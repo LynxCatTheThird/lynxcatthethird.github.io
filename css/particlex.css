@@ -203,7 +203,7 @@ body {
     background: #f6f8fa;
     color: #000000d9;
     font-family: "Poppins", "Source Han Sans SC", sans-serif;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 500;
     scrollbar-color: #8ab5ff #e6efff;
     scrollbar-width: 8px;
@@ -239,35 +239,35 @@ h1 {
     font-weight: bold;
     font-family: "Poppins", "Source Han Sans SC", sans-serif;
     color: #1e3e3f;
-    font-size: 35px;
+    font-size: 40px;
 }
 h2 {
     margin: 15px 0;
     font-weight: bold;
     font-family: "Poppins", "Source Han Sans SC", sans-serif;
     color: #1e3e3f;
-    font-size: 31px;
+    font-size: 35px;
 }
 h3 {
     margin: 15px 0;
     font-weight: bold;
     font-family: "Poppins", "Source Han Sans SC", sans-serif;
     color: #1e3e3f;
-    font-size: 27px;
+    font-size: 30px;
 }
 h4 {
     margin: 15px 0;
     font-weight: bold;
     font-family: "Poppins", "Source Han Sans SC", sans-serif;
     color: #1e3e3f;
-    font-size: 24px;
+    font-size: 27px;
 }
 h5 {
     margin: 15px 0;
     font-weight: bold;
     font-family: "Poppins", "Source Han Sans SC", sans-serif;
     color: #1e3e3f;
-    font-size: 20px;
+    font-size: 23px;
 }
 p {
     margin: 15px 0;
@@ -499,7 +499,7 @@ pre .language {
 }
 #home-posts .post .post-tags a {
     color: #ffbbf4;
-    font-size: 16px;
+    font-size: 18px;
 }
 #home-posts .post .post-tags .tag {
     display: inline-block;
@@ -516,7 +516,7 @@ pre .language {
     color: #fff;
     font-weight: bold;
     border-radius: 20px 0;
-    font-size: 16px;
+    font-size: 18px;
     position: absolute;
     bottom: -5px;
     right: -5px;
@@ -593,7 +593,7 @@ pre .language {
 }
 #home-card {
     position: relative;
-    width: 200px;
+    width: 300px;
 }
 #card-div {
     position: -webkit-sticky;
@@ -601,7 +601,7 @@ pre .language {
     top: 80px;
 }
 #home-card .card-style {
-    padding: 20px 0;
+    padding: 25px 10px;
     background: #fff;
     border-radius: 10px;
     text-align: center;
@@ -639,7 +639,7 @@ pre .language {
 }
 #home-card .card-style .icon-links a {
     color: #5c6b72;
-    font-size: 20px;
+    font-size: 24px;
     padding: 3px 5px;
     border-radius: 5px;
 }
@@ -659,10 +659,10 @@ pre .language {
 }
 #home-card .card-style .friend-links .friend-link a {
     display: inline-block;
-    width: 140px;
+    width: 170px;
     line-height: 3;
     color: #5c6b72;
-    font-size: 16px;
+    font-size: 18px;
     border-radius: 15px;
 }
 #home-card .card-style .friend-links .friend-link a:hover {
@@ -772,7 +772,7 @@ pre .language {
     background: rgba(189, 220, 247, 0.42);
     padding: 4px 8px;
     border-radius: 4px;
-    font-size: 16px;
+    font-size: 18px;
     color: #4b616b;
 }
 .content pre {
@@ -862,7 +862,7 @@ pre .language {
     box-shadow: 1px 1px 0.75rem rgba(237, 110, 161, 0.302);
     color: #fff;
     font-weight: bold;
-    font-size: 13px;
+    font-size: 15px;
     border-radius: 0 0 10px 10px;
 }
 .content .hljs {
@@ -921,7 +921,7 @@ pre .language {
 }
 footer {
     position: relative;
-    font-size: 16px;
+    font-size: 18px;
     width: 100%;
     text-align: center;
     top: 150px;
@@ -944,7 +944,7 @@ footer .footer-icon {
     display: inline-block;
     margin: 0 10px;
     color: #66afef;
-    font-size: 18px;
+    font-size: 20px;
 }
 #archives {
     position: relative;
@@ -1020,7 +1020,7 @@ footer .footer-icon {
     top: 100px;
     color: #1e3e3f;
     padding: 20px;
-    font-size: 17px;
+    font-size: 18px;
 }
 .article h1 {
     font-weight: bold;
@@ -1144,7 +1144,7 @@ footer .footer-icon {
     font-family: "Fira Code" !important;
     background: rgba(189, 220, 247, 0.42);
     border-radius: 4px;
-    font-size: 16px;
+    font-size: 18px;
     color: #4b616b;
 }
 .gt-container .markdown-body pre {
@@ -1192,7 +1192,7 @@ footer .footer-icon {
     background: -o-linear-gradient(120deg, #9abbf7 0, #ffbbf4 100%);
     background: linear-gradient(120deg, #9abbf7 0, #ffbbf4 100%);
     color: #fff;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     text-align: center;
     letter-spacing: 10px;
@@ -1244,7 +1244,7 @@ footer .footer-icon {
     border: 1px solid #0002;
 }
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 13px;/*右侧滚动条效果更好*/
     height: 10px;
 }
 ::-webkit-scrollbar-track {
@@ -1294,17 +1294,17 @@ footer .footer-icon {
         padding: 25px;
     }
     #home-head .home-info .info .wrap h1 {
-        font-size: 56px;
+        font-size: 63px;
         font-weight: bold;
         font-family: "Poppins", "Source Han Sans SC", sans-serif;
         margin-bottom: 10px;
     }
     #home-head .home-info .info .wrap h3 {
-        font-size: 27px;
+        font-size: 37px;
         margin: 10px 0;
     }
     #home-head .home-info .info .wrap h5 {
-        font-size: 16px;
+        font-size: 18px;
         margin: 20px 0;
     }
     ul {
@@ -1316,13 +1316,13 @@ footer .footer-icon {
     #home-posts-wrap {
         max-width: 1300px;
         min-width: 900px;
-        padding: 30px 0;
+        padding: 20px 0;
     }
     .home-posts-wrap-no-card {
         max-width: 900px !important;
     }
     #home-posts {
-        width: 800px;
+        width: 900px; /*首页post宽度*/
         margin-left: auto;
         margin-right: 50px;
     }
@@ -1358,7 +1358,7 @@ footer .footer-icon {
         padding: 30px 0;
     }
     #home-posts {
-        width: 800px;
+        width: 760px;
         margin: auto;
     }
     #home-card {
@@ -1399,17 +1399,17 @@ footer .footer-icon {
         padding: 50px;
     }
     #home-head .home-info .info .wrap h1 {
-        font-size: 52px;
+        font-size: 51px;
         font-weight: bold;
         font-family: "Poppins", "Source Han Sans SC", sans-serif;
         margin-bottom: 10px;
     }
     #home-head .home-info .info .wrap h3 {
-        font-size: 23px;
+        font-size: 25px;
         margin: 10px 0;
     }
     #home-head .home-info .info .wrap h5 {
-        font-size: 16px;
+        font-size: 18px;
         margin: 20px 0;
     }
     ul {
