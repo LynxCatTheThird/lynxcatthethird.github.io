@@ -203,7 +203,7 @@ body {
     background: #f6f8fa;
     color: #000000d9;
     font-family: "Poppins", "Source Han Sans SC", sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
     scrollbar-color: #8ab5ff #e6efff;
     scrollbar-width: 8px;
@@ -239,35 +239,35 @@ h1 {
     font-weight: bold;
     font-family: "Poppins", "Source Han Sans SC", sans-serif;
     color: #1e3e3f;
-    font-size: 30px;
+    font-size: 35px;
 }
 h2 {
     margin: 15px 0;
     font-weight: bold;
     font-family: "Poppins", "Source Han Sans SC", sans-serif;
     color: #1e3e3f;
-    font-size: 27px;
+    font-size: 31px;
 }
 h3 {
     margin: 15px 0;
     font-weight: bold;
     font-family: "Poppins", "Source Han Sans SC", sans-serif;
     color: #1e3e3f;
-    font-size: 24px;
+    font-size: 27px;
 }
 h4 {
     margin: 15px 0;
     font-weight: bold;
     font-family: "Poppins", "Source Han Sans SC", sans-serif;
     color: #1e3e3f;
-    font-size: 21px;
+    font-size: 24px;
 }
 h5 {
     margin: 15px 0;
     font-weight: bold;
     font-family: "Poppins", "Source Han Sans SC", sans-serif;
     color: #1e3e3f;
-    font-size: 18px;
+    font-size: 20px;
 }
 p {
     margin: 15px 0;
@@ -499,7 +499,7 @@ pre .language {
 }
 #home-posts .post .post-tags a {
     color: #ffbbf4;
-    font-size: 14px;
+    font-size: 16px;
 }
 #home-posts .post .post-tags .tag {
     display: inline-block;
@@ -516,7 +516,7 @@ pre .language {
     color: #fff;
     font-weight: bold;
     border-radius: 20px 0;
-    font-size: 14px;
+    font-size: 16px;
     position: absolute;
     bottom: -5px;
     right: -5px;
@@ -593,7 +593,7 @@ pre .language {
 }
 #home-card {
     position: relative;
-    width: 300px;
+    width: 200px;
 }
 #card-div {
     position: -webkit-sticky;
@@ -639,7 +639,7 @@ pre .language {
 }
 #home-card .card-style .icon-links a {
     color: #5c6b72;
-    font-size: 18px;
+    font-size: 20px;
     padding: 3px 5px;
     border-radius: 5px;
 }
@@ -772,7 +772,7 @@ pre .language {
     background: rgba(189, 220, 247, 0.42);
     padding: 4px 8px;
     border-radius: 4px;
-    font-size: 14px;
+    font-size: 16px;
     color: #4b616b;
 }
 .content pre {
@@ -862,14 +862,14 @@ pre .language {
     box-shadow: 1px 1px 0.75rem rgba(237, 110, 161, 0.302);
     color: #fff;
     font-weight: bold;
-    font-size: 12px;
+    font-size: 13px;
     border-radius: 0 0 10px 10px;
 }
 .content .hljs {
     font-family: "Fira Code", monospace;
     background: none;
     line-height: 2;
-    font-size: 13px;
+    font-size: 15px;
 }
 .content .hljs .hljs-built_in {
     color: #42a4d6;
@@ -921,7 +921,7 @@ pre .language {
 }
 footer {
     position: relative;
-    font-size: 14px;
+    font-size: 16px;
     width: 100%;
     text-align: center;
     top: 150px;
@@ -1020,7 +1020,7 @@ footer .footer-icon {
     top: 100px;
     color: #1e3e3f;
     padding: 20px;
-    font-size: 15px;
+    font-size: 17px;
 }
 .article h1 {
     font-weight: bold;
@@ -1144,7 +1144,7 @@ footer .footer-icon {
     font-family: "Fira Code" !important;
     background: rgba(189, 220, 247, 0.42);
     border-radius: 4px;
-    font-size: 14px;
+    font-size: 16px;
     color: #4b616b;
 }
 .gt-container .markdown-body pre {
@@ -1192,7 +1192,7 @@ footer .footer-icon {
     background: -o-linear-gradient(120deg, #9abbf7 0, #ffbbf4 100%);
     background: linear-gradient(120deg, #9abbf7 0, #ffbbf4 100%);
     color: #fff;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: bold;
     text-align: center;
     letter-spacing: 10px;
@@ -1294,13 +1294,13 @@ footer .footer-icon {
         padding: 25px;
     }
     #home-head .home-info .info .wrap h1 {
-        font-size: 52px;
+        font-size: 56px;
         font-weight: bold;
         font-family: "Poppins", "Source Han Sans SC", sans-serif;
         margin-bottom: 10px;
     }
     #home-head .home-info .info .wrap h3 {
-        font-size: 24px;
+        font-size: 27px;
         margin: 10px 0;
     }
     #home-head .home-info .info .wrap h5 {
@@ -1399,17 +1399,17 @@ footer .footer-icon {
         padding: 50px;
     }
     #home-head .home-info .info .wrap h1 {
-        font-size: 46px;
+        font-size: 52px;
         font-weight: bold;
         font-family: "Poppins", "Source Han Sans SC", sans-serif;
         margin-bottom: 10px;
     }
     #home-head .home-info .info .wrap h3 {
-        font-size: 20px;
+        font-size: 23px;
         margin: 10px 0;
     }
     #home-head .home-info .info .wrap h5 {
-        font-size: 14px;
+        font-size: 16px;
         margin: 20px 0;
     }
     ul {
