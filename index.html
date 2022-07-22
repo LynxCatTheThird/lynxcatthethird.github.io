@@ -1,0 +1,287 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+        <title>欢迎！</title>
+        <meta name="author" content="LynxCatTheThird">
+        <meta name="description" content="我是山猫三号，一个来自一百零三世纪的强人工智能。">
+        <meta name="keywords" content="">
+        <link rel="icon" href="avatar.png">
+        <script src="https://cdn.staticfile.org/instant.page/5.1.0/instantpage.min.js" type="module"></script>
+        <script src="https://cdn.staticfile.org/font-awesome/6.1.1/js/all.min.js"></script>
+        
+        <link rel="stylesheet" href="/css/test/fonts.min.css">
+        
+        <link rel="stylesheet" href="/css/particlex.css">
+        <script src="https://cdn.staticfile.org/vue/3.2.33/vue.global.prod.min.js"></script>
+    <meta name="generator" content="Hexo 6.2.0"></head>
+    <body>
+        <div id="loading" style="height:100vh;width:100vw;position:fixed;display:flex;z-index:200;justify-content:space-between;background:#fff;transition:opacity 0.3s ease-out"><div style="position:fixed;height:100vh;width:100vw;display:flex;justify-content:center;align-items:center"><div id="loadcontent" style="width:50vmin;height:50vmin;padding:50px;border-radius:50%;display:flex;justify-content:center;align-items:center;border:solid 10px #a3ddfb;text-align:center"><div><h2>LOADING...</h2><p style="word-break:keep-all">加载过慢请开启缓存(浏览器默认开启)</p><div><img alt="loading" src="/loading.gif"></div></div></div></div></div>
+        <div id="layout">
+            <i data-fa-symbol="calendar-solid" class="fa-solid fa-calendar fa-fw"></i>
+            <i data-fa-symbol="bookmark-solid" class="fa-solid fa-bookmark fa-fw"></i>
+            <i data-fa-symbol="tags-solid" class="fa-solid fa-tags fa-fw"></i>
+            <transition name="into">
+                <div v-show="show_page" style="display: -not-none">
+                    <div id="menu_show">
+                         
+<nav id="menu">
+    <div class="desktop-menu">
+        <a href="/">
+            <span class="title">欢迎！</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;首页</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;关于我</span>
+        </a>
+        
+    </div>
+    <div :class="'phone-menu ' + menu_show" id="phone-menu">
+        <div class="curtain" @click="menu_show = !menu_show" v-show="menu_show"></div>
+        <div :class="'title'" @click="menu_show = !menu_show">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;欢迎！</span>
+        </div>
+        <transition name="slide">
+        <div class="items" v-show="menu_show">
+            
+            <a href="/">
+                <div class="item">
+                    <div style="min-width: 20px; max-width: 50px; width: 10%">
+                        <i class="fa-solid fa-house fa-fw"></i>
+                    </div>
+                    <div style="min-width: 100px; max-width: 150%; width: 20%">首页</div>
+                </div>
+            </a>
+            
+            <a href="/about">
+                <div class="item">
+                    <div style="min-width: 20px; max-width: 50px; width: 10%">
+                        <i class="fa-solid fa-id-card fa-fw"></i>
+                    </div>
+                    <div style="min-width: 100px; max-width: 150%; width: 20%">关于我</div>
+                </div>
+            </a>
+            
+        </div>
+        </transition>
+    </div>
+</nav>
+                    </div>
+                    <div id="main">
+                        <div id="home-head">
+    <div id="home-background" style="background-image: url(background.webp)"></div>
+    
+    <div id="home-info" class="home-info" @click="home_click">
+        <span class="loop"></span>
+        <span class="loop"></span>
+        <span class="loop"></span>
+        <span class="loop"></span>
+        <span class="info">
+            <div class="wrap">
+                <h1>欢迎！</h1>
+                <h3>LynxCatTheThird 的小窝儿</h3>
+                <h5>我是山猫三号，一个来自一百零三世纪的强人工智能。</h5>
+            </div>
+        </span>
+    </div>
+    
+</div>
+
+<div id="home-posts-wrap" class=>
+    <div id="home-posts">
+        <div id="posts">
+            
+
+<div class="post">
+    <a href="/2022/06/06/top/">
+        <h2>
+            欢迎来到我的主页！
+        </h2>
+    </a>
+    <div class="category-and-date">
+        
+        <span class="date">
+            <span class="icon">
+                <svg class="fa-icon"><use xlink:href="#calendar-solid"></use></svg>
+            </span>
+            2022/6/6
+        </span>
+    </div>
+    <div class="excerpt">
+        <div class="content" v-pre>
+            
+            <h2 id="目前，我的博客由四个-Hexo-框架共同组成："><a href="#目前，我的博客由四个-Hexo-框架共同组成：" class="headerlink" title="目前，我的博客由四个 Hexo 框架共同组成："></a>目前，我的博客由四个 Hexo 框架共同组成：</h2><h3 id="主页（您目前所在页面）"><a href="#主页（您目前所在页面）" class="headerlink" title="主页（您目前所在页面）"></a>主页（您目前所在页面）</h3><p>用作进入个人博客与项目网站的向导页面</p>
+<p>使用 <a target="_blank" rel="noopener" href="https://github.com/argvchs/hexo-theme-particlex/">ParticleX</a> 主题，感谢 <a target="_blank" rel="noopener" href="https://github.com/argvchs/">@Argvchs</a>（个人博客地址：<a target="_blank" rel="noopener" href="https://argvchs.github.io/">https://argvchs.github.io</a>）</p>
+<p>Github：<a href="https://lynxcatthethird.github.io/">欢迎！ (lynxcatthethird.github.io)</a></p>
+<p>Vercel：<a target="_blank" rel="noopener" href="https://lynxcatthethird-home.vercel.app/">欢迎！ (lynxcatthethird-home.vercel.app)</a></p>
+<h3 id="项目网站"><a href="#项目网站" class="headerlink" title="项目网站"></a>项目网站</h3><p>用作我目前正在创作的文学作品的简介与发布</p>
+<p>使用 <a target="_blank" rel="noopener" href="https://github.com/blinkfox/hexo-theme-matery/">Matery</a> 主题，感谢 <a target="_blank" rel="noopener" href="https://github.com/blinkfox/">@BlinkFox</a>（个人博客地址：<a target="_blank" rel="noopener" href="http://blinkfox.com/">http://blinkfox.com/</a>）和参与开发的所有人和群友们（尽管我没进群）</p>
+<p>Github：<a href="https://lynxcatthethird.github.io/project/">LynxCatTheThird 的小窝儿 (https://lynxcatthethird.github.io/project/)</a></p>
+<p>Vercel：<a target="_blank" rel="noopener" href="https://lynxcatthethird-project.vercel.app/">LynxCatTheThird 的小窝儿 (lynxcatthethird-project.vercel.app)</a></p>
+<h3 id="个人博客（仅具雏形）"><a href="#个人博客（仅具雏形）" class="headerlink" title="个人博客（仅具雏形）"></a>个人博客（仅具雏形）</h3><p>用作日常发文、技术发文、闲聊、随笔等日常用途</p>
+<p>使用 <a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a> 主题，感谢 <a target="_blank" rel="noopener" href="https://github.com/jerryc127">@Jerry Wong</a>（个人博客地址：<a target="_blank" rel="noopener" href="https://crazywong.com/">https://crazywong.com/</a>）和参与开发的所有人和群友们</p>
+<p>Github：<a href="https://lynxcatthethird.github.io/person/">LynxCatTheThird 的小窝儿 (https://lynxcatthethird.github.io/person/)</a></p>
+<p>Vercel：<a target="_blank" rel="noopener" href="https://lynxcatthethird-person.vercel.app/">LynxCatTheThird 的小窝儿 (lynxcatthethird-person.vercel.app)</a></p>
+<h3 id="项目更新网站"><a href="#项目更新网站" class="headerlink" title="项目更新网站"></a>项目更新网站</h3><p>用作我目前正在创作的文学作品的更新日志</p>
+<p>使用 <a target="_blank" rel="noopener" href="https://github.com/hifun-team/hexo-theme-miracle">Miracle</a> 主题，感谢 <a target="_blank" rel="noopener" href="https://github.com/hifun-team">HiFun Team</a></p>
+<p>Github：<a href="https://lynxcatthethird.github.io/update/">LynxCatTheThird 的更新发布页(https://lynxcatthethird.github.io/update/)</a></p>
+<p>Vercel：<a target="_blank" rel="noopener" href="https://lynxcatthethird-update.vercel.app/">LynxCatTheThird 的更新发布页 (lynxcatthethird-update.vercel.app)</a></p>
+<h2 id="注："><a href="#注：" class="headerlink" title="注："></a>注：</h2><p>1.LynxCatTheThird 是住宿生，网站大致以 2-6 周一次的频率更新，比较慢，请您理解<br>2.LynxCatTheThird 是初中生，才疏学浅，可能写不好文章，请您谅解<br>3.<strong>本站服务器资源白嫖于 Github 和 Vercel，比较慢，还有限流，请您凑合用用，静待以后转独立服务器</strong></p>
+
+            
+        </div>
+    </div>
+    <div class="post-tags">
+        
+        
+    </div>
+    <a href="/2022/06/06/top/" class="go-post">
+        阅读全文
+    </a>
+</div>
+
+             
+<div class="page-current">
+    <div class="prev">
+        
+    </div>
+    <div class="page-index">
+        
+        <span class="current">
+            1
+        </span>
+        
+    </div>
+    <div class="next">
+        
+    </div>
+</div>
+        </div>
+    </div>
+    
+    <div id="home-card">
+        <div id="card-div">
+    <div class="card-style" style="width: 300px">
+        <div class="avatar">
+            <img src="avatar.png " alt="avatar">
+        </div>
+        <div class="name">
+            LynxCatTheThird
+        </div>
+        <div class="descriptions">
+            
+            <div class="description">
+                我是山猫三号，一个来自一百零三世纪的强人工智能。
+            </div>
+            
+        </div>
+        <div class="icon-links">
+            
+            <span class="icon-link">
+                <a target="_blank" rel="noopener" href="https://github.com/lynxcatthethird">
+                    <i class="fa-brands fa-github fa-fw"></i>
+                </a>
+            </span>
+            
+            <span class="icon-link">
+                <a target="_blank" rel="noopener" href="https://space.bilibili.com/1352440272">
+                    <i class="fa-brands fa-bilibili fa-fw"></i>
+                </a>
+            </span>
+            
+            <span class="icon-link">
+                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/LynxCatTheThird">
+                    <i class="fa-brands fa-zhihu fa-fw"></i>
+                </a>
+            </span>
+            
+            <span class="icon-link">
+                <a target="_blank" rel="noopener" href="https://twitter.com/lynxcatthethird">
+                    <i class="fa-brands fa-twitter fa-fw"></i>
+                </a>
+            </span>
+            
+            <span class="icon-link">
+                <a href="weixin://contacts/profile/tsfxlyx123456">
+                    <i class="fa-brands fa-weixin fa-fw"></i>
+                </a>
+            </span>
+            
+            <span class="icon-link">
+                <a target="_blank" rel="noopener" href="http://wpa.qq.com/msgrd?v=3&uin=45933179&site=qq&menu=true">
+                    <i class="fa-brands fa-qq fa-fw"></i>
+                </a>
+            </span>
+            
+        </div>
+        <div class="friend-links">
+            
+            <div class="friend-link">
+                <a target="_blank" rel="noopener" href="https://argvchs.github.io/">
+                    主题开发者 Argvchs
+                </a>
+            </div>
+            
+            <div class="friend-link">
+                <a target="_blank" rel="noopener" href="http://lukeyalvin.site/">
+                    一蓑烟雨
+                </a>
+            </div>
+            
+            <div class="friend-link">
+                <a target="_blank" rel="noopener" href="https://www.imnian.com/">
+                    流年笔记
+                </a>
+            </div>
+            
+            <div class="friend-link">
+                <a target="_blank" rel="noopener" href="https://www.miaodiapp.com/">
+                    喵滴
+                </a>
+            </div>
+            
+        </div>
+    </div>
+</div>
+    </div>
+    
+</div>
+                         
+<footer id="footer">
+    <div class="footer-wrap">
+        <div>
+            © 20xx - 2022 欢迎！
+            <span class="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            @LynxCatTheThird
+        </div>
+        <div></div>
+        <div>Based on the <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo Engine</a> & <a
+                target="_blank" rel="noopener" href="https://github.com/argvchs/hexo-theme-particlex">ParticleX Theme</a></div>
+        
+    </div>
+</footer>
+                    </div>
+                </div>
+            </transition>
+            <div id="img_show">
+                <img id="img_content" alt="img_show">
+            </div>
+        </div>
+        <script src="https://cdn.staticfile.org/highlight.js/11.5.1/highlight.min.js"></script>
+        <script src="/js/particlex.js"></script>
+        <script src="/js/showimg.js"></script>
+        
+
+    </body>
+</html>
