@@ -37,7 +37,8 @@
   <entry>
     <title>文章效果与字体编码测试</title>
     <url>/article/a36a68fc/</url>
-    <content><![CDATA[<h1 id="Markdown-基本语法">Markdown 基本语法</h1>
+    <content><![CDATA[<style type="text/css">@font-face{font-family:'ZhuDouSans';font-display:swap;src:url(https://jsd.onmicrosoft.cn/gh/Buernia/Zhudou-Sans@main/fonts/webfont/ZhudouSansVF.woff2) format('woff2')}</style>
+<h1 id="Markdown-基本语法">Markdown 基本语法</h1>
 <h1 id="一级标题">一级标题</h1>
 <h2 id="二级标题">二级标题</h2>
 <h3 id="三级标题">三级标题</h3>
@@ -287,7 +288,7 @@
 <h1 id="额外安装的标签外挂">额外安装的标签外挂</h1>
 <h2 id="Aplayer">Aplayer</h2>
 
-    <div id="aplayer-yPmIsvnu" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="75087837" data-server="netease" data-type="album" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86"></div>
+    <div id="aplayer-bQWpRXjP" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="75087837" data-server="netease" data-type="album" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86"></div>
 <h2 id="Tag-Plugins-Plus">Tag Plugins Plus <sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></h2>
 <h3 id="行内文本样式-text">行内文本样式 text</h3>
 <ol>
