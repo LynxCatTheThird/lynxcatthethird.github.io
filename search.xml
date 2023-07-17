@@ -288,7 +288,7 @@
 <h1 id="额外安装的标签外挂">额外安装的标签外挂</h1>
 <h2 id="Aplayer">Aplayer</h2>
 
-    <div id="aplayer-bQWpRXjP" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="75087837" data-server="netease" data-type="album" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86"></div>
+    <div id="aplayer-ugqSdSWM" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="75087837" data-server="netease" data-type="album" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86"></div>
 <h2 id="Tag-Plugins-Plus">Tag Plugins Plus <sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></h2>
 <h3 id="行内文本样式-text">行内文本样式 text</h3>
 <ol>
@@ -728,6 +728,88 @@ Butterfly 主题的各个衍生魔改 <span class="hidden-anchor" id="referto_[6
       </categories>
       <tags>
         <tag>刷机</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>网站速度优化指北</title>
+    <url>/article/a63f345a/</url>
+    <content><![CDATA[<p>网站速度的重要性不必多说。闲言少叙，让我们直奔主题。</p>
+<h1 id="减少下载资源的数量与大小">减少下载资源的数量与大小</h1>
+<p>此话不必多说，但应如何做到呢？</p>
+<h2 id="合并文件">合并文件</h2>
+<p>文件的存储与传输都是按照一定的簇来执行的。举个例子：有 100 个小文件，大小均为 1KB，共簇大小为 4KB，则它们的 1KB&nbsp; 总大小为 400KB，而非 100KB！这无形之中就多了 300KB。而且，更多的文件就意味着更多的连接、请求、下载次数，耗时相当可观。
+合并文件的主要方法有：</p>
+<ol>
+<li>将多个 CSS/JS 合并为一个</li>
+<li>将 CSS/JS 嵌入至 HTML 中 </li>
+</ol>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">npm install hexo-html-minifier hexo-clean-css hexo-uglify --save</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="压缩文件">压缩文件</h2>
+<p>文件中的回车、部分空格、注释都毫不影响其最终作用，却仍占用相当大体积，因此应将其删去。</p>
+<div class="note warning simple"><p>大多数压缩程序会将文件合并为一行，导致在 Commit 记录中难以看出文件的修改！</p>
+</div>
+<div class="tabs" id="方案"><ul class="nav-tabs"><li class="tab active"><button type="button" data-href="#方案-1">方案 1</button></li><li class="tab"><button type="button" data-href="#方案-2"> 方案 2</button></li></ul><div class="tab-contents"><div class="tab-item-content active" id="方案-1"><p>乐特的 <code>hexo-minify</code> 插件</p>
+<p>安装</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">npm install hexo-minify --save</span><br></pre></td></tr></tbody></table></figure>
+<p>配置</p>
+<p>在博客目录下 `_config.yml 添加如下配置：</p>
+<figure class="highlight yaml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">## Hexo-minify Default Config Options</span></span><br><span class="line"><span class="attr">minify:</span></span><br><span class="line">  <span class="attr">preview:</span> <span class="literal">false</span> <span class="comment">## 本地预览时是否压缩</span></span><br><span class="line">  <span class="attr">exclude:</span> [<span class="string">"*.min.*"</span>]</span><br><span class="line">  <span class="attr">js:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">sourceMap:</span></span><br><span class="line">      <span class="attr">enable:</span> <span class="literal">false</span> <span class="comment">## 生成 sourceMap</span></span><br><span class="line">      <span class="comment">## 将 sourceMappingURL 插入压缩后的 js 文件，如果为 false 则需要在浏览器开发者工具中手动添加 sourceMap</span></span><br><span class="line">      <span class="attr">sourceMappingURL:</span> <span class="literal">false</span> <span class="comment">## //# sourceMappingURL=xxx.js.map</span></span><br><span class="line">    <span class="comment">## 详细配置: https://github.com/terser/terser#minify-options</span></span><br><span class="line">    <span class="attr">options:</span> {}</span><br><span class="line">  <span class="attr">css:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="comment">## 详细配置: https://github.com/clean-css/clean-css#compatibility-modes</span></span><br><span class="line">    <span class="attr">options:</span> {}</span><br><span class="line">  <span class="attr">html:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="comment">## 详细配置: https://github.com/kangax/html-minifier#options-quick-reference</span></span><br><span class="line">    <span class="attr">options:</span></span><br><span class="line">      <span class="attr">minifyJS:</span> <span class="literal">true</span> <span class="comment"># Compressed JavaScript</span></span><br><span class="line">      <span class="attr">minifyCSS:</span> <span class="literal">true</span> <span class="comment"># CSS Compressed</span></span><br><span class="line">      <span class="attr">removeComments:</span> <span class="literal">true</span> <span class="comment"># Remove the comments</span></span><br><span class="line">      <span class="attr">collapseWhitespace:</span> <span class="literal">true</span> <span class="comment"># Delete any extra space</span></span><br><span class="line">      <span class="attr">removeAttributeQuotes:</span> <span class="literal">true</span> <span class="comment"># Delete attribute quotes</span></span><br><span class="line">  <span class="attr">image:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">svg:</span></span><br><span class="line">      <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">      <span class="comment">## 详细配置: https://github.com/imagemin/imagemin-svgo#imageminsvgooptionsbuffer</span></span><br><span class="line">      <span class="attr">options:</span> {}</span><br><span class="line">    <span class="attr">jpg:</span></span><br><span class="line">      <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">      <span class="comment">## 详细配置: https://github.com/imagemin/imagemin-jpegtran#options</span></span><br><span class="line">      <span class="attr">options:</span> {}</span><br><span class="line">    <span class="attr">png:</span></span><br><span class="line">      <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">      <span class="comment">## 详细配置: https://github.com/imagemin/imagemin-pngquant#options</span></span><br><span class="line">      <span class="attr">options:</span> {}</span><br><span class="line">    <span class="attr">gif:</span></span><br><span class="line">      <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">      <span class="comment">## 详细配置: https://www.npmjs.com/package/imagemin-gifsicle#options</span></span><br><span class="line">      <span class="attr">options:</span> {}</span><br><span class="line">    <span class="attr">webp:</span></span><br><span class="line">      <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">      <span class="comment">## 详细配置: https://github.com/imagemin/imagemin-webp#options</span></span><br><span class="line">      <span class="attr">options:</span> {}</span><br><span class="line">  <span class="attr">font:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">    <span class="comment">## 详细配置: https://github.com/Lete114/fontmin-spider#api</span></span><br><span class="line">    <span class="attr">options:</span> {}</span><br></pre></td></tr></tbody></table></figure><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div><div class="tab-item-content" id="方案-2"><p>来源：<a href="https://argvchs.github.io/2022/08/27/hexo-minify-static-files/">Hexo 压缩静态文件</a></p>
+<p>安装</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">npm install hexo-html-minifier hexo-clean-css hexo-uglify --save</span><br></pre></td></tr></tbody></table></figure>
+<p>配置</p>
+<p>在博客目录下 `_config.yml 添加如下配置：</p>
+<figure class="highlight yaml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">uglify:</span></span><br><span class="line">  <span class="attr">mangle:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">output:</span></span><br><span class="line">  <span class="attr">compress:</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">"*.min.js"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">clean_css:</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">"*.min.css"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">html_minifier:</span></span><br><span class="line">  <span class="attr">collapseBooleanAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">collapseWhitespace:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">ignoreCustomComments:</span> [<span class="type">!!js/regexp</span> <span class="string">/^\s*more/</span>]</span><br><span class="line">  <span class="attr">removeComments:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">removeEmptyAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">removeScriptTypeAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">removeStyleLinkTypeAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">minifyJS:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">minifyCSS:</span> <span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div></div>
+<h2 id="减少-CSS-JS-加载数">减少 CSS/JS 加载数</h2>
+<p>更多的文件意味着更长的加载用时与渲染用时（RAM 时间与 CPU 时间），因此应慎重引入。</p>
+<p>以 Butterfly 主题为例，若您并不必需某些组件（如 abcjs），则应将其关闭。若您并不明确某些功能（如 Layload 与 Service&nbsp;Worker）的利与弊的大小关系，则也不应轻易启用。常见的有：</p>
+<ul>
+<li>
+<p>abcjs，mermaid，katex/MathJax，Aplayer / 美化插件（Finework 等）<br>这些东西并非必需，不应以多多益善由开启</p>
+</li>
+<li>
+<p>预加载<br>在网速足够快时，开启它作用并似乎不明显</p>
+</li>
+<li>
+<p>懒加载<br>在图床速度足够快、图片足够优秀（指体积与品质符合网页加载需求）时，开启它作用并不明显，反而可能导致某些资源的加载被阻塞，从而导致网页持续地转圈</p>
+</li>
+<li>
+<p>PJax/Service&nbsp;Worker<br>若您不明确对缓存进行调控所减少的下载用时与 JS 拉长的 CPU 用时之间的利弊关系，则不应随意开启</p>
+</li>
+<li>
+<p>字体<br>字体文件往往体积巨大，渲染起来又费时费力，不应过多引入</p>
+</li>
+</ul>
+<h1 id="保证资源加载畅通">保证资源加载畅通</h1>
+<p>在引用资源前，应确保来源稳定可靠。若其速度不稳定或服务时好时坏，可能会导致卡加载动画或卡白屏。</p>
+<p>应对资源和服务进行维护 / 监控或选择可靠的来源，引入前应进行多地 Ping/HTTP 测试，确保多地访问通畅。</p>
+<p>若确因资金 / 政策 / 网络环境等原因不能保证服务时时可用，可用 CDN 竞速、资源镜像或 IP 属地判断等技术缓解。</p>
+<h1 id="停用加载动画与入场动画">停用加载动画与入场动画</h1>
+<p>很多朋友为了网页美观性往往会添加加载动画，但正如前面所说，只要有一条资源有问题，就会阻塞整个加载动画，致使网页迟迟显示不出有效内容。纵使是非全屏式动画（pace_css），也仿佛在提示用户 “嘿！我还没加载完呢！” 十分影响观念。</p>
+<p>入场动画（如闪现）则会影响渲染初期的效率，抢占渲染其它内容所需的 CPU 与 GPU，在某些低端设备或 GPU 有问题的设备上可能会引起卡顿。</p>
+<h1 id="使用合适的-CDN">使用合适的 CDN</h1>
+<p>打个比方，假如您在上海，收快递时，快递从苏州还是美国发过来快？显然是苏州！CDN 也同理。市面上常用的公益 CDN（JSDelivr，&nbsp;UnPKG，CDNJS）等多没有大陆节点，使用此类 CDN, 数据包往往要 “漂洋过海来看你 “，速度堪忧。而对于此问题，只需切换 CDN 即可。以 Butterfly&nbsp; 为例，可在配置中将 CDN 来源设为 custom 以使用国内源（如 staticfile）。若国内源无法包含所有所需文件，还可以经某资源设定单独链接。
+苦您的站点面向全球用户，则可选则 CDN 竞选、并发请求，1P 筛选等策略。
+H₂&nbsp; 减少 API 调用。
+　相信许多朋友为了能提升观感，为自己的站点配备了一言、不蒜子、评论计数等 API，这应慎重。大量使用 API 会显着拉大 API 调用次数，带来十分可观的费用。同样的，部分 APZ 速度不稳，设想一下，当您刷视频时，突然接放量、点餐量、评论量等部加载不出来了，整个网页一片问号，是否十分 ex？抑或您去搜索视频，搜索 API 半天没动静，或把整个网页的加载拉住了，是否十分难受？
+H₂&nbsp; 优化图片
+　图片作为媒体的玉头戏，在网页上不可或缺。随着图片体积的增大，图片所带来的负担也不容小觑。优化图片的要用的是减十体积，其方法有：
+写提高性能</p>
+<p>1。降低分辨率、位深、色彩精度之类 2。使用工具进行无损或低损压缩 3。将 PNG，JPG 等格式转为 WeBP 或 Avif 格式
+此类图片发布日期较新，有许多新技术以及新特征（比如在保证质量不太差的前提下，最大程度压缩体积），利于网页使入 4。将 Gif 换用 APNG 或 MP4
+Gif 不仅体积巨大，质量差，渲染还十分力，不如直接用视频
+T₂&nbsp; 减少不必要的元素数量
+Lighthouse&nbsp; 测试中的 “你知道吗” 中有一条:“将网页主菜从 300 个提升至 &nbsp;60004，网页转化率下降了 85%”
+过多的元素不仅意味着更大的体积，也意味着更大的渲染压力。以 Butterfly 主题为例，在不修改源码的情况下，我们可以采用以下方式： 1。减少 Menu，&nbsp;Sidebar 中的项目 2。减少首页 &nbsp;post 展示量
+T₂&nbsp; 减少动态内容
+　某些内容是动态变化的（如沾点的运行时间），更有甚者，某些内容是动态渲染的（比如文章过期提示）。与静态内容相比，动态内客往位需要的 CPU 时间以提供 HTML，其后才能进行额外</p>
+]]></content>
+      <categories>
+        <category>科学与技术</category>
+        <category>计算机</category>
+        <category>网站搭建</category>
+      </categories>
+      <tags>
+        <tag>网站搭建</tag>
       </tags>
   </entry>
 </search>
