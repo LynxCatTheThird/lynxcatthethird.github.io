@@ -288,7 +288,7 @@
 <h1 id="额外安装的标签外挂">额外安装的标签外挂</h1>
 <h2 id="Aplayer">Aplayer</h2>
 
-    <div id="aplayer-rIcVQhCI" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="75087837" data-server="netease" data-type="album" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86"></div>
+    <div id="aplayer-LSJIZgGW" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="75087837" data-server="netease" data-type="album" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86"></div>
 <h1 id="Iframe">Iframe</h1>
 <h2 id="Bilibili">Bilibili</h2>
 <iframe src="//player.bilibili.com/player.html?aid=80433022&amp;bvid=BV1GJ411x7h7&amp;cid=137649199&amp;page=1&amp;high_quality=1" allowfullscreen="allowfullscreen" width="100%" height="500" scrolling="no" frameborder="0" sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"></iframe>
@@ -493,7 +493,9 @@
     <url>/article/a63f345a/</url>
     <content><![CDATA[<div class="note warning simple"><p>未经专业测试，仅为个人使用体验</p>
 </div>
-<p>网站速度的重要性不必多说。闲言少叙，让我们直奔主题。</p>
+<p>在开始之前，有这么一个网站：<a href="https://lynxcatthethird-person.netlify.app/html/loading.html">https://lynxcatthethird-person.netlify.app/html/loading.html</a>。</p>
+<p>这里面引入了五套字体，每套字体 3 个或 9 个字重，共计需要加载 1000～2000 个字体文件。那么，这个网页的速度与性能，会差到什么程度？</p>
+<p>由此，我们引出本文的话题：</p>
 <h1 id="减少下载资源的数量与大小">减少下载资源的数量与大小</h1>
 <p>此话不必多说，但应如何做到呢？</p>
 <h2 id="合并文件">合并文件</h2>
