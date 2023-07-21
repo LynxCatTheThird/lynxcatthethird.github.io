@@ -96,7 +96,7 @@
 <p><a href="mailto:tsfxlyx@qq.com">tsfxlyx@qq.com</a></p>
 <p><strong><a href="https://lynxcatthethird-person.netlify.app/">带格式化的链接</a></strong></p>
 <p><a href="https://lynxcatthethird-person.netlify.app/">引用类型链接</a></p>
-<p><img src="https://i0.hdslb.com/bfs/album/335657374a640f1748c290003b8851caa7db114d.png" alt="图片" title="带有标题"></p>
+<p><img src="https://i0.hdslb.com/bfs/album/335657374a640f1748c290003b8851caa7db114d.png@1e_1c.webp" alt="图片" title="带有标题"></p>
 <table>
     <tbody><tr>
         <td> HTML 嵌入</td>
@@ -288,7 +288,7 @@
 <h1 id="额外安装的标签外挂">额外安装的标签外挂</h1>
 <h2 id="Aplayer">Aplayer</h2>
 
-    <div id="aplayer-NTHQbIVo" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="75087837" data-server="netease" data-type="album" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86"></div>
+    <div id="aplayer-jtdLolyv" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="75087837" data-server="netease" data-type="album" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86"></div>
 <h1 id="Iframe">Iframe</h1>
 <h2 id="Bilibili">Bilibili</h2>
 <iframe src="//player.bilibili.com/player.html?aid=80433022&amp;bvid=BV1GJ411x7h7&amp;cid=137649199&amp;page=1&amp;high_quality=1" allowfullscreen="allowfullscreen" width="100%" height="500" scrolling="no" frameborder="0" sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"></iframe>
@@ -495,7 +495,7 @@
 </div>
 <p>在开始之前，有这么一个网站：<a href="https://lynxcatthethird-person.netlify.app/html/loading.html">https://lynxcatthethird-person.netlify.app/html/loading.html</a>。</p>
 <p>这里面引入了五套字体，每套字体 3 个或 9 个字重，共计需要加载 1000～2000 个字体文件。那么，这个网页的速度与性能，会差到什么程度？</p>
-<p>由此，我们引出本文的话题：</p>
+<p>由此，我们引出本文的话题：如何优化网站速度？</p>
 <h1 id="减少下载资源的数量与大小">减少下载资源的数量与大小</h1>
 <p>此话不必多说，但应如何做到呢？</p>
 <h2 id="合并文件">合并文件</h2>
@@ -520,12 +520,12 @@
 <h3 id="附加组件"><abbr title="abcjs，Mermaid，Katex/MathJax，Aplayer，美化插件（Firework 等）">附加组件</abbr></h3>
 <p>这些东西并非必需，不应以多多益善为由开启。</p>
 <figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">aplayerInject:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure>
-<p><em>(此处略去，请自行判断)</em></p>
+<p><em>(其余略去，请自行判断)</em></p>
 <h3 id="预加载">预加载</h3>
-<p>在网速足够快时，开启它作用并似乎不明显。但对于部署于 Github Pages 等平台的情况，建议开启。</p>
+<p>在双方网速足够快时，开启它作用并似乎不明显。但对于部署于 Github Pages 等国外平台，或带宽较高的情况，建议开启。</p>
 <figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">instantpage:</span> <span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure>
 <h3 id="懒加载">懒加载</h3>
-<p>在图床速度足够快、图片足够优秀时，开启它作用并不明显，反而可能导致某些资源的加载被阻塞，从而导致网页持续地转圈。</p>
+<p>在图床速度足够快、图片足够优秀时，开启它作用并不明显，反而可能阻塞某些资源的加载（让它们卡在 “等待中”）。并且，懒加载会频繁的取消与发起资源的加载，拉长时间。</p>
 <figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">lazyload:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
 <h3 id="PJax-Service-Worker">PJax/Service&nbsp;Worker</h3>
 <p>若您不明确对缓存进行调控所减少的下载用时与 JS 拉长的 CPU 用时之间的利弊关系，则不应随意开启。</p>
@@ -534,18 +534,18 @@
 <p>字体文件往往体积巨大，渲染起来又费时费力，不应过多引入。</p>
 <h1 id="保证资源加载畅通">保证资源加载畅通</h1>
 <p>在引用资源前，应确保来源稳定可靠。若其速度不稳定或服务时好时坏，可能会导致卡加载动画或卡白屏。</p>
-<p>应对资源和服务进行维护 / 监控或选择可靠的来源，引入前应进行<a href="https://itdog.cn/">多地 Ping/HTTP 测试</a>，确保多地访问通畅。</p>
-<p>若确因资金 / 政策 / 网络环境等原因不能保证服务时时可用，可用 CDN 竞速、资源镜像或 IP 属地判断等技术缓解。具体按可以参见<a href="https://kmar.top/posts/73014407/">《小白也能用的 SW 构建插件》 | 山岳库博</a>。</p>
+<p>应对资源和服务进行维护、监控或选择可靠的来源，引入前应进行<a href="https://itdog.cn/">多地 Ping/HTTP 测试</a>，确保多地访问通畅。</p>
+<p>若确因资金、政策、网络环境等原因不能保证服务时时可用，可用 CDN 竞速、资源镜像或 IP 属地判断等技术缓解。具体按可以参见<a href="https://kmar.top/posts/73014407/">《小白也能用的 SW 构建插件》 | 山岳库博</a>。</p>
 <h1 id="停用加载动画与入场动画">停用加载动画与入场动画</h1>
 <p>很多朋友为了网页美观性往往会添加加载动画，但正如前面所说，只要有一条资源有问题，就会阻塞整个加载动画，致使网页迟迟显示不出有效内容。纵使是非全屏式动画（pace_css），也仿佛在提示用户 “嘿！我还没加载完呢！” 十分影响观念，建议关闭。</p>
 <figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">preloader:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
-<p>入场动画则会影响渲染初期的效率，抢占渲染其它内容所需的 CPU 与 GPU，在某些低端设备或 GPU 有问题的设备上可能会引起卡顿，建议关闭。</p>
+<p>在渲染负载较重的情况下（如引用了很多字体与大图），入场动画会抢占渲染其它内容所需的 CPU 与 GPU，影响渲染初期的效率，在某些低端设备或 GPU 有问题的设备上可能会引起卡顿，建议关闭。但对于页面较为轻量的情况，开启它反而可以隐藏加载时的闪烁，提高美观性。</p>
 <figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">enter_transitions:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
 <h1 id="使用合适的-CDN">使用合适的 CDN</h1>
-<p>打个比方，假如您在上海，收快递时，快递从苏州还是美国发过来快？显然是苏州！CDN 也同理。市面上常用的公益 CDN（JSDelivr，&nbsp;UnPKG，CDNJS）等多没有大陆节点，使用此类 CDN, 数据包往往要 “漂洋过海来看你”，速度堪忧。而对于此问题，只需切换 CDN 即可。</p>
+<p>打个比方，假如您在上海，收快递时，快递从苏州还是美国发过来快？显然是苏州！CDN 也同理。市面上常用的公益 CDN（JSDelivr，&nbsp;UnPKG，CDNJS）等多没有大陆节点，使用此类 CDN, 数据包往往要漂洋过海从美国发过来，速度堪忧。</p>
 <p>以 Butterfly&nbsp;为例，可在配置中将 CDN 来源设为 custom 以使用国内 CDN（如 Staticfile）：</p>
 <figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">CDN:</span></span><br><span class="line">  <span class="attr">third_party_provider:</span> <span class="string">custom</span></span><br><span class="line">  <span class="attr">version:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">custom_format:</span> <span class="string">https://cdn.staticfile.org/${cdnjs_name}/${version}/${min_cdnjs_file}</span></span><br></pre></td></tr></tbody></table></figure>
-<p>若国内源无法包含所有所需文件，还可以给某资源设定单独链接。</p>
+<p>若国内源无法包含所有所需文件，还可以给某资源设定单独链接。例如：</p>
 <figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">CDN:</span></span><br><span class="line">  <span class="attr">option:</span></span><br><span class="line">    <span class="attr">busuanzi:</span> <span class="string">https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js</span></span><br></pre></td></tr></tbody></table></figure>
 <p>若您的站点面向全球用户，则可选择 CDN 竞选、并发请求，IP 筛选等策略。具体按可以参见<a href="https://kmar.top/posts/73014407/">《小白也能用的 SW 构建插件》 | 山岳库博</a>。</p>
 <h1 id="优化图片">优化图片</h1>
