@@ -686,7 +686,7 @@
       </tags>
   </entry>
   <entry>
-    <title>旧手机优化计划之二 - 流畅、保活与省电</title>
+    <title>旧手机优化计划之三 - 流畅、保活与省电</title>
     <url>/article/4097fa9/</url>
     <content><![CDATA[<div class="note warning flat"><p>初版文章有错误且已过期，请不要参考</p>
 </div>
@@ -704,7 +704,7 @@
 <p>为了从源头上解决内存捉襟见肘的问题，我们可以使用交换空间。这里我使用使用 Scene 调节。</p>
 <h4 id="ZRAM">ZRAM</h4>
 <p>ZRAM 是在内存中划出一块来并对其进行压缩，详情可见 <a href="https://wiki.archlinuxcn.org/wiki/Zram">ArchWikiCN</a>。正因如此，ZRAM 设置不当会给 CPU 带来显著的压力，进而拉大耗电量、减少续航。</p>
-<p>如果您只打算开 ZRAM，那么建议在 2GB 到 2.75GB（2048MB 到 2816MB）之间。过小作用不大，过大拉多耗电量。</p>
+<p>如果您只打算开 ZRAM，那么建议在 2GB 到 3GB（2048MB 到 3072MB）之间。过小作用不大，过大拉多耗电量。</p>
 <h4 id="Swap">Swap</h4>
 <div class="note red icon-padding flat"><i class="note-icon fas fa-ban"></i><p>不可以只启用 Swap，这会严重拉慢磁盘 IO 与严重磨损磁盘！</p>
 </div>
