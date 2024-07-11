@@ -118,7 +118,7 @@ match: url => [
 }
 
 let getRaceUrls = srcUrl => {
-    if (srcUrl.includes("lynx")) {
+    if (srcUrl.includes("lynx")&&!srcUrl.includes("api")&&!srcUrl.includes("cdn")) {
         const url = new URL(srcUrl);
         return [
             srcUrl,

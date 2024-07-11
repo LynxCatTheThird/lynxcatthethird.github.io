@@ -1,7 +1,7 @@
+https://www.lynx3.top/vercel.json
 https://www.lynx3.top/article/d654e311/
 https://www.lynx3.top/article/a36a68fc/
 https://www.lynx3.top/help/index.html
-https://www.lynx3.top/vercel.json
 https://www.lynx3.top/tags/index.html
 https://www.lynx3.top/categories/index.html
 https://www.lynx3.top/thanks/index.html
