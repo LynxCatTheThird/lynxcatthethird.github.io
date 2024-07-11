@@ -122,12 +122,12 @@ let getRaceUrls = srcUrl => {
         const url = new URL(srcUrl);
         return [
             srcUrl,
-            `https://vc12.lynx3.top/` + url.pathname,
-            `https://vc13.lynx3.top/` + url.pathname,
-            `https://vc15.lynx3.top/` + url.pathname,
-            `https://nl2.lynx3.top/` + url.pathname,
-            `https://lynxcatthethird.github.io/` + url.pathname,
-            `https://cf.lynx3.top/` + url.pathname,
+            `https://vc12.lynx3.top` + url.pathname,
+            `https://vc13.lynx3.top` + url.pathname,
+            `https://vc15.lynx3.top` + url.pathname,
+            `https://nl2.lynx3.top` + url.pathname,
+            `https://lynxcatthethird.github.io` + url.pathname,
+            `https://cf.lynx3.top` + url.pathname,
         ];
     }
 }
