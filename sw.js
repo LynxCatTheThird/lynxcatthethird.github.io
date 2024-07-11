@@ -123,16 +123,17 @@ let getRaceUrls = srcUrl => {
         const url = new URL(srcUrl);
         return [
             srcUrl,
+            `https://vc12.lynx3.top/` + url.pathname,
+            `https://vc13.lynx3.top/` + url.pathname,
+            `https://vc15.lynx3.top/` + url.pathname,
             `https://nl2.lynx3.top/` + url.pathname,
             `https://lynxcatthethird.github.io/` + url.pathname,
             `https://cf.lynx3.top/` + url.pathname,
         ];
     }
 }
-let isMemoryQueue = request => {
-    // do something...
-}
-let isCors = () => false
+let isCors = request => request.url.startsWith('https://vc')
+let isMemoryQueue = () => false
 const fetchFile = (request, banCache, urls) => {
         if (!urls) {
             urls = getRaceUrls(request.url)
