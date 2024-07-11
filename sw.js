@@ -131,7 +131,7 @@ let getRaceUrls = srcUrl => {
         ];
     }
 }
-let isCors = request => request.url.startsWith('https://vc')
+let isCors = () => false
 let isMemoryQueue = () => false
 const fetchFile = (request, banCache, urls) => {
         if (!urls) {
