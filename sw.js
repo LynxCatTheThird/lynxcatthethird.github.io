@@ -110,7 +110,7 @@ clean: true,
 match: url => [
             "cdn.staticfile.org",
             "cdn.staticfile.net",
-            "cdn.jsdmirror.com",
+            "npm.webcache.cn",
             "fonts.googleapis.com",
             "fonts.gstatic.com",
             "s2.hdslb.com",
