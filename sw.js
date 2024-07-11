@@ -117,9 +117,42 @@ match: url => [
         ].includes(url.host) && url.pathname.match(/\.(js|css|woff2|woff|ttf|json|png|jpg|webp)$/)}
 }
 
+let getRaceUrls = srcUrl => {
+    if (srcUrl.includes("lynx")&&!srcUrl.includes("api")&&!srcUrl.includes("cdn")) {
+        const url = new URL(srcUrl);
+        return [
+            srcUrl,
+            `https://vc12.lynx3.top/` + url.pathname,
+            `https://vc13.lynx3.top/` + url.pathname,
+            `https://vc15.lynx3.top/` + url.pathname,
+            `https://nl2.lynx3.top/` + url.pathname,
+            `https://lynxcatthethird.github.io/` + url.pathname,
+            `https://cf.lynx3.top/` + url.pathname,
+        ];
+    }
+}
 let isCors = () => false
 let isMemoryQueue = () => false
-const fetchFile = fetchWithCors;
+const fetchFile = (request, banCache, urls) => {
+        if (!urls) {
+            urls = getRaceUrls(request.url)
+        }
+        if (!urls || !Promise.any) return fetchWithCors(request, banCache)
+        const res = urls.map(url => new Request(url, request))
+        const controllers = new Array(res.length)
+        // noinspection JSCheckFunctionSignatures
+        return Promise.any(
+            res.map((it, index) => fetchWithCors(
+                it, banCache,
+                {signal: (controllers[index] = new AbortController()).signal}
+            ).then(response => checkResponse(response) ? {index, response} : Promise.reject()))
+        ).then(it => {
+            for (let i in controllers) {
+                if (i !== it.index) controllers[i].abort()
+            }
+            return it.response
+        })
+    }
 const getSpareUrls = _ => {}
 
     // 检查请求是否成功
@@ -208,7 +241,7 @@ const getSpareUrls = _ => {}
                 )
             )
         } else {
-            const urls = null
+            const urls = getRaceUrls(request.url)
             if (urls) handleFetch(fetchFile(request, false, urls))
             // [modifyRequest else-if]
             else handleFetch(fetchWithCache(request).catch(err => new Response(err, {status: 499})))
