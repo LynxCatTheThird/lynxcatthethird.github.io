@@ -119,7 +119,6 @@ match: url => [
 
 let getRaceUrls = srcUrl => {
     if (srcUrl.includes("lynx")) {
-        console.log("114514!");
         const url = new URL(srcUrl);
         return [
             srcUrl,
