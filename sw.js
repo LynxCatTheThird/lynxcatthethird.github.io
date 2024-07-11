@@ -117,43 +117,65 @@ match: url => [
         ].includes(url.host) && url.pathname.match(/\.(js|css|woff2|woff|ttf|json|png|jpg|webp)$/)}
 }
 
-let getRaceUrls = srcUrl => {
-    if (srcUrl.includes("lynx")&&!srcUrl.includes("api")&&!srcUrl.includes("cdn")) {
-        const url = new URL(srcUrl);
-        return [
-            srcUrl,
-            `https://vc12.lynx3.top` + url.pathname,
-            `https://vc13.lynx3.top` + url.pathname,
-            `https://vc15.lynx3.top` + url.pathname,
-            `https://nl2.lynx3.top` + url.pathname,
-            `https://lynxcatthethird.github.io` + url.pathname,
-            `https://cf.lynx3.top` + url.pathname,
-        ];
+let getSpareUrls = srcUrl => {
+    if (srcUrl.startsWith("https://jsd.cdn.zzko.cn")) {
+        return {
+            timeout: 3000,
+            list: [
+                srcUrl,
+                `https://cdn.jsdelivr.net${new URL(srcUrl).pathname}`
+            ]
+        };
     }
 }
 let isCors = () => false
 let isMemoryQueue = () => false
-const fetchFile = (request, banCache, urls) => {
+const fetchFile = (request, banCache, urls = null) => {
         if (!urls) {
-            urls = getRaceUrls(request.url)
+            urls = getSpareUrls(request.url)
+            if (!urls) return fetchWithCors(request, banCache)
         }
-        if (!urls || !Promise.any) return fetchWithCors(request, banCache)
-        const res = urls.map(url => new Request(url, request))
-        const controllers = new Array(res.length)
+        const list = urls.list
+        const controllers = new Array(list.length)
         // noinspection JSCheckFunctionSignatures
-        return Promise.any(
-            res.map((it, index) => fetchWithCors(
-                it, banCache,
+        const startFetch = index => fetchWithCors(
+                new Request(list[index], request),
+                banCache,
                 {signal: (controllers[index] = new AbortController()).signal}
-            ).then(response => checkResponse(response) ? {index, response} : Promise.reject()))
-        ).then(it => {
-            for (let i in controllers) {
-                if (i !== it.index) controllers[i].abort()
+            ).then(response => checkResponse(response) ? {r: response, i: index} : Promise.reject())
+        return new Promise((resolve, reject) => {
+            let flag = true
+            const startAll = () => {
+                flag = false
+                Promise.any([
+                    first,
+                    ...Array.from({
+                        length: list.length - 1
+                    }, (_, index) => index + 1).map(index => startFetch(index))
+                ]).then(res => {
+                    for (let i = 0; i !== list.length; ++i) {
+                        if (i !== res.i)
+                            controllers[i].abort()
+                    }
+                    resolve(res.r)
+                }).catch(() => reject(`请求 ${request.url} 失败`))
             }
-            return it.response
+            const id = setTimeout(startAll, urls.timeout)
+            const first = startFetch(0)
+                .then(res => {
+                    if (flag) {
+                        clearTimeout(id)
+                        resolve(res.r)
+                    }
+                }).catch(() => {
+                    if (flag) {
+                        clearTimeout(id)
+                        startAll()
+                    }
+                    return Promise.reject()
+                })
         })
     }
-const getSpareUrls = _ => {}
 
     // 检查请求是否成功
     // noinspection JSUnusedLocalSymbols
@@ -241,7 +263,7 @@ const getSpareUrls = _ => {}
                 )
             )
         } else {
-            const urls = getRaceUrls(request.url)
+            const urls = getSpareUrls(request.url)
             if (urls) handleFetch(fetchFile(request, false, urls))
             // [modifyRequest else-if]
             else handleFetch(fetchWithCache(request).catch(err => new Response(err, {status: 499})))
