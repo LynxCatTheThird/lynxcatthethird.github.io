@@ -720,7 +720,8 @@
 <p>微信版本复杂，建议参考<a href="https://gitee.com/ww3w/dzb/blob/master/1.md#-%E5%BE%AE%E4%BF%A1">百分之千 / 定制版应用收藏 / 版本拐点</a>选择，并从<a href="https://www.coolapk.com/feed/51351476">酷安老哥微笑渲染悲伤的帖子</a>里下载。</p>
 <p>比较推荐的是 7.0.21、Play8.0.15、Play8.0.33、8.0.42（话说这几个好像也不咋地，所以：zxl,****！）</p>
 <h4 id="QQ">QQ</h4>
-<p>建议用 9.0.8，可以从 <a href="https://t.me/QQUpdates">QQUpdates</a>、<a href="https://t.me/qq_updatelog">QQ/TIM Update Log</a> 获得。9.0.15 和 9.0.17 有多人报道冷启动、小程序、扫码变慢。</p>
+<p><s>建议用 9.0.8，可以从 <a href="https://t.me/QQUpdates">QQUpdates</a>、<a href="https://t.me/qq_updatelog">QQ/TIM Update Log</a> 获得。9.0.15 和 9.0.17 有多人报道冷启动、小程序、扫码变慢。</s></p>
+<p>时代变了，建议用 9.0.65，可以从 <a href="https://t.me/QQUpdates">QQUpdates</a>、<a href="https://t.me/qq_updatelog">QQ/TIM Update Log</a> 获得。</p>
 <h4 id="Others">Others</h4>
 <p>请参考以下几个视频：</p>
 <p><a href="https://www.bilibili.com/video/BV16P411P7QT/">安卓软件保姆级优化，让你的手机再战三年！</a></p>
@@ -864,7 +865,7 @@
 <li>Wenhao 新版内核由于未知原因不适用 Magisk，将会导致手机随机重启入 EDL 模式或高通救援模式，并且无法使用微信视频通话和 QQ 视频通话，请勿尝试。</li>
 <li>修复 Magisk 运行环境与更新 Magisk 时，<strong>务必取消</strong>勾选 “安装到 recvoery” 这个选项，高版本 Magisk （26.1+）会<strong>默认启用</strong>这个选项，错误刷入后会导致 WLAN 无法打开以及 Recovery 无法进入。<br>如果您不慎安装到了 Recovery，请提取卡刷包内的 boot.img 和 recovery.img 重新刷入对应分区，或者干脆重刷完整包。</li>
 <li>“Ramdisk” 为 “否” 是正常的，是 R11 (s) 设备的特性，<strong>不</strong>影响 Magisk 功能。</li>
-<li>使用 <code>Magisk Delta</code>（后改名 <code>Kitsune Mask</code>）将难以在除 <code>Kitsune</code> 自己的群组之外的社区得到技术支持。</li>
+<li>使用 <code>Magisk Delta</code>（后改名 <code>Kitsune Mask</code>）将难以在除 <code>Kitsune</code> 自己的群组之外的社区得到技术支持，也不需要且无法使用 <code>Shamiko</code> 和 <code>ZygiskNext</code>（包括衍生）。</li>
 <li><code>Alpha</code> 禁止在 Android 内修改 <code>/system</code>，介意勿用。但你要知道：这十分有利于安全。</li>
 </ol>
 <h2 id="Magisk-技巧提示">Magisk 技巧提示</h2>
@@ -882,6 +883,7 @@
 <li>安装模块超级慢的情况暂时无解。</li>
 <li>KernelSU 禁止在 Android 内修改 <code>/system</code>，介意勿用。但你要知道：这十分有利于安全。</li>
 <li>KernelSU 没有申请 Root 权限的机制。在授予应用程序 Root 后，应用程序在调用时会自动获取 Root 权限且无任何提示。请仅授予可信的应用程序 Root 权限！</li>
+<li>KernelSU 暂未有较好的隐藏挂载点泄漏的方法。</li>
 </ol>
 <h1 id="APatch">APatch</h1>
 <h2 id="安装-APatch">安装 APatch</h2>
@@ -901,11 +903,14 @@
 <li>APatch 禁止在 Android 内修改 <code>/system</code>，介意勿用。但你要知道：这十分有利于安全。</li>
 <li>APatch 没有申请 Root 权限的机制。在授予应用程序 Root 后，应用程序在调用时会自动获取 Root 权限且无任何提示。请仅授予可信的应用程序 Root 权限！</li>
 <li>若您使用了他人修补的 boot.img，务必重新设置密钥！</li>
+<li>Scene 及其附属模块暂不支持 APatch，请勿尝试安装。</li>
 </ol>
 <h2 id="APatch-技巧提示">APatch 技巧提示</h2>
 <ol>
 <li>可通过使用内核模块 <a href="https://t.me/tbthoughts/25">Cherish Peekaboo</a> 隐藏一些挂载点。（作者：GarfieldHan，暂停更新）</li>
 <li>可通过<a href="https://t.me/apatch_discuss/76157">特殊方法</a>使用 Shamiko，但非常不建议。（作者：GarfieldHan）</li>
+<li>有报告开机掉 Wifi 或不能使用 SIM 卡，也有开机黑屏的情况。此问题正加紧研究，已知的预防方法是关机前关掉 Wifi 与移动数据开关，待开机后再开启。若出现问题，请重新修补并刷写 Boot 分区，关闭 Wifi 与移动数据开关，重启一到三次。</li>
+<li>有报告开机桌面会崩溃一次并自动恢复正常，怀疑与 QuickSwitch 冲突，暂未确定问题是否出在 APatch。由于 DotOS 使用了 QuickSwitch，所以可能出现问题，故开机后请不要马上开始操作手机。</li>
 </ol>
 <h1 id="推荐学习">推荐学习</h1>
 <h2 id="自己编译内核">自己编译内核</h2>
