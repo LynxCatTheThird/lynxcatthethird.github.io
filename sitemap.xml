@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.lynx3.top/link/index.html</loc>
+    
+    <lastmod>2024-07-14</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://www.lynx3.top/article/2a7bbe49/</loc>
     
     <lastmod>2024-07-11</lastmod>
@@ -102,15 +111,6 @@
   
   <url>
     <loc>https://www.lynx3.top/comment/index.html</loc>
-    
-    <lastmod>2024-03-09</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.lynx3.top/link/index.html</loc>
     
     <lastmod>2024-03-09</lastmod>
     
