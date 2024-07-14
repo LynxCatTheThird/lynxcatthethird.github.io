@@ -133,10 +133,8 @@ let getSpareUrls = srcUrl => {
         };
     }
 }
-let isMemoryQueue = request => {
-    // do something...
-}
 let isCors = () => false
+let isMemoryQueue = () => false
 const fetchFile = (request, banCache, urls = null) => {
         if (!urls) {
             urls = getSpareUrls(request.url)
