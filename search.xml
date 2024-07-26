@@ -109,25 +109,6 @@
       </tags>
   </entry>
   <entry>
-    <title>关于 51.la 以及公共 CDN 的说明</title>
-    <url>/article/97e8c8fe/</url>
-    <content><![CDATA[<h1 id="本站作出的反应">本站作出的反应</h1>
-<h2 id="关于-51-la">关于 <a href="http://51.la">51.la</a></h2>
-<p>站长在 2024 年 7 月 26 日 15:19 彻底核实近期投毒事件与 <a href="http://51.la">51.la</a> 有关后立即删除了与 51la 相关的所有内容，并立即部署。公告在随后发布。</p>
-<p>非常抱歉延迟这么多天才采取措施，向我仅有的几名访客致以歉意。</p>
-]]></content>
-      <categories>
-        <category>科学与技术</category>
-        <category>计算机</category>
-        <category>网站搭建</category>
-      </categories>
-      <tags>
-        <tag>网站搭建</tag>
-        <tag>生活随笔</tag>
-        <tag>社会</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>人工智能眼中的人机关系</title>
     <url>/article/5e83efa/</url>
     <content><![CDATA[<h1 id="Pi">Pi</h1>
@@ -704,8 +685,8 @@
         <category>AI</category>
       </categories>
       <tags>
-        <tag>社会</tag>
         <tag>AI</tag>
+        <tag>社会</tag>
       </tags>
   </entry>
   <entry>
