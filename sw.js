@@ -103,7 +103,7 @@
 simple: {
 clean: true,
 search: false,
-match: url => (url.host.includes('lynx') || url.host.includes('lctt')) && url.pathname.match(/(\.(js|css|xml|json)|\/)$/) && !url.host.includes('api')}
+match: url => (url.host.includes('lynx') || url.host.includes('lctt')) && url.pathname.match(/(\.(js|css|xml)|\/)$/) && !url.host.includes('api')}
 ,
 cdn: {
 clean: true,
