@@ -1,1 +1,288 @@
-(()=>{const t={debounce:(t,e=0,n=false)=>{let o;return(...i)=>{const s=()=>{o=null;if(!n)t(...i)};const a=n&&!o;clearTimeout(o);o=setTimeout(s,e);if(a)t(...i)}},throttle:function(t,e,n={}){let o,i,s;let a=0;const l=()=>{a=n.leading===false?0:(new Date).getTime();o=null;t.apply(i,s);if(!o)i=s=null};const r=(...r)=>{const c=(new Date).getTime();if(!a&&n.leading===false)a=c;const d=e-(c-a);i=this;s=r;if(d<=0||d>e){if(o){clearTimeout(o);o=null}a=c;t.apply(i,s);if(!o)i=s=null}else if(!o&&n.trailing!==false){o=setTimeout(l,d)}};return r},sidebarPaddingR:()=>{const t=window.innerWidth;const e=document.body.clientWidth;const n=t-e;if(t!==e){document.body.style.paddingRight=n+"px"}},snackbarShow:(t,e=false,n=2e3)=>{const{position:o,bgLight:i,bgDark:s}=GLOBAL_CONFIG.Snackbar;const a=document.documentElement.getAttribute("data-theme")==="light"?i:s;Snackbar.show({text:t,backgroundColor:a,showAction:e,duration:n,pos:o,customClass:"snackbar-css"})},diffDate:(t,e=false)=>{const n=new Date;const o=new Date(t);const i=n.getTime()-o.getTime();const s=1e3*60;const a=s*60;const l=a*24;const r=l*30;const{dateSuffix:c}=GLOBAL_CONFIG;if(!e)return parseInt(i/l);const d=i/r;const f=i/l;const m=i/a;const u=i/s;if(d>12)return o.toISOString().slice(0,10);if(d>=1)return`${parseInt(d)} ${c.month}`;if(f>=1)return`${parseInt(f)} ${c.day}`;if(m>=1)return`${parseInt(m)} ${c.hour}`;if(u>=1)return`${parseInt(u)} ${c.min}`;return c.just},loadComment:(t,e)=>{if("IntersectionObserver"in window){const n=new IntersectionObserver((t=>{if(t[0].isIntersecting){e();n.disconnect()}}),{threshold:[0]});n.observe(t)}else{e()}},scrollToDest:(t,e=500)=>{const n=window.pageYOffset;const o=document.getElementById("page-header").classList.contains("fixed");if(n>t||o)t=t-70;if("scrollBehavior"in document.documentElement.style){window.scrollTo({top:t,behavior:"smooth"});return}let i=null;t=+t;window.requestAnimationFrame((function o(s){i=!i?s:i;const a=s-i;if(n<t){window.scrollTo(0,(t-n)*a/e+n)}else{window.scrollTo(0,n-(n-t)*a/e)}if(a<e){window.requestAnimationFrame(o)}else{window.scrollTo(0,t)}}))},animateIn:(t,e)=>{t.style.display="block";t.style.animation=e},animateOut:(t,e)=>{t.addEventListener("animationend",(function e(){t.style.display="";t.style.animation="";t.removeEventListener("animationend",e)}));t.style.animation=e},wrap:(t,e,n)=>{const o=document.createElement(e);for(const[t,e]of Object.entries(n)){o.setAttribute(t,e)}t.parentNode.insertBefore(o,t);o.appendChild(t)},isHidden:t=>t.offsetHeight===0&&t.offsetWidth===0,getEleTop:t=>{let e=t.offsetTop;let n=t.offsetParent;while(n!==null){e+=n.offsetTop;n=n.offsetParent}return e},loadLightbox:t=>{const e=GLOBAL_CONFIG.lightbox;if(e==="mediumZoom"){mediumZoom(t,{background:"var(--zoom-bg)"})}if(e==="fancybox"){Array.from(t).forEach((t=>{if(t.parentNode.tagName!=="A"){const e=t.dataset.lazySrc||t.src;const n=t.title||t.alt||"";btf.wrap(t,"a",{href:e,"data-fancybox":"gallery","data-caption":n,"data-thumb":e})}}));if(!window.fancyboxRun){Fancybox.bind("[data-fancybox]",{Hash:false,Thumbs:{showOnStart:false},Images:{Panzoom:{maxScale:4}},Carousel:{transition:"slide"},Toolbar:{display:{left:["infobar"],middle:["zoomIn","zoomOut","toggle1to1","rotateCCW","rotateCW","flipX","flipY"],right:["slideshow","thumbs","close"]}}});window.fancyboxRun=true}}},setLoading:{add:t=>{const e=`\n        <div class="loading-container">\n          <div class="loading-item">\n            <div></div><div></div><div></div><div></div><div></div>\n          </div>\n        </div>\n      `;t.insertAdjacentHTML("afterend",e)},remove:t=>{t.nextElementSibling.remove()}},updateAnchor:t=>{if(t!==window.location.hash){if(!t)t=location.pathname;const e=GLOBAL_CONFIG_SITE.title;window.history.replaceState({url:location.href,title:e},e,t)}},getScrollPercent:(t,e)=>{const n=e.clientHeight;const o=document.documentElement.clientHeight;const i=e.offsetTop;const s=n>o?n-o:document.documentElement.scrollHeight-o;const a=(t-i)/s;const l=Math.round(a*100);const r=l>100?100:l<=0?0:l;return r},addEventListenerPjax:(t,e,n,o=false)=>{t.addEventListener(e,n,o);btf.addGlobalFn("pjax",(()=>{t.removeEventListener(e,n,o)}))},removeGlobalFnEvent:(t,e=window)=>{const{globalFn:n={}}=e;const o=n[t]||{};const i=Object.keys(o);if(!i.length)return;i.forEach((t=>{o[t]()}));delete e.globalFn[t]}};window.btf={...window.btf,...t}})();
+(() => {
+  const btfFn = {
+    debounce: (func, wait = 0, immediate = false) => {
+      let timeout
+      return (...args) => {
+        const later = () => {
+          timeout = null
+          if (!immediate) func(...args)
+        }
+        const callNow = immediate && !timeout
+        clearTimeout(timeout)
+        timeout = setTimeout(later, wait)
+        if (callNow) func(...args)
+      }
+    },
+
+    throttle: function (func, wait, options = {}) {
+      let timeout, context, args
+      let previous = 0
+
+      const later = () => {
+        previous = options.leading === false ? 0 : new Date().getTime()
+        timeout = null
+        func.apply(context, args)
+        if (!timeout) context = args = null
+      }
+
+      const throttled = (...params) => {
+        const now = new Date().getTime()
+        if (!previous && options.leading === false) previous = now
+        const remaining = wait - (now - previous)
+        context = this
+        args = params
+        if (remaining <= 0 || remaining > wait) {
+          if (timeout) {
+            clearTimeout(timeout)
+            timeout = null
+          }
+          previous = now
+          func.apply(context, args)
+          if (!timeout) context = args = null
+        } else if (!timeout && options.trailing !== false) {
+          timeout = setTimeout(later, remaining)
+        }
+      }
+
+      return throttled
+    },
+
+    sidebarPaddingR: () => {
+      const innerWidth = window.innerWidth
+      const clientWidth = document.body.clientWidth
+      const paddingRight = innerWidth - clientWidth
+      if (innerWidth !== clientWidth) {
+        document.body.style.paddingRight = paddingRight + 'px'
+      }
+    },
+
+    snackbarShow: (text, showAction = false, duration = 2000) => {
+      const { position, bgLight, bgDark } = GLOBAL_CONFIG.Snackbar
+      const bg = document.documentElement.getAttribute('data-theme') === 'light' ? bgLight : bgDark
+      Snackbar.show({
+        text,
+        backgroundColor: bg,
+        showAction,
+        duration,
+        pos: position,
+        customClass: 'snackbar-css'
+      })
+    },
+
+    diffDate: (d, more = false) => {
+      const dateNow = new Date()
+      const datePost = new Date(d)
+      const dateDiff = dateNow.getTime() - datePost.getTime()
+      const minute = 1000 * 60
+      const hour = minute * 60
+      const day = hour * 24
+      const month = day * 30
+      const { dateSuffix } = GLOBAL_CONFIG
+
+      if (!more) return parseInt(dateDiff / day)
+
+      const monthCount = dateDiff / month
+      const dayCount = dateDiff / day
+      const hourCount = dateDiff / hour
+      const minuteCount = dateDiff / minute
+
+      if (monthCount > 12) return datePost.toISOString().slice(0, 10)
+      if (monthCount >= 1) return `${parseInt(monthCount)} ${dateSuffix.month}`
+      if (dayCount >= 1) return `${parseInt(dayCount)} ${dateSuffix.day}`
+      if (hourCount >= 1) return `${parseInt(hourCount)} ${dateSuffix.hour}`
+      if (minuteCount >= 1) return `${parseInt(minuteCount)} ${dateSuffix.min}`
+      return dateSuffix.just
+    },
+
+    loadComment: (dom, callback) => {
+      if ('IntersectionObserver' in window) {
+        const observerItem = new IntersectionObserver((entries) => {
+          if (entries[0].isIntersecting) {
+            callback()
+            observerItem.disconnect()
+          }
+        }, { threshold: [0] })
+        observerItem.observe(dom)
+      } else {
+        callback()
+      }
+    },
+
+    scrollToDest: (pos, time = 500) => {
+      const currentPos = window.pageYOffset
+      const isNavFixed = document.getElementById('page-header').classList.contains('fixed')
+      if (currentPos > pos || isNavFixed) pos = pos - 70
+
+      if ('scrollBehavior' in document.documentElement.style) {
+        window.scrollTo({
+          top: pos,
+          behavior: 'smooth'
+        })
+        return
+      }
+
+      let start = null
+      pos = +pos
+      window.requestAnimationFrame(function step (currentTime) {
+        start = !start ? currentTime : start
+        const progress = currentTime - start
+        if (currentPos < pos) {
+          window.scrollTo(0, ((pos - currentPos) * progress / time) + currentPos)
+        } else {
+          window.scrollTo(0, currentPos - ((currentPos - pos) * progress / time))
+        }
+        if (progress < time) {
+          window.requestAnimationFrame(step)
+        } else {
+          window.scrollTo(0, pos)
+        }
+      })
+    },
+
+    animateIn: (ele, text) => {
+      ele.style.display = 'block'
+      ele.style.animation = text
+    },
+
+    animateOut: (ele, text) => {
+      ele.addEventListener('animationend', function f () {
+        ele.style.display = ''
+        ele.style.animation = ''
+        ele.removeEventListener('animationend', f)
+      })
+      ele.style.animation = text
+    },
+
+    wrap: (selector, eleType, options) => {
+      const createEle = document.createElement(eleType)
+      for (const [key, value] of Object.entries(options)) {
+        createEle.setAttribute(key, value)
+      }
+      selector.parentNode.insertBefore(createEle, selector)
+      createEle.appendChild(selector)
+    },
+
+    isHidden: ele => ele.offsetHeight === 0 && ele.offsetWidth === 0,
+
+    getEleTop: ele => {
+      let actualTop = ele.offsetTop
+      let current = ele.offsetParent
+
+      while (current !== null) {
+        actualTop += current.offsetTop
+        current = current.offsetParent
+      }
+
+      return actualTop
+    },
+
+    loadLightbox: ele => {
+      const service = GLOBAL_CONFIG.lightbox
+
+      if (service === 'mediumZoom') {
+        mediumZoom(ele, { background: 'var(--zoom-bg)' })
+      }
+
+      if (service === 'fancybox') {
+        Array.from(ele).forEach(i => {
+          if (i.parentNode.tagName !== 'A') {
+            const dataSrc = i.dataset.lazySrc || i.src
+            const dataCaption = i.title || i.alt || ''
+            btf.wrap(i, 'a', { href: dataSrc, 'data-fancybox': 'gallery', 'data-caption': dataCaption, 'data-thumb': dataSrc })
+          }
+        })
+
+        if (!window.fancyboxRun) {
+          Fancybox.bind('[data-fancybox]', {
+            Hash: false,
+            Thumbs: {
+              showOnStart: false
+            },
+            Images: {
+              Panzoom: {
+                maxScale: 4
+              }
+            },
+            Carousel: {
+              transition: 'slide'
+            },
+            Toolbar: {
+              display: {
+                left: ['infobar'],
+                middle: [
+                  'zoomIn',
+                  'zoomOut',
+                  'toggle1to1',
+                  'rotateCCW',
+                  'rotateCW',
+                  'flipX',
+                  'flipY'
+                ],
+                right: ['slideshow', 'thumbs', 'close']
+              }
+            }
+          })
+          window.fancyboxRun = true
+        }
+      }
+    },
+
+    setLoading: {
+      add: ele => {
+        const html = `
+        <div class="loading-container">
+          <div class="loading-item">
+            <div></div><div></div><div></div><div></div><div></div>
+          </div>
+        </div>
+      `
+        ele.insertAdjacentHTML('afterend', html)
+      },
+      remove: ele => {
+        ele.nextElementSibling.remove()
+      }
+    },
+
+    updateAnchor: (anchor) => {
+      if (anchor !== window.location.hash) {
+        if (!anchor) anchor = location.pathname
+        const title = GLOBAL_CONFIG_SITE.title
+        window.history.replaceState({
+          url: location.href,
+          title
+        }, title, anchor)
+      }
+    },
+
+    getScrollPercent: (currentTop, ele) => {
+      const docHeight = ele.clientHeight
+      const winHeight = document.documentElement.clientHeight
+      const headerHeight = ele.offsetTop
+      const contentMath = (docHeight > winHeight) ? (docHeight - winHeight) : (document.documentElement.scrollHeight - winHeight)
+      const scrollPercent = (currentTop - headerHeight) / (contentMath)
+      const scrollPercentRounded = Math.round(scrollPercent * 100)
+      const percentage = (scrollPercentRounded > 100) ? 100 : (scrollPercentRounded <= 0) ? 0 : scrollPercentRounded
+      return percentage
+    },
+
+    addEventListenerPjax: (ele, event, fn, option = false) => {
+      ele.addEventListener(event, fn, option)
+      btf.addGlobalFn('pjax', () => {
+        ele.removeEventListener(event, fn, option)
+      })
+    },
+
+    removeGlobalFnEvent: (key, parent = window) => {
+      const { globalFn = {} } = parent
+      const keyObj = globalFn[key] || {}
+      const keyArr = Object.keys(keyObj)
+      if (!keyArr.length) return
+      keyArr.forEach(i => {
+        keyObj[i]()
+      })
+      delete parent.globalFn[key]
+    }
+  }
+
+  window.btf = { ...window.btf, ...btfFn }
+})()
