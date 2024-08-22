@@ -1,18 +1,1 @@
-#article-container code {
-    border-radius: 5px;
-}
-
-#article-container a:not(:has(img)):not(.headerlink)::before,
-.post-copyright a::before {
-    font-family: FontAwesome;
-    content: "\f35d";
-    margin-right: 3px;
-}
-
-#post .post-outdate-notice {
-    border-radius: 6px;
-}
-
-.layout {
-    max-width: 1400px;
-}
+#article-container code{border-radius:5px}#article-container a:not(:has(img)):not(.headerlink)::before,.post-copyright a::before{font-family:FontAwesome;content:"\f35d";margin-right:3px}#post .post-outdate-notice{border-radius:6px}.layout{max-width:1400px}
