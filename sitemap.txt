@@ -4,8 +4,8 @@ https://www.lynx3.top/article/d654e311/
 https://www.lynx3.top/article/4097fa9/
 https://www.lynx3.top/article/2a7bbe49/
 https://www.lynx3.top/vercel.json
-https://www.lynx3.top/about/index.html
 https://www.lynx3.top/board/index.html
+https://www.lynx3.top/about/index.html
 https://www.lynx3.top/categories/index.html
 https://www.lynx3.top/comment/index.html
 https://www.lynx3.top/faq/index.html
@@ -26,9 +26,9 @@ https://www.lynx3.top/tags/%E5%89%8D%E7%AB%AF/
 https://www.lynx3.top/tags/%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94/
 https://www.lynx3.top/categories/%E7%A7%91%E5%AD%A6%E4%B8%8E%E6%8A%80%E6%9C%AF/
 https://www.lynx3.top/categories/%E7%A7%91%E5%AD%A6%E4%B8%8E%E6%8A%80%E6%9C%AF/%E8%AE%A1%E7%AE%97%E6%9C%BA/
-https://www.lynx3.top/categories/%E7%A7%91%E5%AD%A6%E4%B8%8E%E6%8A%80%E6%9C%AF/%E6%95%B0%E5%AD%A6/
 https://www.lynx3.top/categories/%E7%94%9F%E6%B4%BB/
-https://www.lynx3.top/categories/%E7%A7%91%E5%AD%A6%E4%B8%8E%E6%8A%80%E6%9C%AF/%E8%AE%A1%E7%AE%97%E6%9C%BA/%E5%89%8D%E7%AB%AF/
-https://www.lynx3.top/categories/%E7%A7%91%E5%AD%A6%E4%B8%8E%E6%8A%80%E6%9C%AF/%E8%AE%A1%E7%AE%97%E6%9C%BA/Linux/
+https://www.lynx3.top/categories/%E7%A7%91%E5%AD%A6%E4%B8%8E%E6%8A%80%E6%9C%AF/%E6%95%B0%E5%AD%A6/
 https://www.lynx3.top/categories/%E7%A7%91%E5%AD%A6%E4%B8%8E%E6%8A%80%E6%9C%AF/%E8%AE%A1%E7%AE%97%E6%9C%BA/%E5%88%B7%E6%9C%BA/
+https://www.lynx3.top/categories/%E7%A7%91%E5%AD%A6%E4%B8%8E%E6%8A%80%E6%9C%AF/%E8%AE%A1%E7%AE%97%E6%9C%BA/Linux/
+https://www.lynx3.top/categories/%E7%A7%91%E5%AD%A6%E4%B8%8E%E6%8A%80%E6%9C%AF/%E8%AE%A1%E7%AE%97%E6%9C%BA/%E5%89%8D%E7%AB%AF/
 https://www.lynx3.top/categories/%E7%94%9F%E6%B4%BB/%E9%9A%8F%E7%AC%94/
