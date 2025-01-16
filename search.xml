@@ -413,67 +413,6 @@ h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​
       </tags>
   </entry>
   <entry>
-    <title>旧手机优化计划之一 - 刷机</title>
-    <url>/article/d654e311/</url>
-    <content><![CDATA[<h1 id="机型概况">机型概况</h1>
-<p>机子是 2017 年发布的 OPPO R11，CPU 是骁龙 660 AIE，运存为 4GB，闪存是严重磨损的 eMMC 64GB。电池是原装的 3000mAh 的（现在只有 2200mAh 了）。</p>
-<p>绿厂只给到 Android 9 ColorOS 6，连暗色模式都没有，根本满足不了我的需求。于是，我决定刷机。</p>
-<p>OPPO R11 目前主要由 CY 团队维护，故绝大多数资源来自 <a href="https://d.cyteam.cn/">CY 团队的下载站</a>。分享链接有密码，请自行加群获取。</p>
-<h1 id="刷机入门">刷机入门</h1>
-<p>在此，我们需要明确几个定义：</p>
-<ul>
-<li><strong>底层</strong>：是指基本的驱动等最重要、最基本的文件，即 “底包”。R11 (s) 系列底包版本号多为 <code>X.nn</code>、<code>nnnn</code> 或 <code>nnnnnn</code> 格式。由于并不总是能够提供三种版本号，请自行辨别。</li>
-<li><strong>系统</strong>：
-<ol>
-<li>字面意义上的系统，包括全部可被刷写的分区</li>
-<li>分区名，通常指 System 分区，可能同时也包括 Boot 分区和 Vendor 分区</li>
-</ol>
-</li>
-<li><strong> A/C</strong>：为了避免歧义，本文中 Android 与 ColorOS 均使用全称而<strong>不</strong>简称为 A 或 C</li>
-</ul>
-<h2 id="解除-Fastboot-限制">解除 Fastboot 限制</h2>
-<p>由于在大多数稳定版系统中 OPPO 对 fastboot 进行了限制，所以我们必须降级或升级至合适的版本进行解锁 BootLoader 的操作。</p>
-<h3 id="无限制">无限制</h3>
-<p>若您的版本号为 <code>A.01</code> / <code>170529</code> 或 <code>C.17</code> / <code>1170</code>，恭喜，Fastboot 畅通无阻，您可直接开始<a href="#%E8%A7%A3%E9%94%81-BootLoader">解锁 BootLoader</a>。</p>
-<h3 id="升级">升级</h3>
-<p>若您的版本号小于 <code>C.17</code> / <code>1170</code>，则可以下载 <a href="https://d.cyteam.cn/d/CY%E4%B8%8E%E6%A9%99%E6%A0%B9%E7%9B%AE%E5%BD%95/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/OPPO/R%26K%20Series/R11/%E5%AE%98%E6%96%B9ROM%EF%BC%88Stock%20ROM%EF%BC%89/%E5%8D%A1%E5%88%B7%EF%BC%88Flash%20Through%20Recovery%EF%BC%89/R11_11_OTA_1170_all_PDZfMhjgV0q1_b68a39.ozip?sign=IY5sogNDdcsn_0Y7V9WT6SSAK73dy6YUPLk92BpdWnk=:0">R11_11_OTA_1170_all_PDZfMhjgV0q1_b68a39.ozip</a>，在<strong>自带</strong>文件管理中打开，升级至 <code>C.17</code> / <code>1170</code> 以解除限制。</p>
-<h3 id="降级">降级</h3>
-<p>相信决定对 OPPO R11 刷机的同学大多数应该更新到了比较新的系统版本吧？如果您的版本号为 <code>C.19</code> / <code>1190</code>，则必须采用降级法。由于此时手机处于严重受限状态，所以我们只能采用最底层的刷机方式 9008 刷机（这也是售后修手机的方法）进行降级操作。</p>
-<ol>
-<li>打上<a href="https://d.cyteam.cn/d/CY%E4%B8%8E%E6%A9%99%E6%A0%B9%E7%9B%AE%E5%BD%95/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7%EF%BC%88Software%20Tools%EF%BC%89/%E9%A9%B1%E5%8A%A8%EF%BC%88Drive%EF%BC%89/CYteam-Services-Tools%20For%20Win10.exe">驱动</a></li>
-<li>下载 <a href="https://d.cyteam.cn/d/CY%E4%B8%8E%E6%A9%99%E6%A0%B9%E7%9B%AE%E5%BD%95/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/OPPO/R%26K%20Series/R11/%E5%AE%98%E6%96%B9ROM%EF%BC%88Stock%20ROM%EF%BC%89/%E7%BA%BF%E5%88%B7%EF%BC%88Flash%20Through%209008%EF%BC%89/R11_11_A.01_170529%EF%BC%889008%E7%BA%BF%E5%88%B7%E5%8C%85%EF%BC%8C11%E3%80%8111t%E5%8F%AF%E7%94%A8%EF%BC%89.7z?sign=EjY5LRISMx_UXC7jbayarsYXffcL_IEzOxuSgBCMpto=:0">R11_11_A.01_170529（9008 线刷包，11、11t 可用）.7z</a> 和 <a href="https://d.cyteam.cn/d/CY%E4%B8%8E%E6%A9%99%E6%A0%B9%E7%9B%AE%E5%BD%95/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/OPPO/R%26K%20Series/R11/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7%20%EF%BC%88Software%20Tools%EF%BC%89/%E5%88%B7%E6%9C%BA%E5%B7%A5%E5%85%B7%20(Flash%20Tool)/R11-MsmDownloadTool.exe?sign=hKnlxjiE602PHN3sgJpqSm_El2EMBhrUt5QAVEyPug8=:0">R11-MsmDownloadTool.exe</a>，选择对应代号（R11 的代号为 16051）；手机关机，同时按下<code>电源键</code> + <code>音量+</code>+ <code>音量-</code> 进入 EDL（9008 模式），连接手机至电脑，按照提示刷入即可。</li>
-<li>A.01，启动！</li>
-</ol>
-<p>切记保证数据线连接良好，慎防数据线意外松动。除此之外，基本不会出现什么问题。如果出现诸如 “握手失败”“握手超时” 之类的错误，请尝试重启电脑与手机、更换数据线或 USB 口、重装驱动，有条件的更换电脑。</p>
-<h2 id="解锁-BootLoader">解锁 BootLoader</h2>
-<ol>
-<li>打开开发者选项<br>打开手机，进入设置，找到 “关于手机” 或 “关于设备” 选项，找到 “版本号” 或 “型号 “一栏，并连续点击数次（通常需要点击 7 次），开发者模式即可成功开启。</li>
-<li>打开 OEM 解锁和 USB 调试开关</li>
-<li>下载 <a href="https://developer.android.google.cn/tools/releases/platform-tools?hl=zh_CN">SDK Platform Tools</a>，并解压到合适的位置</li>
-<li>手机连接电脑，重启到 fastboot（或执行 <code>adb reboot fastboot</code>），然后执行 <code>fastboot oem unlock</code>，终端应当提示 “unlocked”</li>
-<li> 重启，手机应当有一橙色感叹号（<code>&lt; ! &gt;</code>），提示 “数据有危险”，并要求你访问 <code>g.co/ABH</code>。若有，则解锁成功。</li>
-</ol>
-<h2 id="刷入第三方-Rec">刷入第三方 Rec</h2>
-<ol>
-<li>手机连接电脑，重启到 fastboot（或执行 <code>adb reboot fastboot</code>）</li>
-<li>电脑<a href="https://d.cyteam.cn/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/OPPO/R&amp;K%20Series/R11/%E7%AC%AC%E4%B8%89%E6%96%B9%E6%81%A2%E5%A4%8D%E6%A8%A1%E5%BC%8F%E9%95%9C%E5%83%8F%20(Third%20Party%20Recovery%20Image)">下载合适的 Recovery 镜像</a>，执行 <code>fastboot flash recovery twrp-x.x.x-xxxx.img</code></li>
-</ol>
-<h2 id="刷入第三方系统">刷入第三方系统</h2>
-<ol>
-<li>从<a href="https://d.cyteam.cn/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/OPPO/R&amp;K%20Series/R11/%E7%AC%AC%E4%B8%89%E6%96%B9%E7%B3%BB%E7%BB%9F%E5%88%B7%E6%9C%BA%E5%8C%85%20(Third%20Party%20ROM)">第三方系统刷机包 (Third Party ROM)</a> 内下载喜欢的包</li>
-<li>这些包大多是一体包，直接刷入就好</li>
-</ol>
-]]></content>
-      <categories>
-        <category>科学与技术</category>
-        <category>计算机</category>
-        <category>刷机</category>
-      </categories>
-      <tags>
-        <tag>刷机</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>文章效果与字体编码测试</title>
     <url>/article/a36a68fc/</url>
     <content><![CDATA[<h1 id="Markdown-基本语法">Markdown 基本语法</h1>
@@ -1030,6 +969,67 @@ Countless small mysteries are also solved in the process.</span></p></div>
       </categories>
       <tags>
         <tag>前端</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>旧手机优化计划之一 - 刷机</title>
+    <url>/article/d654e311/</url>
+    <content><![CDATA[<h1 id="机型概况">机型概况</h1>
+<p>机子是 2017 年发布的 OPPO R11，CPU 是骁龙 660 AIE，运存为 4GB，闪存是严重磨损的 eMMC 64GB。电池是原装的 3000mAh 的（现在只有 2200mAh 了）。</p>
+<p>绿厂只给到 Android 9 ColorOS 6，连暗色模式都没有，根本满足不了我的需求。于是，我决定刷机。</p>
+<p>OPPO R11 目前主要由 CY 团队维护，故绝大多数资源来自 <a href="https://d.cyteam.cn/">CY 团队的下载站</a>。分享链接有密码，请自行加群获取。</p>
+<h1 id="刷机入门">刷机入门</h1>
+<p>在此，我们需要明确几个定义：</p>
+<ul>
+<li><strong>底层</strong>：是指基本的驱动等最重要、最基本的文件，即 “底包”。R11 (s) 系列底包版本号多为 <code>X.nn</code>、<code>nnnn</code> 或 <code>nnnnnn</code> 格式。由于并不总是能够提供三种版本号，请自行辨别。</li>
+<li><strong>系统</strong>：
+<ol>
+<li>字面意义上的系统，包括全部可被刷写的分区</li>
+<li>分区名，通常指 System 分区，可能同时也包括 Boot 分区和 Vendor 分区</li>
+</ol>
+</li>
+<li><strong> A/C</strong>：为了避免歧义，本文中 Android 与 ColorOS 均使用全称而<strong>不</strong>简称为 A 或 C</li>
+</ul>
+<h2 id="解除-Fastboot-限制">解除 Fastboot 限制</h2>
+<p>由于在大多数稳定版系统中 OPPO 对 fastboot 进行了限制，所以我们必须降级或升级至合适的版本进行解锁 BootLoader 的操作。</p>
+<h3 id="无限制">无限制</h3>
+<p>若您的版本号为 <code>A.01</code> / <code>170529</code> 或 <code>C.17</code> / <code>1170</code>，恭喜，Fastboot 畅通无阻，您可直接开始<a href="#%E8%A7%A3%E9%94%81-BootLoader">解锁 BootLoader</a>。</p>
+<h3 id="升级">升级</h3>
+<p>若您的版本号小于 <code>C.17</code> / <code>1170</code>，则可以下载 <a href="https://d.cyteam.cn/d/CY%E4%B8%8E%E6%A9%99%E6%A0%B9%E7%9B%AE%E5%BD%95/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/OPPO/R%26K%20Series/R11/%E5%AE%98%E6%96%B9ROM%EF%BC%88Stock%20ROM%EF%BC%89/%E5%8D%A1%E5%88%B7%EF%BC%88Flash%20Through%20Recovery%EF%BC%89/R11_11_OTA_1170_all_PDZfMhjgV0q1_b68a39.ozip?sign=IY5sogNDdcsn_0Y7V9WT6SSAK73dy6YUPLk92BpdWnk=:0">R11_11_OTA_1170_all_PDZfMhjgV0q1_b68a39.ozip</a>，在<strong>自带</strong>文件管理中打开，升级至 <code>C.17</code> / <code>1170</code> 以解除限制。</p>
+<h3 id="降级">降级</h3>
+<p>相信决定对 OPPO R11 刷机的同学大多数应该更新到了比较新的系统版本吧？如果您的版本号为 <code>C.19</code> / <code>1190</code>，则必须采用降级法。由于此时手机处于严重受限状态，所以我们只能采用最底层的刷机方式 9008 刷机（这也是售后修手机的方法）进行降级操作。</p>
+<ol>
+<li>打上<a href="https://d.cyteam.cn/d/CY%E4%B8%8E%E6%A9%99%E6%A0%B9%E7%9B%AE%E5%BD%95/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7%EF%BC%88Software%20Tools%EF%BC%89/%E9%A9%B1%E5%8A%A8%EF%BC%88Drive%EF%BC%89/CYteam-Services-Tools%20For%20Win10.exe">驱动</a></li>
+<li>下载 <a href="https://d.cyteam.cn/d/CY%E4%B8%8E%E6%A9%99%E6%A0%B9%E7%9B%AE%E5%BD%95/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/OPPO/R%26K%20Series/R11/%E5%AE%98%E6%96%B9ROM%EF%BC%88Stock%20ROM%EF%BC%89/%E7%BA%BF%E5%88%B7%EF%BC%88Flash%20Through%209008%EF%BC%89/R11_11_A.01_170529%EF%BC%889008%E7%BA%BF%E5%88%B7%E5%8C%85%EF%BC%8C11%E3%80%8111t%E5%8F%AF%E7%94%A8%EF%BC%89.7z?sign=EjY5LRISMx_UXC7jbayarsYXffcL_IEzOxuSgBCMpto=:0">R11_11_A.01_170529（9008 线刷包，11、11t 可用）.7z</a> 和 <a href="https://d.cyteam.cn/d/CY%E4%B8%8E%E6%A9%99%E6%A0%B9%E7%9B%AE%E5%BD%95/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/OPPO/R%26K%20Series/R11/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7%20%EF%BC%88Software%20Tools%EF%BC%89/%E5%88%B7%E6%9C%BA%E5%B7%A5%E5%85%B7%20(Flash%20Tool)/R11-MsmDownloadTool.exe?sign=hKnlxjiE602PHN3sgJpqSm_El2EMBhrUt5QAVEyPug8=:0">R11-MsmDownloadTool.exe</a>，选择对应代号（R11 的代号为 16051）；手机关机，同时按下<code>电源键</code> + <code>音量+</code>+ <code>音量-</code> 进入 EDL（9008 模式），连接手机至电脑，按照提示刷入即可。</li>
+<li>A.01，启动！</li>
+</ol>
+<p>切记保证数据线连接良好，慎防数据线意外松动。除此之外，基本不会出现什么问题。如果出现诸如 “握手失败”“握手超时” 之类的错误，请尝试重启电脑与手机、更换数据线或 USB 口、重装驱动，有条件的更换电脑。</p>
+<h2 id="解锁-BootLoader">解锁 BootLoader</h2>
+<ol>
+<li>打开开发者选项<br>打开手机，进入设置，找到 “关于手机” 或 “关于设备” 选项，找到 “版本号” 或 “型号 “一栏，并连续点击数次（通常需要点击 7 次），开发者模式即可成功开启。</li>
+<li>打开 OEM 解锁和 USB 调试开关</li>
+<li>下载 <a href="https://developer.android.google.cn/tools/releases/platform-tools?hl=zh_CN">SDK Platform Tools</a>，并解压到合适的位置</li>
+<li>手机连接电脑，重启到 fastboot（或执行 <code>adb reboot fastboot</code>），然后执行 <code>fastboot oem unlock</code>，终端应当提示 “unlocked”</li>
+<li> 重启，手机应当有一橙色感叹号（<code>&lt; ! &gt;</code>），提示 “数据有危险”，并要求你访问 <code>g.co/ABH</code>。若有，则解锁成功。</li>
+</ol>
+<h2 id="刷入第三方-Rec">刷入第三方 Rec</h2>
+<ol>
+<li>手机连接电脑，重启到 fastboot（或执行 <code>adb reboot fastboot</code>）</li>
+<li>电脑<a href="https://d.cyteam.cn/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/OPPO/R&amp;K%20Series/R11/%E7%AC%AC%E4%B8%89%E6%96%B9%E6%81%A2%E5%A4%8D%E6%A8%A1%E5%BC%8F%E9%95%9C%E5%83%8F%20(Third%20Party%20Recovery%20Image)">下载合适的 Recovery 镜像</a>，执行 <code>fastboot flash recovery twrp-x.x.x-xxxx.img</code></li>
+</ol>
+<h2 id="刷入第三方系统">刷入第三方系统</h2>
+<ol>
+<li>从<a href="https://d.cyteam.cn/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/OPPO/R&amp;K%20Series/R11/%E7%AC%AC%E4%B8%89%E6%96%B9%E7%B3%BB%E7%BB%9F%E5%88%B7%E6%9C%BA%E5%8C%85%20(Third%20Party%20ROM)">第三方系统刷机包 (Third Party ROM)</a> 内下载喜欢的包</li>
+<li>这些包大多是一体包，直接刷入就好</li>
+</ol>
+]]></content>
+      <categories>
+        <category>科学与技术</category>
+        <category>计算机</category>
+        <category>刷机</category>
+      </categories>
+      <tags>
+        <tag>刷机</tag>
       </tags>
   </entry>
   <entry>
