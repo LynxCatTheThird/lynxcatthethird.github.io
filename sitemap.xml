@@ -2,16 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://www.lynx3.me/help/index.html</loc>
+    <loc>https://www.lynx3.me/thanks/index.html</loc>
     
-    <lastmod>2025-02-18</lastmod>
+    <lastmod>2025-02-19</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://www.lynx3.me/thanks/index.html</loc>
+    <loc>https://www.lynx3.me/policy/index.html</loc>
+    
+    <lastmod>2025-02-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.lynx3.me/help/index.html</loc>
     
     <lastmod>2025-02-18</lastmod>
     
@@ -66,15 +75,6 @@
   
   <url>
     <loc>https://www.lynx3.me/link/index.html</loc>
-    
-    <lastmod>2025-02-18</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.lynx3.me/policy/index.html</loc>
     
     <lastmod>2025-02-18</lastmod>
     

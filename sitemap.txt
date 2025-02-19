@@ -1,12 +1,12 @@
-https://www.lynx3.me/help/index.html
 https://www.lynx3.me/thanks/index.html
+https://www.lynx3.me/policy/index.html
+https://www.lynx3.me/help/index.html
 https://www.lynx3.me/vercel.json
 https://www.lynx3.me/board/index.html
 https://www.lynx3.me/categories/index.html
 https://www.lynx3.me/comment/index.html
 https://www.lynx3.me/faq/index.html
 https://www.lynx3.me/link/index.html
-https://www.lynx3.me/policy/index.html
 https://www.lynx3.me/tags/index.html
 https://www.lynx3.me/about/index.html
 https://www.lynx3.me/article/53963325/
