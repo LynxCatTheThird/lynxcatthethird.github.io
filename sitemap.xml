@@ -101,6 +101,24 @@
   </url>
   
   <url>
+    <loc>https://www.lynx3.me/board/index.html</loc>
+    
+    <lastmod>2025-02-18</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.lynx3.me/categories/index.html</loc>
+    
+    <lastmod>2025-02-18</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://www.lynx3.me/comment/index.html</loc>
     
     <lastmod>2025-02-18</lastmod>
@@ -119,25 +137,7 @@
   </url>
   
   <url>
-    <loc>https://www.lynx3.me/categories/index.html</loc>
-    
-    <lastmod>2025-02-18</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://www.lynx3.me/tags/index.html</loc>
-    
-    <lastmod>2025-02-18</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.lynx3.me/board/index.html</loc>
     
     <lastmod>2025-02-18</lastmod>
     

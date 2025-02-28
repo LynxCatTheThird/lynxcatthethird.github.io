@@ -475,135 +475,6 @@ h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​
       </tags>
   </entry>
   <entry>
-    <title>旧手机优化计划之三 - 流畅、保活与省电</title>
-    <url>/article/4097fa9/</url>
-    <content><![CDATA[<div class="note warning flat"><p>除非您有把握，否则不建议随意调整手机默认的性能配置！
-默认的，往往是最好的！</p>
-</div>
-<h1 id="流畅度">流畅度</h1>
-<h2 id="内存方向">内存方向</h2>
-<p>对于 Android 11+Magisk+LSPosed + 小而美 + QQ+etc. 来说，sdm660+4GB 已显捉襟见肘。对于小而美、QQ、B 站、抖音等软件，其本身优化就极差，再加一堆 XpHook，性能便更差了：不仅狂杀后台，而且时常会 OOM。怎么办呢？</p>
-<h3 id="交换空间">交换空间</h3>
-<div class="note red icon-padding flat"><i class="note-icon fas fa-triangle-exclamation"></i><p>本段教程尽力做到流畅和保后台之间平衡，但是由于 OPPO R11 内存实在偏小，不得不向保后台偏移。代价就是</p>
-<ol>
-<li>增多耗电，加剧发热</li>
-<li>热启动变慢</li>
-</ol>
-</div>
-<p>为了从源头上解决内存捉襟见肘的问题，我们可以使用交换空间。这里我使用使用 Scene 调节。</p>
-<h4 id="ZRAM">ZRAM</h4>
-<p>ZRAM 是在内存中划出一块来并对其进行压缩，详情可见 <a href="https://wiki.archlinuxcn.org/wiki/Zram">ArchWikiCN</a>。正因如此，ZRAM 设置不当会给 CPU 带来显著的压力，进而拉大耗电量、减少续航。</p>
-<p>如果您只打算开 ZRAM，那么建议在 2GB 到 3GB（2048MB 到 3072MB）之间。过小作用不大，过大拉多耗电量。</p>
-<h4 id="Swap">Swap</h4>
-<div class="note red icon-padding flat"><i class="note-icon fas fa-ban"></i><p>不可以只启用 Swap，这会严重拉慢磁盘 IO 与严重磨损磁盘！</p>
-</div>
-<h4 id="ZRAM-Swap">ZRAM+Swap</h4>
-<p>ZRAM 建议在 1.5GB 到 2.5GB（1536MB 到 2560MB）之间，Swap 建议在 0.5GB 到 1.5GB（1024MB 到 1536MB）之间，并且当 Scene 提示交换策略时，选择优先使用 ZRAM。这样可以让新鲜的数据在较快的 ZRAM 里交换，而当 ZRAM 被榨干时则把脏数据写到 Swap 以备过后使用。</p>
-<p><img src="https://s2.hdslb.com/bfs/article/20f11065f4af3fd39fe1100c57e465231352440272.png@1000h.webp" alt="效果图"></p>
-<h4 id="VM-Parameters">VM Parameters</h4>
-<p>将 swapiness 和 extra_free_kbytes 拉得较大。这样可以保证留有充足的 RAM 以防止 OOM。</p>
-<h3 id="特殊版本">特殊版本</h3>
-<h4 id="微信">微信</h4>
-<p><s>微信版本复杂，建议参考<a href="https://gitee.com/ww3w/dzb/blob/master/1.md#-%E5%BE%AE%E4%BF%A1">百分之千 / 定制版应用收藏 / 版本拐点</a>选择，并从<a href="https://www.coolapk.com/feed/51351476">酷安老哥微笑渲染悲伤的帖子</a>里下载。</s></p>
-<p><s>比较推荐的是 CN 7.0.21、Play 8.0.15、Play 8.0.33、CN 8.0.42。</s></p>
-<p>不建议 OPPO R11 使用微信了，实在太卡。</p>
-<h4 id="QQ">QQ</h4>
-<p><s>建议用 9.0.8，可以从 <a href="https://t.me/QQUpdates">QQUpdates</a>、<a href="https://t.me/qq_updatelog">QQ/TIM Update Log</a> 获得。9.0.15 和 9.0.17 有多人报道冷启动、小程序、扫码变慢。</s></p>
-<p>时代变了，建议用 9.0.65，可以从 <a href="https://t.me/QQUpdates">QQUpdates</a>、<a href="https://t.me/qq_updatelog">QQ/TIM Update Log</a> 获得。</p>
-<h4 id="Others">Others</h4>
-<p>请参考以下几个视频：</p>
-<p><a href="https://www.bilibili.com/video/BV16P411P7QT/">安卓软件保姆级优化，让你的手机再战三年！</a></p>
-<p><a href="https://www.bilibili.com/video/BV1r94y1T7Xa/">让老旗舰机重回新生？请收好这份养老软件指南！</a></p>
-<h3 id="三方客户端">三方客户端</h3>
-<p>对于某些热门软件，可能会有大佬用爱发电。传送门有：</p>
-<ul>
-<li><a href="https://github.com/bggRGjQaUbCoE/PiliPlus">PiliPlus</a>（哔哩哔哩）</li>
-<li><a href="https://github.com/huajiqaq/Hydrogen">Hydrogen</a>（知乎）</li>
-<li><a href="https://github.com/CeuiLiSA/Pixiv-Shaft">Shaft</a>（Pixiv）</li>
-</ul>
-<p>这些三方客户端有更为优秀的外观，更为可观的速度，以及某些诱人的功能。</p>
-<h3 id="手动养老">手动养老</h3>
-<p>对 QQ 微信等压力大的软件启动 Scene 监视器，随时监测硬件状况以逼迫自己养老，防止 OOM。</p>
-<h2 id="CPU-方向">CPU 方向</h2>
-<h3 id="通用">通用</h3>
-<p>推介以下两件套：<a href="http://vtools.omarea.com/">Scene</a> <s>、<a href="https://moka.latestfile.zip/">Moka</a></s>。</p>
-<p>Scene 可以调整 CPU~~，Moka 可以删除温控［注意：OPPO R11 一路下键即可，删不干净很正常，全删掉会有 Bug（比如爆音、打电话自动开免提、录屏时录不了系统内部声音）］~~，强烈不建议删除温控，而且移除温控之后毫无效果。</p>
-<h3 id="三方调度">三方调度</h3>
-<h4 id="Uperf-方案">Uperf 方案</h4>
-<p>刷入 <a href="https://github.com/yinwanxi/Uperf-Game-Turbo">Uperf Game Turbo</a>、<a href="https://github.com/nakixii/Magisk_AsoulOpt">AsoulOpt</a></p>
-<p>Uperf Game Turbo 可以较好地调节 CPU，使之在需要省电时省电、需要性能时高效。（注意：我们只需要 Uperf Game Turbo 的配置文件，而不需要其过分地教我们做事。为了避免其引起的一系列问题，请在刷入后将其禁用。）</p>
-<p>AsoulOpt 可以调节线程，提高 CPU 效率。</p>
-<p><img src="https://s2.hdslb.com/bfs/article/5b176872d9d21a056c214fb990aa0a881352440272.png@1000h.webp" alt=""></p>
-<h4 id="CuprumTurbo-Scheduler-方案"><a href="https://github.com/chenzyadb/CuprumTurbo-Scheduler">CuprumTurbo Scheduler</a> 方案</h4>
-<p>说这个东西可能令人眼前一黑，但如果说 CuToolBox，相信大多数人都耳熟能详。CuprumTurbo Scheduler 就是 CuToolBox 的模块版。</p>
-<p>经过测试后发现其确实有助于提升流畅性；但未经长期测试，加之峰值功率与 Uperf Game Turbo 相比明显偏大，难以得出准确结论。</p>
-<p><img src="https://s2.hdslb.com/bfs/article/589abf4ddc5824f1bcc037639c4391171352440272.png@1000h.webp" alt=""></p>
-<div class="note red icon-padding flat"><i class="note-icon fas fa-triangle-exclamation"></i><p>安装 Tritium Fiage 前，请先卸载 Uperf 及其相关和衍生模块和 AsoulOpt，并关闭 Scene 的核心分配与高通的 Performance Boost Config。</p>
-<p><img class="inline-img" src="https://s2.hdslb.com/bfs/article/b78cebe362474026d5abdcd637f6cba61352440272.png@1e_1c.webp" style="height:600px"><img class="inline-img" src="https://s2.hdslb.com/bfs/article/74af917c131fcdb2609cf48c4802f5a31352440272.png@1e_1c.webp" style="height:600px"></p>
-</div>
-<h4 id="Tritium-Fiage-方案">Tritium Fiage 方案</h4>
-<p>Tritium Fiage 是基于 CuprumTurbo Scheduler 的修改版，可以从酷安的<a href="https://www.coolapk.com/u/3922059">鱼龄</a>那里下载。</p>
-<p>启用后建议将性能模式设为默认。功耗基本不会变，但流畅度会好很多。</p>
-<p><img src="https://s2.hdslb.com/bfs/article/8a224c202551da98cb6b8440784107621352440272.png@1000h.webp" alt="如图，极端场景（此处为连续刷 4K 视频）下功率仍不太高"></p>
-<p><img src="https://s2.hdslb.com/bfs/article/e279516c9b215b5c4b438be2eb8416071352440272.png@1000h.webp" alt="功耗"></p>
-<div class="note red icon-padding flat"><i class="note-icon fas fa-triangle-exclamation"></i><p>安装 Tritium Fiage 前，请先卸载 Uperf 及其相关和衍生模块和 AsoulOpt，并关闭 Scene 的核心分配与高通的 Performance Boost Config。</p>
-<p><img class="inline-img" src="https://s2.hdslb.com/bfs/article/b78cebe362474026d5abdcd637f6cba61352440272.png@1e_1c.webp" style="height:600px"><img class="inline-img" src="https://s2.hdslb.com/bfs/article/74af917c131fcdb2609cf48c4802f5a31352440272.png@1e_1c.webp" style="height:600px"></p>
-</div>
-<div class="note orange icon-padding flat"><i class="note-icon fas fa-triangle-exclamation"></i><p>不必手动安装 cu_jank_detector.zip，启动不了。</p>
-</div>
-<div class="note red icon-padding flat"><i class="note-icon fas fa-ban"></i><p>~~ 不要安装解除系统限制模块。这是与 Moka 重复的去温控模块，并且效果略差。~~ 不建议去除温控。</p>
-</div>
-<h2 id="Dex2oat">Dex2oat</h2>
-<p>手动 dex2oat 可以提高冷启动速度并降低 CPU 和 RAM 占用，具体选哪一个模式请自行测试。</p>
-<p><img src="https://s2.hdslb.com/bfs/article/67d3336ea1ab8de166b5263c41f0af711352440272.png@700h.webp" alt="编译过程"></p>
-<h1 id="后台">后台</h1>
-<div class="note green icon-padding flat"><i class="note-icon fas fa-circle-check"></i><p>这里假设您使用 ZRAM（2048MB）+Swap（1536MB）+Tritium Fiage（1.2.1） 方案！</p>
-</div>
-<div class="note red icon-padding flat"><i class="note-icon fas fa-ban"></i><p>后台优化后并不是可以放飞自我了；相反，留后台会显著加大 OOM 的风险，尤其是在 OPPOR11 等 RAM 吃紧的机型上，请务必适当设置交换空间，并合理使用！</p>
-</div>
-<h2 id="对非必要软件关禁闭">对非必要软件关禁闭</h2>
-<p>使用小黑屋、雹等软件，以禁用方式冻结在后台死皮赖脸的软件。</p>
-<h2 id="调节所有软件后台活动">调节所有软件后台活动</h2>
-<ol>
-<li>在 Thanox 的后台启动和后台运行中对<strong>用户应用</strong>设置<strong>全不</strong>，在任务清理和乖巧模式中设置<strong>全部</strong>，随后排除 Shizuku、输入法、三方 Widget 等常驻后台的软件。</li>
-<li>切换过滤规则为系统，对软件商店等毒瘤适当设置。（我用类原生，没有经验，提供不了相关建议）</li>
-<li>添加模板，仅打开任务清理和乖巧模式（仅点亮这两个开关，其他均灭掉），并启用自动配置</li>
-</ol>
-<h3 id="注意">注意</h3>
-<ol>
-<li>对咕噜咕噜 Play 服务、咕噜咕噜服务框架和咕噜咕噜商店的操作可能会导致其它软件无法调用咕噜咕噜相关服务</li>
-<li>对下载器与浏览器打开乖巧模式会导致下载通知冻结</li>
-<li>对浏览器打开后台运行而关闭任务清理可能会导致其一直在后台吃内存</li>
-</ol>
-<h2 id="为必要软件开小灶">为必要软件开小灶</h2>
-<h3 id="接消息">接消息</h3>
-<p>某些软件（比如微信 QQ 等通讯软件）要接消息，但如果一直挂后台占 RAM 太多，可在应用详情页：</p>
-<ol>
-<li>打开后台启动（否则开机不自启动）</li>
-<li>打开后台运行、后台保护，关闭任务清理（否则频繁被杀死）</li>
-<li>乖巧模式（减少后台占用）</li>
-</ol>
-<h3 id="监听">监听</h3>
-<p>某些软件（比如 Robot36、Thanox 后台记录、Scene 动态切换、Shizuku）要能够一直执行下去并试试反应用户操作，还有一些软件（比如天气小组件）要频繁获取信息，可在应用详情页：</p>
-<ol>
-<li>打开后台启动（否则开机不自启动）</li>
-<li>打开后台运行、后台保护，关闭任务清理、乖巧模式（否则频繁被杀死）</li>
-</ol>
-<h2 id="效果">效果</h2>
-<p><img src="https://s2.hdslb.com/bfs/article/5e24560d4bcad132eb0a52fe3375f49d1352440272.png@700h.webp" alt="开机静置五分钟后"></p>
-<p><img src="https://s2.hdslb.com/bfs/article/5e24560d4bcad132eb0a52fe3375f49d1352440272.png@700h.webp" alt="一边水 Q群，一边在微信聊天"></p>
-<p><img src="https://s2.hdslb.com/bfs/article/12ff98d20468deb923a5c073ea5fe0c11352440272.png@700h.webp" alt="使用一个半小时，再静置半小时"></p>
-]]></content>
-      <categories>
-        <category>科学与技术</category>
-        <category>计算机</category>
-        <category>刷机</category>
-      </categories>
-      <tags>
-        <tag>刷机</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>文章效果与字体编码测试</title>
     <url>/article/a36a68fc/</url>
     <content><![CDATA[<h1 id="Markdown-基本语法">Markdown 基本语法</h1>
@@ -1162,6 +1033,135 @@ Countless small mysteries are also solved in the process.</span></p></div>
       </categories>
       <tags>
         <tag>前端</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>旧手机优化计划之三 - 流畅、保活与省电</title>
+    <url>/article/4097fa9/</url>
+    <content><![CDATA[<div class="note warning flat"><p>除非您有把握，否则不建议随意调整手机默认的性能配置！
+默认的，往往是最好的！</p>
+</div>
+<h1 id="流畅度">流畅度</h1>
+<h2 id="内存方向">内存方向</h2>
+<p>对于 Android 11+Magisk+LSPosed + 小而美 + QQ+etc. 来说，sdm660+4GB 已显捉襟见肘。对于小而美、QQ、B 站、抖音等软件，其本身优化就极差，再加一堆 XpHook，性能便更差了：不仅狂杀后台，而且时常会 OOM。怎么办呢？</p>
+<h3 id="交换空间">交换空间</h3>
+<div class="note red icon-padding flat"><i class="note-icon fas fa-triangle-exclamation"></i><p>本段教程尽力做到流畅和保后台之间平衡，但是由于 OPPO R11 内存实在偏小，不得不向保后台偏移。代价就是</p>
+<ol>
+<li>增多耗电，加剧发热</li>
+<li>热启动变慢</li>
+</ol>
+</div>
+<p>为了从源头上解决内存捉襟见肘的问题，我们可以使用交换空间。这里我使用使用 Scene 调节。</p>
+<h4 id="ZRAM">ZRAM</h4>
+<p>ZRAM 是在内存中划出一块来并对其进行压缩，详情可见 <a href="https://wiki.archlinuxcn.org/wiki/Zram">ArchWikiCN</a>。正因如此，ZRAM 设置不当会给 CPU 带来显著的压力，进而拉大耗电量、减少续航。</p>
+<p>如果您只打算开 ZRAM，那么建议在 2GB 到 3GB（2048MB 到 3072MB）之间。过小作用不大，过大拉多耗电量。</p>
+<h4 id="Swap">Swap</h4>
+<div class="note red icon-padding flat"><i class="note-icon fas fa-ban"></i><p>不可以只启用 Swap，这会严重拉慢磁盘 IO 与严重磨损磁盘！</p>
+</div>
+<h4 id="ZRAM-Swap">ZRAM+Swap</h4>
+<p>ZRAM 建议在 1.5GB 到 2.5GB（1536MB 到 2560MB）之间，Swap 建议在 0.5GB 到 1.5GB（1024MB 到 1536MB）之间，并且当 Scene 提示交换策略时，选择优先使用 ZRAM。这样可以让新鲜的数据在较快的 ZRAM 里交换，而当 ZRAM 被榨干时则把脏数据写到 Swap 以备过后使用。</p>
+<p><img src="https://s2.hdslb.com/bfs/article/20f11065f4af3fd39fe1100c57e465231352440272.png@1000h.webp" alt="效果图"></p>
+<h4 id="VM-Parameters">VM Parameters</h4>
+<p>将 swapiness 和 extra_free_kbytes 拉得较大。这样可以保证留有充足的 RAM 以防止 OOM。</p>
+<h3 id="特殊版本">特殊版本</h3>
+<h4 id="微信">微信</h4>
+<p><s>微信版本复杂，建议参考<a href="https://gitee.com/ww3w/dzb/blob/master/1.md#-%E5%BE%AE%E4%BF%A1">百分之千 / 定制版应用收藏 / 版本拐点</a>选择，并从<a href="https://www.coolapk.com/feed/51351476">酷安老哥微笑渲染悲伤的帖子</a>里下载。</s></p>
+<p><s>比较推荐的是 CN 7.0.21、Play 8.0.15、Play 8.0.33、CN 8.0.42。</s></p>
+<p>不建议 OPPO R11 使用微信了，实在太卡。</p>
+<h4 id="QQ">QQ</h4>
+<p><s>建议用 9.0.8，可以从 <a href="https://t.me/QQUpdates">QQUpdates</a>、<a href="https://t.me/qq_updatelog">QQ/TIM Update Log</a> 获得。9.0.15 和 9.0.17 有多人报道冷启动、小程序、扫码变慢。</s></p>
+<p>时代变了，建议用 9.0.65，可以从 <a href="https://t.me/QQUpdates">QQUpdates</a>、<a href="https://t.me/qq_updatelog">QQ/TIM Update Log</a> 获得。</p>
+<h4 id="Others">Others</h4>
+<p>请参考以下几个视频：</p>
+<p><a href="https://www.bilibili.com/video/BV16P411P7QT/">安卓软件保姆级优化，让你的手机再战三年！</a></p>
+<p><a href="https://www.bilibili.com/video/BV1r94y1T7Xa/">让老旗舰机重回新生？请收好这份养老软件指南！</a></p>
+<h3 id="三方客户端">三方客户端</h3>
+<p>对于某些热门软件，可能会有大佬用爱发电。传送门有：</p>
+<ul>
+<li><a href="https://github.com/bggRGjQaUbCoE/PiliPlus">PiliPlus</a>（哔哩哔哩）</li>
+<li><a href="https://github.com/huajiqaq/Hydrogen">Hydrogen</a>（知乎）</li>
+<li><a href="https://github.com/CeuiLiSA/Pixiv-Shaft">Shaft</a>（Pixiv）</li>
+</ul>
+<p>这些三方客户端有更为优秀的外观，更为可观的速度，以及某些诱人的功能。</p>
+<h3 id="手动养老">手动养老</h3>
+<p>对 QQ 微信等压力大的软件启动 Scene 监视器，随时监测硬件状况以逼迫自己养老，防止 OOM。</p>
+<h2 id="CPU-方向">CPU 方向</h2>
+<h3 id="通用">通用</h3>
+<p>推介以下两件套：<a href="http://vtools.omarea.com/">Scene</a> <s>、<a href="https://moka.latestfile.zip/">Moka</a></s>。</p>
+<p>Scene 可以调整 CPU~~，Moka 可以删除温控［注意：OPPO R11 一路下键即可，删不干净很正常，全删掉会有 Bug（比如爆音、打电话自动开免提、录屏时录不了系统内部声音）］~~，强烈不建议删除温控，而且移除温控之后毫无效果。</p>
+<h3 id="三方调度">三方调度</h3>
+<h4 id="Uperf-方案">Uperf 方案</h4>
+<p>刷入 <a href="https://github.com/yinwanxi/Uperf-Game-Turbo">Uperf Game Turbo</a>、<a href="https://github.com/nakixii/Magisk_AsoulOpt">AsoulOpt</a></p>
+<p>Uperf Game Turbo 可以较好地调节 CPU，使之在需要省电时省电、需要性能时高效。（注意：我们只需要 Uperf Game Turbo 的配置文件，而不需要其过分地教我们做事。为了避免其引起的一系列问题，请在刷入后将其禁用。）</p>
+<p>AsoulOpt 可以调节线程，提高 CPU 效率。</p>
+<p><img src="https://s2.hdslb.com/bfs/article/5b176872d9d21a056c214fb990aa0a881352440272.png@1000h.webp" alt=""></p>
+<h4 id="CuprumTurbo-Scheduler-方案"><a href="https://github.com/chenzyadb/CuprumTurbo-Scheduler">CuprumTurbo Scheduler</a> 方案</h4>
+<p>说这个东西可能令人眼前一黑，但如果说 CuToolBox，相信大多数人都耳熟能详。CuprumTurbo Scheduler 就是 CuToolBox 的模块版。</p>
+<p>经过测试后发现其确实有助于提升流畅性；但未经长期测试，加之峰值功率与 Uperf Game Turbo 相比明显偏大，难以得出准确结论。</p>
+<p><img src="https://s2.hdslb.com/bfs/article/589abf4ddc5824f1bcc037639c4391171352440272.png@1000h.webp" alt=""></p>
+<div class="note red icon-padding flat"><i class="note-icon fas fa-triangle-exclamation"></i><p>安装 Tritium Fiage 前，请先卸载 Uperf 及其相关和衍生模块和 AsoulOpt，并关闭 Scene 的核心分配与高通的 Performance Boost Config。</p>
+<p><img class="inline-img" src="https://s2.hdslb.com/bfs/article/b78cebe362474026d5abdcd637f6cba61352440272.png@1e_1c.webp" style="height:600px"><img class="inline-img" src="https://s2.hdslb.com/bfs/article/74af917c131fcdb2609cf48c4802f5a31352440272.png@1e_1c.webp" style="height:600px"></p>
+</div>
+<h4 id="Tritium-Fiage-方案">Tritium Fiage 方案</h4>
+<p>Tritium Fiage 是基于 CuprumTurbo Scheduler 的修改版，可以从酷安的<a href="https://www.coolapk.com/u/3922059">鱼龄</a>那里下载。</p>
+<p>启用后建议将性能模式设为默认。功耗基本不会变，但流畅度会好很多。</p>
+<p><img src="https://s2.hdslb.com/bfs/article/8a224c202551da98cb6b8440784107621352440272.png@1000h.webp" alt="如图，极端场景（此处为连续刷 4K 视频）下功率仍不太高"></p>
+<p><img src="https://s2.hdslb.com/bfs/article/e279516c9b215b5c4b438be2eb8416071352440272.png@1000h.webp" alt="功耗"></p>
+<div class="note red icon-padding flat"><i class="note-icon fas fa-triangle-exclamation"></i><p>安装 Tritium Fiage 前，请先卸载 Uperf 及其相关和衍生模块和 AsoulOpt，并关闭 Scene 的核心分配与高通的 Performance Boost Config。</p>
+<p><img class="inline-img" src="https://s2.hdslb.com/bfs/article/b78cebe362474026d5abdcd637f6cba61352440272.png@1e_1c.webp" style="height:600px"><img class="inline-img" src="https://s2.hdslb.com/bfs/article/74af917c131fcdb2609cf48c4802f5a31352440272.png@1e_1c.webp" style="height:600px"></p>
+</div>
+<div class="note orange icon-padding flat"><i class="note-icon fas fa-triangle-exclamation"></i><p>不必手动安装 cu_jank_detector.zip，启动不了。</p>
+</div>
+<div class="note red icon-padding flat"><i class="note-icon fas fa-ban"></i><p>~~ 不要安装解除系统限制模块。这是与 Moka 重复的去温控模块，并且效果略差。~~ 不建议去除温控。</p>
+</div>
+<h2 id="Dex2oat">Dex2oat</h2>
+<p>手动 dex2oat 可以提高冷启动速度并降低 CPU 和 RAM 占用，具体选哪一个模式请自行测试。</p>
+<p><img src="https://s2.hdslb.com/bfs/article/67d3336ea1ab8de166b5263c41f0af711352440272.png@700h.webp" alt="编译过程"></p>
+<h1 id="后台">后台</h1>
+<div class="note green icon-padding flat"><i class="note-icon fas fa-circle-check"></i><p>这里假设您使用 ZRAM（2048MB）+Swap（1536MB）+Tritium Fiage（1.2.1） 方案！</p>
+</div>
+<div class="note red icon-padding flat"><i class="note-icon fas fa-ban"></i><p>后台优化后并不是可以放飞自我了；相反，留后台会显著加大 OOM 的风险，尤其是在 OPPOR11 等 RAM 吃紧的机型上，请务必适当设置交换空间，并合理使用！</p>
+</div>
+<h2 id="对非必要软件关禁闭">对非必要软件关禁闭</h2>
+<p>使用小黑屋、雹等软件，以禁用方式冻结在后台死皮赖脸的软件。</p>
+<h2 id="调节所有软件后台活动">调节所有软件后台活动</h2>
+<ol>
+<li>在 Thanox 的后台启动和后台运行中对<strong>用户应用</strong>设置<strong>全不</strong>，在任务清理和乖巧模式中设置<strong>全部</strong>，随后排除 Shizuku、输入法、三方 Widget 等常驻后台的软件。</li>
+<li>切换过滤规则为系统，对软件商店等毒瘤适当设置。（我用类原生，没有经验，提供不了相关建议）</li>
+<li>添加模板，仅打开任务清理和乖巧模式（仅点亮这两个开关，其他均灭掉），并启用自动配置</li>
+</ol>
+<h3 id="注意">注意</h3>
+<ol>
+<li>对咕噜咕噜 Play 服务、咕噜咕噜服务框架和咕噜咕噜商店的操作可能会导致其它软件无法调用咕噜咕噜相关服务</li>
+<li>对下载器与浏览器打开乖巧模式会导致下载通知冻结</li>
+<li>对浏览器打开后台运行而关闭任务清理可能会导致其一直在后台吃内存</li>
+</ol>
+<h2 id="为必要软件开小灶">为必要软件开小灶</h2>
+<h3 id="接消息">接消息</h3>
+<p>某些软件（比如微信 QQ 等通讯软件）要接消息，但如果一直挂后台占 RAM 太多，可在应用详情页：</p>
+<ol>
+<li>打开后台启动（否则开机不自启动）</li>
+<li>打开后台运行、后台保护，关闭任务清理（否则频繁被杀死）</li>
+<li>乖巧模式（减少后台占用）</li>
+</ol>
+<h3 id="监听">监听</h3>
+<p>某些软件（比如 Robot36、Thanox 后台记录、Scene 动态切换、Shizuku）要能够一直执行下去并试试反应用户操作，还有一些软件（比如天气小组件）要频繁获取信息，可在应用详情页：</p>
+<ol>
+<li>打开后台启动（否则开机不自启动）</li>
+<li>打开后台运行、后台保护，关闭任务清理、乖巧模式（否则频繁被杀死）</li>
+</ol>
+<h2 id="效果">效果</h2>
+<p><img src="https://s2.hdslb.com/bfs/article/5e24560d4bcad132eb0a52fe3375f49d1352440272.png@700h.webp" alt="开机静置五分钟后"></p>
+<p><img src="https://s2.hdslb.com/bfs/article/5e24560d4bcad132eb0a52fe3375f49d1352440272.png@700h.webp" alt="一边水 Q群，一边在微信聊天"></p>
+<p><img src="https://s2.hdslb.com/bfs/article/12ff98d20468deb923a5c073ea5fe0c11352440272.png@700h.webp" alt="使用一个半小时，再静置半小时"></p>
+]]></content>
+      <categories>
+        <category>科学与技术</category>
+        <category>计算机</category>
+        <category>刷机</category>
+      </categories>
+      <tags>
+        <tag>刷机</tag>
       </tags>
   </entry>
   <entry>
