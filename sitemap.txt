@@ -9,11 +9,11 @@ https://www.lynx3.me/article/a36a68fc/
 https://www.lynx3.me/policy/index.html
 https://www.lynx3.me/help/index.html
 https://www.lynx3.me/vercel.json
-https://www.lynx3.me/board/index.html
-https://www.lynx3.me/categories/index.html
 https://www.lynx3.me/comment/index.html
 https://www.lynx3.me/faq/index.html
+https://www.lynx3.me/categories/index.html
 https://www.lynx3.me/tags/index.html
+https://www.lynx3.me/board/index.html
 https://www.lynx3.me/article/d68048af/
 https://www.lynx3.me/article/b5186965/
 https://www.lynx3.me/
