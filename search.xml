@@ -474,6 +474,278 @@ h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​
       </tags>
   </entry>
   <entry>
+    <title>旧手机优化计划之三 - 流畅、保活与省电</title>
+    <url>/article/4097fa9/</url>
+    <content><![CDATA[<div class="note warning flat"><p>除非您有把握，否则不建议随意调整手机默认的性能配置！
+默认的，往往是最好的！</p>
+</div>
+<h1 id="流畅度">流畅度</h1>
+<h2 id="内存方向">内存方向</h2>
+<p>对于 Android 11+Magisk+LSPosed + 小而美 + QQ+etc. 来说，sdm660+4GB 已显捉襟见肘。对于小而美、QQ、B 站、抖音等软件，其本身优化就极差，再加一堆 XpHook，性能便更差了：不仅狂杀后台，而且时常会 OOM。怎么办呢？</p>
+<h3 id="交换空间">交换空间</h3>
+<div class="note red icon-padding flat"><i class="note-icon fas fa-triangle-exclamation"></i><p>本段教程尽力做到流畅和保后台之间平衡，但是由于 OPPO R11 内存实在偏小，不得不向保后台偏移。代价就是</p>
+<ol>
+<li>增多耗电，加剧发热</li>
+<li>热启动变慢</li>
+</ol>
+</div>
+<p>为了从源头上解决内存捉襟见肘的问题，我们可以使用交换空间。这里我使用使用 Scene 调节。</p>
+<h4 id="ZRAM">ZRAM</h4>
+<p>ZRAM 是在内存中划出一块来并对其进行压缩，详情可见 <a href="https://wiki.archlinuxcn.org/wiki/Zram">ArchWikiCN</a>。正因如此，ZRAM 设置不当会给 CPU 带来显著的压力，进而拉大耗电量、减少续航。</p>
+<p>如果您只打算开 ZRAM，那么建议在 2GB 到 3GB（2048MB 到 3072MB）之间。过小作用不大，过大拉多耗电量。</p>
+<h4 id="Swap">Swap</h4>
+<div class="note red icon-padding flat"><i class="note-icon fas fa-ban"></i><p>不可以只启用 Swap，这会严重拉慢磁盘 IO 与严重磨损磁盘！</p>
+</div>
+<h4 id="ZRAM-Swap">ZRAM+Swap</h4>
+<p>ZRAM 建议在 1.5GB 到 2.5GB（1536MB 到 2560MB）之间，Swap 建议在 0.5GB 到 1.5GB（1024MB 到 1536MB）之间，并且当 Scene 提示交换策略时，选择优先使用 ZRAM。这样可以让新鲜的数据在较快的 ZRAM 里交换，而当 ZRAM 被榨干时则把脏数据写到 Swap 以备过后使用。</p>
+<p><img src="https://s2.hdslb.com/bfs/article/20f11065f4af3fd39fe1100c57e465231352440272.png@1000h.webp" alt="效果图"></p>
+<h4 id="VM-Parameters">VM Parameters</h4>
+<p>将 swapiness 和 extra_free_kbytes 拉得较大。这样可以保证留有充足的 RAM 以防止 OOM。</p>
+<h3 id="特殊版本">特殊版本</h3>
+<h4 id="微信">微信</h4>
+<p><s>微信版本复杂，建议参考<a href="https://gitee.com/ww3w/dzb/blob/master/1.md#-%E5%BE%AE%E4%BF%A1">百分之千 / 定制版应用收藏 / 版本拐点</a>选择，并从<a href="https://www.coolapk.com/feed/51351476">酷安老哥微笑渲染悲伤的帖子</a>里下载。</s></p>
+<p><s>比较推荐的是 CN 7.0.21、Play 8.0.15、Play 8.0.33、CN 8.0.42。</s></p>
+<p>不建议 OPPO R11 使用微信了，实在太卡。</p>
+<h4 id="QQ">QQ</h4>
+<p><s>建议用 9.0.8，可以从 <a href="https://t.me/QQUpdates">QQUpdates</a>、<a href="https://t.me/qq_updatelog">QQ/TIM Update Log</a> 获得。9.0.15 和 9.0.17 有多人报道冷启动、小程序、扫码变慢。</s></p>
+<p>时代变了，建议用 9.0.65，可以从 <a href="https://t.me/QQUpdates">QQUpdates</a>、<a href="https://t.me/qq_updatelog">QQ/TIM Update Log</a> 获得。</p>
+<h4 id="Others">Others</h4>
+<p>请参考以下几个视频：</p>
+<p><a href="https://www.bilibili.com/video/BV16P411P7QT/">安卓软件保姆级优化，让你的手机再战三年！</a></p>
+<p><a href="https://www.bilibili.com/video/BV1r94y1T7Xa/">让老旗舰机重回新生？请收好这份养老软件指南！</a></p>
+<h3 id="三方客户端">三方客户端</h3>
+<p>对于某些热门软件，可能会有大佬用爱发电。传送门有：</p>
+<ul>
+<li><a href="https://github.com/bggRGjQaUbCoE/PiliPlus">PiliPlus</a>（哔哩哔哩）</li>
+<li><a href="https://github.com/huajiqaq/Hydrogen">Hydrogen</a>（知乎）</li>
+<li><a href="https://github.com/CeuiLiSA/Pixiv-Shaft">Shaft</a>（Pixiv）</li>
+</ul>
+<p>这些三方客户端有更为优秀的外观，更为可观的速度，以及某些诱人的功能。</p>
+<h3 id="手动养老">手动养老</h3>
+<p>对 QQ 微信等压力大的软件启动 Scene 监视器，随时监测硬件状况以逼迫自己养老，防止 OOM。</p>
+<h2 id="CPU-方向">CPU 方向</h2>
+<h3 id="通用">通用</h3>
+<p>推介以下两件套：<a href="http://vtools.omarea.com/">Scene</a> <s>、<a href="https://moka.latestfile.zip/">Moka</a></s>。</p>
+<p>Scene 可以调整 CPU~~，Moka 可以删除温控［注意：OPPO R11 一路下键即可，删不干净很正常，全删掉会有 Bug（比如爆音、打电话自动开免提、录屏时录不了系统内部声音）］~~，强烈不建议删除温控，而且移除温控之后毫无效果。</p>
+<h3 id="三方调度">三方调度</h3>
+<h4 id="Uperf-方案">Uperf 方案</h4>
+<p>刷入 <a href="https://github.com/yinwanxi/Uperf-Game-Turbo">Uperf Game Turbo</a>、<a href="https://github.com/nakixii/Magisk_AsoulOpt">AsoulOpt</a></p>
+<p>Uperf Game Turbo 可以较好地调节 CPU，使之在需要省电时省电、需要性能时高效。（注意：我们只需要 Uperf Game Turbo 的配置文件，而不需要其过分地教我们做事。为了避免其引起的一系列问题，请在刷入后将其禁用。）</p>
+<p>AsoulOpt 可以调节线程，提高 CPU 效率。</p>
+<p><img src="https://s2.hdslb.com/bfs/article/5b176872d9d21a056c214fb990aa0a881352440272.png@1000h.webp" alt=""></p>
+<h4 id="CuprumTurbo-Scheduler-方案"><a href="https://github.com/chenzyadb/CuprumTurbo-Scheduler">CuprumTurbo Scheduler</a> 方案</h4>
+<p>说这个东西可能令人眼前一黑，但如果说 CuToolBox，相信大多数人都耳熟能详。CuprumTurbo Scheduler 就是 CuToolBox 的模块版。</p>
+<p>经过测试后发现其确实有助于提升流畅性；但未经长期测试，加之峰值功率与 Uperf Game Turbo 相比明显偏大，难以得出准确结论。</p>
+<p><img src="https://s2.hdslb.com/bfs/article/589abf4ddc5824f1bcc037639c4391171352440272.png@1000h.webp" alt=""></p>
+<div class="note red icon-padding flat"><i class="note-icon fas fa-triangle-exclamation"></i><p>安装 Tritium Fiage 前，请先卸载 Uperf 及其相关和衍生模块和 AsoulOpt，并关闭 Scene 的核心分配与高通的 Performance Boost Config。</p>
+<p><img class="inline-img" src="https://s2.hdslb.com/bfs/article/b78cebe362474026d5abdcd637f6cba61352440272.png@1e_0c.webp" style="height:600px"><img class="inline-img" src="https://s2.hdslb.com/bfs/article/74af917c131fcdb2609cf48c4802f5a31352440272.png@1e_0c.webp" style="height:600px"></p>
+</div>
+<h4 id="Tritium-Fiage-方案">Tritium Fiage 方案</h4>
+<p>Tritium Fiage 是基于 CuprumTurbo Scheduler 的修改版，可以从酷安的<a href="https://www.coolapk.com/u/3922059">鱼龄</a>那里下载。</p>
+<p>启用后建议将性能模式设为默认。功耗基本不会变，但流畅度会好很多。</p>
+<p><img src="https://s2.hdslb.com/bfs/article/8a224c202551da98cb6b8440784107621352440272.png@1000h.webp" alt="如图，极端场景（此处为连续刷 4K 视频）下功率仍不太高"></p>
+<p><img src="https://s2.hdslb.com/bfs/article/e279516c9b215b5c4b438be2eb8416071352440272.png@1000h.webp" alt="功耗"></p>
+<div class="note red icon-padding flat"><i class="note-icon fas fa-triangle-exclamation"></i><p>安装 Tritium Fiage 前，请先卸载 Uperf 及其相关和衍生模块和 AsoulOpt，并关闭 Scene 的核心分配与高通的 Performance Boost Config。</p>
+<p><img class="inline-img" src="https://s2.hdslb.com/bfs/article/b78cebe362474026d5abdcd637f6cba61352440272.png@1e_0c.webp" style="height:600px"><img class="inline-img" src="https://s2.hdslb.com/bfs/article/74af917c131fcdb2609cf48c4802f5a31352440272.png@1e_0c.webp" style="height:600px"></p>
+</div>
+<div class="note orange icon-padding flat"><i class="note-icon fas fa-triangle-exclamation"></i><p>不必手动安装 cu_jank_detector.zip，启动不了。</p>
+</div>
+<div class="note red icon-padding flat"><i class="note-icon fas fa-ban"></i><p>~~ 不要安装解除系统限制模块。这是与 Moka 重复的去温控模块，并且效果略差。~~ 不建议去除温控。</p>
+</div>
+<h2 id="Dex2oat">Dex2oat</h2>
+<p>手动 dex2oat 可以提高冷启动速度并降低 CPU 和 RAM 占用，具体选哪一个模式请自行测试。</p>
+<p><img src="https://s2.hdslb.com/bfs/article/67d3336ea1ab8de166b5263c41f0af711352440272.png@700h.webp" alt="编译过程"></p>
+<h1 id="后台">后台</h1>
+<div class="note green icon-padding flat"><i class="note-icon fas fa-circle-check"></i><p>这里假设您使用 ZRAM（2048MB）+Swap（1536MB）+Tritium Fiage（1.2.1） 方案！</p>
+</div>
+<div class="note red icon-padding flat"><i class="note-icon fas fa-ban"></i><p>后台优化后并不是可以放飞自我了；相反，留后台会显著加大 OOM 的风险，尤其是在 OPPOR11 等 RAM 吃紧的机型上，请务必适当设置交换空间，并合理使用！</p>
+</div>
+<h2 id="对非必要软件关禁闭">对非必要软件关禁闭</h2>
+<p>使用小黑屋、雹等软件，以禁用方式冻结在后台死皮赖脸的软件。</p>
+<h2 id="调节所有软件后台活动">调节所有软件后台活动</h2>
+<ol>
+<li>在 Thanox 的后台启动和后台运行中对<strong>用户应用</strong>设置<strong>全不</strong>，在任务清理和乖巧模式中设置<strong>全部</strong>，随后排除 Shizuku、输入法、三方 Widget 等常驻后台的软件。</li>
+<li>切换过滤规则为系统，对软件商店等毒瘤适当设置。（我用类原生，没有经验，提供不了相关建议）</li>
+<li>添加模板，仅打开任务清理和乖巧模式（仅点亮这两个开关，其他均灭掉），并启用自动配置</li>
+</ol>
+<h3 id="注意">注意</h3>
+<ol>
+<li>对咕噜咕噜 Play 服务、咕噜咕噜服务框架和咕噜咕噜商店的操作可能会导致其它软件无法调用咕噜咕噜相关服务</li>
+<li>对下载器与浏览器打开乖巧模式会导致下载通知冻结</li>
+<li>对浏览器打开后台运行而关闭任务清理可能会导致其一直在后台吃内存</li>
+</ol>
+<h2 id="为必要软件开小灶">为必要软件开小灶</h2>
+<h3 id="接消息">接消息</h3>
+<p>某些软件（比如微信 QQ 等通讯软件）要接消息，但如果一直挂后台占 RAM 太多，可在应用详情页：</p>
+<ol>
+<li>打开后台启动（否则开机不自启动）</li>
+<li>打开后台运行、后台保护，关闭任务清理（否则频繁被杀死）</li>
+<li>乖巧模式（减少后台占用）</li>
+</ol>
+<h3 id="监听">监听</h3>
+<p>某些软件（比如 Robot36、Thanox 后台记录、Scene 动态切换、Shizuku）要能够一直执行下去并试试反应用户操作，还有一些软件（比如天气小组件）要频繁获取信息，可在应用详情页：</p>
+<ol>
+<li>打开后台启动（否则开机不自启动）</li>
+<li>打开后台运行、后台保护，关闭任务清理、乖巧模式（否则频繁被杀死）</li>
+</ol>
+<h2 id="效果">效果</h2>
+<p><img src="https://s2.hdslb.com/bfs/article/5e24560d4bcad132eb0a52fe3375f49d1352440272.png@700h.webp" alt="开机静置五分钟后"></p>
+<p><img src="https://s2.hdslb.com/bfs/article/5e24560d4bcad132eb0a52fe3375f49d1352440272.png@700h.webp" alt="一边水 Q群，一边在微信聊天"></p>
+<p><img src="https://s2.hdslb.com/bfs/article/12ff98d20468deb923a5c073ea5fe0c11352440272.png@700h.webp" alt="使用一个半小时，再静置半小时"></p>
+]]></content>
+      <categories>
+        <category>科学与技术</category>
+        <category>计算机</category>
+        <category>刷机</category>
+      </categories>
+      <tags>
+        <tag>刷机</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>旧手机优化计划之二 - Root</title>
+    <url>/article/2a7bbe49/</url>
+    <content><![CDATA[<h1 id="总述">总述</h1>
+<p>本文将介绍三种主流 Root（Magisk、KernelSU、APatch）的安装，并介绍它们的一些技巧提示。</p>
+<p>开始之前，请确保您已经刷入了 TWRP 3.7.0、<code>1170</code> 底包的系统，并有且只有一种可用的 Root 方式。</p>
+<h1 id="必备前置知识">必备前置知识</h1>
+<h2 id="救砖">救砖</h2>
+<ul>
+<li><a href="https://kernelsu.org/zh_CN/guide/rescue-from-bootloop.html">救砖 | KernelSU</a></li>
+<li><a href="https://apatch.dev/zh_CN/rescue-bootloop.html">救砖 | APatch Docs</a></li>
+<li><code>logcat</code>、<code>dmesg</code>、<code>/proc/kmsg</code> 等抓取日志的方法</li>
+<li>基本的 Git 知识</li>
+</ul>
+<h2 id="内核切换方法">内核切换方法</h2>
+<p>切换、更新、修改内核有三种方法：</p>
+<ol>
+<li>从别人那里要来 boot.img 刷入</li>
+<li>将内核镜像（.gz/.gz-dtb）用 AnyKernel3 刷入</li>
+<li>将内核镜像（Image）用 magiskboot 打包入 boot.img 刷入</li>
+</ol>
+<h1 id="Magisk">Magisk</h1>
+<h2 id="安装-Magisk">安装 Magisk</h2>
+<ol>
+<li>下载 Magisk 最新版 APK 文件，并安装到手机中。</li>
+<li>打开 Magisk Manager，点击左上角的 “安装” 按钮，选择空白的 Boot 镜像文件，修补。</li>
+<li>使用 TWRP 备份 Boot 分区，刷入修补好的 boot.img 到 Boot 分区，然后重启手机。</li>
+<li>重启后会提示<code>需要修复环境</code>，不要点击修复，按返回键拒绝。选择安装，<strong>取消勾选</strong> “安装到 Recovery”，然后重启。</li>
+</ol>
+<h2 id="Magisk-注意事项">Magisk 注意事项</h2>
+<ol>
+<li>Wenhao 新版内核由于未知原因不适用 Magisk，将会导致手机随机重启入 EDL 模式或高通救援模式，并且无法使用微信视频通话和 QQ 视频通话，请勿尝试。</li>
+<li>修复 Magisk 运行环境与更新 Magisk 时，<strong>务必取消</strong>勾选 “安装到 recvoery” 这个选项，高版本 Magisk （26.1+）会<strong>默认启用</strong>这个选项，错误刷入后会导致 WLAN 无法打开以及 Recovery 无法进入。<br>如果您不慎安装到了 Recovery，请提取卡刷包内的 boot.img 和 recovery.img 重新刷入对应分区，或者干脆重刷完整包。</li>
+<li>“Ramdisk” 为 “否” 是正常的，是 R11 (s) 设备的特性，<strong>不</strong>影响 Magisk 功能。</li>
+<li><s>使用 <code>Magisk Delta</code>（后改名 <code>Kitsune Mask</code>）将难以在除 <code>Kitsune</code> 自己的群组之外的社区得到技术支持，也不需要且无法使用 <code>Shamiko</code> 和 <code>ZygiskNext</code>（包括衍生）。</s> 不建议继续使用 <code>Kitsune Mask</code>，其不仅在社区内臭名昭著，而且已经停止更新。</li>
+<li><code>Alpha</code> 禁止在 Android 内修改 <code>/system</code>，介意勿用。但要知道：这十分有利于安全。</li>
+</ol>
+<h2 id="Magisk-技巧提示">Magisk 技巧提示</h2>
+<ol>
+<li>Magisk APK 相当于刷机包。当 Magisk 出现 “掉 Root 权限”“获取不到 Root 权限”“Zygisk 反复注入失败” 等问题，而三方 Recovery 又可用时，您可以通过将 Magisk.apk 重命名为 Magisk.<strong>zip</strong> 并刷入来修复。</li>
+<li>Magisk 有多个 Fork，各 Fork 各有不同。若您想切换不同的的 Fork，除了在三方 Recovery 中刷入 Magisk.zip 外，还可以在已有的 Magisk Manager 中授予将要安装的 Magisk Manager Root 权限，并重新启动准备安装的 Magisk Manager。此时准备安装的 Magisk Manager 应当有 “无法获取版本信息”“必须重新安装”“修复运行环境” 等提示，重新安装即可。</li>
+</ol>
+<h1 id="KernelSU">KernelSU</h1>
+<h2 id="安装-KernelSU">安装 KernelSU</h2>
+<p>在第三方 Recovery 中把 <code>AnyKernel3-*.zip</code> 刷入即可</p>
+<h2 id="KernelSU-注意事项">KernelSU 注意事项</h2>
+<ol>
+<li>KernelSU 在 1.x 版本中移除了 non-GKI 支持，因此不适用于 R11 设备。R11 设备请使用 <a href="https://github.com/rsuntk/KernelSU">RKSU</a>。</li>
+<li>KernelSU 在 0.9.3 版本中更改了管理器检测方式，在 ColorOS 6 上会引起卡二屏。请使用 0.9.2 及以下版本。</li>
+<li>安装模块超级慢的情况，使用 <a href="https://github.com/5ec1cff/KernelSU">MKSU</a>。</li>
+<li>KernelSU 禁止在 Android 内修改 <code>/system</code>，介意勿用。但要知道：这十分有利于安全。</li>
+<li>KernelSU 没有申请 Root 权限的机制。在授予应用程序 Root 后，应用程序在调用时会自动获取 Root 权限且无任何提示。请仅授予可信的应用程序 Root 权限！</li>
+<li>KernelSU 隐藏挂载点泄漏请使用 <a href="https://github.com/rsuntk/KernelSU">RKSU</a>。</li>
+</ol>
+<h1 id="APatch">APatch</h1>
+<h2 id="安装-APatch">安装 APatch</h2>
+<ol>
+<li>下载 APatch 最新版 APK 文件，并安装到手机中。</li>
+<li>打开 APatch Manager，点击右上角的 “安装” 按钮，选择空白的 Boot 镜像文件，修补。</li>
+<li>使用 TWRP 备份 Boot 分区，刷入修补好的 boot.img 到 Boot 分区，然后重启手机。</li>
+</ol>
+<h2 id="APatch-注意事项">APatch 注意事项</h2>
+<ol>
+<li>更新 APatch 管理器后需进行两步更新：
+<ol>
+<li>点击主页面更新以更新系统补丁（APatch）</li>
+<li>重新修补并刷写 Boot 分区以更新 KernelPatch</li>
+</ol>
+</li>
+<li>APatch 禁止在 Android 内修改 <code>/system</code>，介意勿用。但要知道：这十分有利于安全。</li>
+<li>APatch 没有申请 Root 权限的机制。在授予应用程序 Root 后，应用程序在调用时会自动获取 Root 权限且无任何提示。请仅授予可信的应用程序 Root 权限！</li>
+<li>若您使用了他人修补的 boot.img，务必重新设置密钥！</li>
+<li>Scene 及其附属模块暂不支持 APatch，请勿尝试安装。</li>
+</ol>
+<h2 id="APatch-技巧提示">APatch 技巧提示</h2>
+<ol>
+<li>可通过使用内核模块 <a href="https://t.me/tbthoughts/25">Cherish Peekaboo</a> 隐藏一些挂载点。（作者：GarfieldHan，暂停更新）</li>
+<li>可通过<a href="https://t.me/apatch_discuss/76157">特殊方法</a>使用 Shamiko，但非常不建议。（作者：GarfieldHan）</li>
+</ol>
+<h1 id="推荐学习">推荐学习</h1>
+<h2 id="自己编译内核">自己编译内核</h2>
+<p>如果您对已有的内核不满意，想要自己修改一下；或者等不及更新，按捺不住追版本号的激动，那下面的内容正合您胃口。</p>
+<p>编译内核是一项较为浩大的工程，所以我们用 Github CodeSpace 编译。当然，您也可以选择本地计算机。但是，使用 CodeSpace 有相当的优势：</p>
+<ol>
+<li>自带完美的、几乎无性能损耗的 Ubuntu，免除安装、调试系统的烦恼</li>
+<li> Ubuntu 是较为常规、通用、可靠的 Linux 发行版，有助于避免在一些小众发行版上的问题</li>
+<li>编译内核很占 CPU、内存和磁盘 IO，会影响本地计算机的使用</li>
+</ol>
+<h3 id="启动！">启动！</h3>
+<p>Fork 自己中意的仓库，建立它的 CodeSpace，各项配置拉满。</p>
+<div class="note warning flat"><p>注意：对于不同的内核，您可能需要不同的编译器！</p>
+</div>
+<h3 id="环境搭建">环境搭建</h3>
+<p>首先，您需要准备好编译环境。</p>
+<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">环境搭建 1</button><button type="button" class="tab"> 环境搭建 2</button></div><div class="tab-contents"><div class="tab-item-content active"><p><s>选择一个合适的位置，下载 <a href="https://releases.linaro.org/components/toolchain/binaries/4.9-2017.01/aarch64-linux-gnu/gcc-linaro-4.9.4-2017.01-x86_64_aarch64-linux-gnu.tar.xz">Linaro GCC 4.9</a> 或 <a href="https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+/refs/tags/android-9.0.0_r61">Google GCC Android 9</a>，记下路径。</s></p>
+<p>GCC 有些旧了，目前仍在更新的 Wenhao Kernel 建议使用 ZyC Clang！</p></div><div class="tab-item-content"><p><s>选择一个合适的位置，<code>git clone https://github.com/kdrag0n/proton-clang</code>，记下路径。</s></p>
+<p>Proton Clang 也好久没更了，让我们使用 <a href="https://github.com/ZyCromerZ/Clang">ZyC Clang</a>！</p></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+<h3 id="环境变量">环境变量</h3>
+<p>设置必需的环境变量。</p>
+<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">环境搭建 1</button><button type="button" class="tab"> 环境搭建 2</button></div><div class="tab-contents"><div class="tab-item-content active"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> ARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> SUBARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/path/to/gcc/bin</span><br><span class="line"><span class="built_in">export</span> CROSS_COMPILE=aarch64-xxxxxxxxxx</span><br><span class="line"><span class="built_in">export</span> OPPO_TARGET_DEVICE=<span class="string">"MSM_nnnnn"</span> <span class="comment"># R11 MSM_16051，R11s MSM_17011</span></span><br></pre></td></tr></tbody></table></figure></div><div class="tab-item-content"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> ARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> SUBARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/path/to/clang/bin</span><br><span class="line"><span class="built_in">export</span> CROSS_COMPILE=aarch64-xxxxxxxxxx</span><br><span class="line"><span class="built_in">export</span> OPPO_TARGET_DEVICE=<span class="string">"MSM_nnnnn"</span> <span class="comment"># R11 MSM_16051，R11s MSM_17011</span></span><br></pre></td></tr></tbody></table></figure></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+<h3 id="编译">编译</h3>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 拉取子模块</span></span><br><span class="line">git submodule init</span><br><span class="line">git submodule update</span><br></pre></td></tr></tbody></table></figure>
+<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">编译 1</button><button type="button" class="tab"> 编译 2</button></div><div class="tab-contents"><div class="tab-item-content active"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">make O=out sdm660-perf_defconfig</span><br><span class="line">make -j$(<span class="built_in">nproc</span> --all) O=out 2&gt;&amp;1 | <span class="built_in">tee</span> kernel_log.log</span><br></pre></td></tr></tbody></table></figure></div><div class="tab-item-content"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">make O=out sdm660-perf_defconfig CC=clang</span><br><span class="line">make -j$(<span class="built_in">nproc</span> --all) O=out CC=clang 2&gt;&amp;1 | <span class="built_in">tee</span> kernel_log.log</span><br></pre></td></tr></tbody></table></figure></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+<h3 id="打包内核">打包内核</h3>
+<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">打包内核 1</button><button type="button" class="tab"> 打包内核 2</button></div><div class="tab-contents"><div class="tab-item-content active"><ol>
+<li>提取一个原版 <code>boot.img</code>，要求不带有 Magisk</li>
+<li> 回到 CodeSpace，依次展开目录 <code>./out/arch/arm64/boot/</code>，将 <code>Image</code> 下载下来备用</li>
+<li>下载 Magisk.apk（适用于 Linux/，方法为解压后在 libs 里找到并提取 x86_64 的 <code>libmagiskboot.so</code>）或 <a href="https://github.com/PinNaCode/magiskboot_build/">magiskboot</a>（适用于 Windows），得到 <code>magiskboot</code> 备用</li>
+<li><code>magiskboot unpack boot-origin.img</code></li>
+<li>用 <code>Image</code> 替换掉 <code>kernel</code>，保持 <code>kernel</code> 名称不变</li>
+<li><code>magiskoot repack</code>，刷入得到的 <code>new-boot.img</code></li>
+</ol></div><div class="tab-item-content"><ol>
+<li>回到 CodeSpace，依次展开目录 <code>./out/arch/arm64/boot/</code>，将 <code>Image-gz.dtb</code> 下载下来备用</li>
+<li>下载一个 <a href="https://codeload.github.com/WenHao2130/android_kernel_oppo_sdm660_4.4.153/zip/refs/heads/prebuilt_ak3">AnyKernel3</a><br>注意文件夹结构！</li>
+<li>用第一步得到的 <code>Image-gz.dtb</code> 替换掉 <code>AnyKernel3-*.zip</code> 里的 <code>Image-gz.dtb</code></li>
+</ol></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+<h1 id="参考资料">参考资料</h1>
+<ul>
+<li><a href="https://github.com/WenHao2130/android_kernel_oppo_sdm660/tree/747c8b9cf5968d20f155e6e7853d56d3d2e1d77c/.github/workflows">WenHao2130/android_kernel_oppo_sdm660</a></li>
+<li><a href="https://kernelsu.org/zh_CN/guide/how-to-integrate-for-non-gki.html">如何为非 GKI 内核集成 KernelSU | KernelSU</a></li>
+<li><a href="https://github.com/tiann/KernelSU/discussions/950">[基础教程] 如何编译一个 ARM64 架构的自定义内核・tiann/KernelSU・Discussion #950</a></li>
+<li><a href="https://github.com/tiann/KernelSU/discussions/952">[基础教程 2] 如何使用 AnyKernel 3 打包内核・tiann/KernelSU・Discussion #952</a></li>
+<li><a href="https://apatch.dev/zh_CN/install.html">安装 | APatch Docs</a></li>
+</ul>
+<h1 id="拓展阅读">拓展阅读</h1>
+<ul>
+<li><a href="https://github.com/osm0sis/AnyKernel3">osm0sis/AnyKernel3: AnyKernel, Evolved</a></li>
+<li><a href="https://source.android.com/docs/core/architecture/bootloader/dtb-images?hl=zh-cn">DTB 映像 &nbsp;|&nbsp; Android 开源项目 &nbsp;|&nbsp; Android Open Source Project</a></li>
+</ul>
+<h1 id="鸣谢">鸣谢</h1>
+<ul>
+<li><a href="https://github.com/Wenhao2130">Wenhao2130</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>科学与技术</category>
+        <category>计算机</category>
+        <category>刷机</category>
+      </categories>
+      <tags>
+        <tag>刷机</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>文章效果与字体编码测试</title>
     <url>/article/a36a68fc/</url>
     <content><![CDATA[<h1 id="Markdown-基本语法">Markdown 基本语法</h1>
@@ -1032,278 +1304,6 @@ Countless small mysteries are also solved in the process.</span></p></div>
       </categories>
       <tags>
         <tag>前端</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>旧手机优化计划之三 - 流畅、保活与省电</title>
-    <url>/article/4097fa9/</url>
-    <content><![CDATA[<div class="note warning flat"><p>除非您有把握，否则不建议随意调整手机默认的性能配置！
-默认的，往往是最好的！</p>
-</div>
-<h1 id="流畅度">流畅度</h1>
-<h2 id="内存方向">内存方向</h2>
-<p>对于 Android 11+Magisk+LSPosed + 小而美 + QQ+etc. 来说，sdm660+4GB 已显捉襟见肘。对于小而美、QQ、B 站、抖音等软件，其本身优化就极差，再加一堆 XpHook，性能便更差了：不仅狂杀后台，而且时常会 OOM。怎么办呢？</p>
-<h3 id="交换空间">交换空间</h3>
-<div class="note red icon-padding flat"><i class="note-icon fas fa-triangle-exclamation"></i><p>本段教程尽力做到流畅和保后台之间平衡，但是由于 OPPO R11 内存实在偏小，不得不向保后台偏移。代价就是</p>
-<ol>
-<li>增多耗电，加剧发热</li>
-<li>热启动变慢</li>
-</ol>
-</div>
-<p>为了从源头上解决内存捉襟见肘的问题，我们可以使用交换空间。这里我使用使用 Scene 调节。</p>
-<h4 id="ZRAM">ZRAM</h4>
-<p>ZRAM 是在内存中划出一块来并对其进行压缩，详情可见 <a href="https://wiki.archlinuxcn.org/wiki/Zram">ArchWikiCN</a>。正因如此，ZRAM 设置不当会给 CPU 带来显著的压力，进而拉大耗电量、减少续航。</p>
-<p>如果您只打算开 ZRAM，那么建议在 2GB 到 3GB（2048MB 到 3072MB）之间。过小作用不大，过大拉多耗电量。</p>
-<h4 id="Swap">Swap</h4>
-<div class="note red icon-padding flat"><i class="note-icon fas fa-ban"></i><p>不可以只启用 Swap，这会严重拉慢磁盘 IO 与严重磨损磁盘！</p>
-</div>
-<h4 id="ZRAM-Swap">ZRAM+Swap</h4>
-<p>ZRAM 建议在 1.5GB 到 2.5GB（1536MB 到 2560MB）之间，Swap 建议在 0.5GB 到 1.5GB（1024MB 到 1536MB）之间，并且当 Scene 提示交换策略时，选择优先使用 ZRAM。这样可以让新鲜的数据在较快的 ZRAM 里交换，而当 ZRAM 被榨干时则把脏数据写到 Swap 以备过后使用。</p>
-<p><img src="https://s2.hdslb.com/bfs/article/20f11065f4af3fd39fe1100c57e465231352440272.png@1000h.webp" alt="效果图"></p>
-<h4 id="VM-Parameters">VM Parameters</h4>
-<p>将 swapiness 和 extra_free_kbytes 拉得较大。这样可以保证留有充足的 RAM 以防止 OOM。</p>
-<h3 id="特殊版本">特殊版本</h3>
-<h4 id="微信">微信</h4>
-<p><s>微信版本复杂，建议参考<a href="https://gitee.com/ww3w/dzb/blob/master/1.md#-%E5%BE%AE%E4%BF%A1">百分之千 / 定制版应用收藏 / 版本拐点</a>选择，并从<a href="https://www.coolapk.com/feed/51351476">酷安老哥微笑渲染悲伤的帖子</a>里下载。</s></p>
-<p><s>比较推荐的是 CN 7.0.21、Play 8.0.15、Play 8.0.33、CN 8.0.42。</s></p>
-<p>不建议 OPPO R11 使用微信了，实在太卡。</p>
-<h4 id="QQ">QQ</h4>
-<p><s>建议用 9.0.8，可以从 <a href="https://t.me/QQUpdates">QQUpdates</a>、<a href="https://t.me/qq_updatelog">QQ/TIM Update Log</a> 获得。9.0.15 和 9.0.17 有多人报道冷启动、小程序、扫码变慢。</s></p>
-<p>时代变了，建议用 9.0.65，可以从 <a href="https://t.me/QQUpdates">QQUpdates</a>、<a href="https://t.me/qq_updatelog">QQ/TIM Update Log</a> 获得。</p>
-<h4 id="Others">Others</h4>
-<p>请参考以下几个视频：</p>
-<p><a href="https://www.bilibili.com/video/BV16P411P7QT/">安卓软件保姆级优化，让你的手机再战三年！</a></p>
-<p><a href="https://www.bilibili.com/video/BV1r94y1T7Xa/">让老旗舰机重回新生？请收好这份养老软件指南！</a></p>
-<h3 id="三方客户端">三方客户端</h3>
-<p>对于某些热门软件，可能会有大佬用爱发电。传送门有：</p>
-<ul>
-<li><a href="https://github.com/bggRGjQaUbCoE/PiliPlus">PiliPlus</a>（哔哩哔哩）</li>
-<li><a href="https://github.com/huajiqaq/Hydrogen">Hydrogen</a>（知乎）</li>
-<li><a href="https://github.com/CeuiLiSA/Pixiv-Shaft">Shaft</a>（Pixiv）</li>
-</ul>
-<p>这些三方客户端有更为优秀的外观，更为可观的速度，以及某些诱人的功能。</p>
-<h3 id="手动养老">手动养老</h3>
-<p>对 QQ 微信等压力大的软件启动 Scene 监视器，随时监测硬件状况以逼迫自己养老，防止 OOM。</p>
-<h2 id="CPU-方向">CPU 方向</h2>
-<h3 id="通用">通用</h3>
-<p>推介以下两件套：<a href="http://vtools.omarea.com/">Scene</a> <s>、<a href="https://moka.latestfile.zip/">Moka</a></s>。</p>
-<p>Scene 可以调整 CPU~~，Moka 可以删除温控［注意：OPPO R11 一路下键即可，删不干净很正常，全删掉会有 Bug（比如爆音、打电话自动开免提、录屏时录不了系统内部声音）］~~，强烈不建议删除温控，而且移除温控之后毫无效果。</p>
-<h3 id="三方调度">三方调度</h3>
-<h4 id="Uperf-方案">Uperf 方案</h4>
-<p>刷入 <a href="https://github.com/yinwanxi/Uperf-Game-Turbo">Uperf Game Turbo</a>、<a href="https://github.com/nakixii/Magisk_AsoulOpt">AsoulOpt</a></p>
-<p>Uperf Game Turbo 可以较好地调节 CPU，使之在需要省电时省电、需要性能时高效。（注意：我们只需要 Uperf Game Turbo 的配置文件，而不需要其过分地教我们做事。为了避免其引起的一系列问题，请在刷入后将其禁用。）</p>
-<p>AsoulOpt 可以调节线程，提高 CPU 效率。</p>
-<p><img src="https://s2.hdslb.com/bfs/article/5b176872d9d21a056c214fb990aa0a881352440272.png@1000h.webp" alt=""></p>
-<h4 id="CuprumTurbo-Scheduler-方案"><a href="https://github.com/chenzyadb/CuprumTurbo-Scheduler">CuprumTurbo Scheduler</a> 方案</h4>
-<p>说这个东西可能令人眼前一黑，但如果说 CuToolBox，相信大多数人都耳熟能详。CuprumTurbo Scheduler 就是 CuToolBox 的模块版。</p>
-<p>经过测试后发现其确实有助于提升流畅性；但未经长期测试，加之峰值功率与 Uperf Game Turbo 相比明显偏大，难以得出准确结论。</p>
-<p><img src="https://s2.hdslb.com/bfs/article/589abf4ddc5824f1bcc037639c4391171352440272.png@1000h.webp" alt=""></p>
-<div class="note red icon-padding flat"><i class="note-icon fas fa-triangle-exclamation"></i><p>安装 Tritium Fiage 前，请先卸载 Uperf 及其相关和衍生模块和 AsoulOpt，并关闭 Scene 的核心分配与高通的 Performance Boost Config。</p>
-<p><img class="inline-img" src="https://s2.hdslb.com/bfs/article/b78cebe362474026d5abdcd637f6cba61352440272.png@1e_0c.webp" style="height:600px"><img class="inline-img" src="https://s2.hdslb.com/bfs/article/74af917c131fcdb2609cf48c4802f5a31352440272.png@1e_0c.webp" style="height:600px"></p>
-</div>
-<h4 id="Tritium-Fiage-方案">Tritium Fiage 方案</h4>
-<p>Tritium Fiage 是基于 CuprumTurbo Scheduler 的修改版，可以从酷安的<a href="https://www.coolapk.com/u/3922059">鱼龄</a>那里下载。</p>
-<p>启用后建议将性能模式设为默认。功耗基本不会变，但流畅度会好很多。</p>
-<p><img src="https://s2.hdslb.com/bfs/article/8a224c202551da98cb6b8440784107621352440272.png@1000h.webp" alt="如图，极端场景（此处为连续刷 4K 视频）下功率仍不太高"></p>
-<p><img src="https://s2.hdslb.com/bfs/article/e279516c9b215b5c4b438be2eb8416071352440272.png@1000h.webp" alt="功耗"></p>
-<div class="note red icon-padding flat"><i class="note-icon fas fa-triangle-exclamation"></i><p>安装 Tritium Fiage 前，请先卸载 Uperf 及其相关和衍生模块和 AsoulOpt，并关闭 Scene 的核心分配与高通的 Performance Boost Config。</p>
-<p><img class="inline-img" src="https://s2.hdslb.com/bfs/article/b78cebe362474026d5abdcd637f6cba61352440272.png@1e_0c.webp" style="height:600px"><img class="inline-img" src="https://s2.hdslb.com/bfs/article/74af917c131fcdb2609cf48c4802f5a31352440272.png@1e_0c.webp" style="height:600px"></p>
-</div>
-<div class="note orange icon-padding flat"><i class="note-icon fas fa-triangle-exclamation"></i><p>不必手动安装 cu_jank_detector.zip，启动不了。</p>
-</div>
-<div class="note red icon-padding flat"><i class="note-icon fas fa-ban"></i><p>~~ 不要安装解除系统限制模块。这是与 Moka 重复的去温控模块，并且效果略差。~~ 不建议去除温控。</p>
-</div>
-<h2 id="Dex2oat">Dex2oat</h2>
-<p>手动 dex2oat 可以提高冷启动速度并降低 CPU 和 RAM 占用，具体选哪一个模式请自行测试。</p>
-<p><img src="https://s2.hdslb.com/bfs/article/67d3336ea1ab8de166b5263c41f0af711352440272.png@700h.webp" alt="编译过程"></p>
-<h1 id="后台">后台</h1>
-<div class="note green icon-padding flat"><i class="note-icon fas fa-circle-check"></i><p>这里假设您使用 ZRAM（2048MB）+Swap（1536MB）+Tritium Fiage（1.2.1） 方案！</p>
-</div>
-<div class="note red icon-padding flat"><i class="note-icon fas fa-ban"></i><p>后台优化后并不是可以放飞自我了；相反，留后台会显著加大 OOM 的风险，尤其是在 OPPOR11 等 RAM 吃紧的机型上，请务必适当设置交换空间，并合理使用！</p>
-</div>
-<h2 id="对非必要软件关禁闭">对非必要软件关禁闭</h2>
-<p>使用小黑屋、雹等软件，以禁用方式冻结在后台死皮赖脸的软件。</p>
-<h2 id="调节所有软件后台活动">调节所有软件后台活动</h2>
-<ol>
-<li>在 Thanox 的后台启动和后台运行中对<strong>用户应用</strong>设置<strong>全不</strong>，在任务清理和乖巧模式中设置<strong>全部</strong>，随后排除 Shizuku、输入法、三方 Widget 等常驻后台的软件。</li>
-<li>切换过滤规则为系统，对软件商店等毒瘤适当设置。（我用类原生，没有经验，提供不了相关建议）</li>
-<li>添加模板，仅打开任务清理和乖巧模式（仅点亮这两个开关，其他均灭掉），并启用自动配置</li>
-</ol>
-<h3 id="注意">注意</h3>
-<ol>
-<li>对咕噜咕噜 Play 服务、咕噜咕噜服务框架和咕噜咕噜商店的操作可能会导致其它软件无法调用咕噜咕噜相关服务</li>
-<li>对下载器与浏览器打开乖巧模式会导致下载通知冻结</li>
-<li>对浏览器打开后台运行而关闭任务清理可能会导致其一直在后台吃内存</li>
-</ol>
-<h2 id="为必要软件开小灶">为必要软件开小灶</h2>
-<h3 id="接消息">接消息</h3>
-<p>某些软件（比如微信 QQ 等通讯软件）要接消息，但如果一直挂后台占 RAM 太多，可在应用详情页：</p>
-<ol>
-<li>打开后台启动（否则开机不自启动）</li>
-<li>打开后台运行、后台保护，关闭任务清理（否则频繁被杀死）</li>
-<li>乖巧模式（减少后台占用）</li>
-</ol>
-<h3 id="监听">监听</h3>
-<p>某些软件（比如 Robot36、Thanox 后台记录、Scene 动态切换、Shizuku）要能够一直执行下去并试试反应用户操作，还有一些软件（比如天气小组件）要频繁获取信息，可在应用详情页：</p>
-<ol>
-<li>打开后台启动（否则开机不自启动）</li>
-<li>打开后台运行、后台保护，关闭任务清理、乖巧模式（否则频繁被杀死）</li>
-</ol>
-<h2 id="效果">效果</h2>
-<p><img src="https://s2.hdslb.com/bfs/article/5e24560d4bcad132eb0a52fe3375f49d1352440272.png@700h.webp" alt="开机静置五分钟后"></p>
-<p><img src="https://s2.hdslb.com/bfs/article/5e24560d4bcad132eb0a52fe3375f49d1352440272.png@700h.webp" alt="一边水 Q群，一边在微信聊天"></p>
-<p><img src="https://s2.hdslb.com/bfs/article/12ff98d20468deb923a5c073ea5fe0c11352440272.png@700h.webp" alt="使用一个半小时，再静置半小时"></p>
-]]></content>
-      <categories>
-        <category>科学与技术</category>
-        <category>计算机</category>
-        <category>刷机</category>
-      </categories>
-      <tags>
-        <tag>刷机</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>旧手机优化计划之二 - Root</title>
-    <url>/article/2a7bbe49/</url>
-    <content><![CDATA[<h1 id="总述">总述</h1>
-<p>本文将介绍三种主流 Root（Magisk、KernelSU、APatch）的安装，并介绍它们的一些技巧提示。</p>
-<p>开始之前，请确保您已经刷入了 TWRP 3.7.0、<code>1170</code> 底包的系统，并有且只有一种可用的 Root 方式。</p>
-<h1 id="必备前置知识">必备前置知识</h1>
-<h2 id="救砖">救砖</h2>
-<ul>
-<li><a href="https://kernelsu.org/zh_CN/guide/rescue-from-bootloop.html">救砖 | KernelSU</a></li>
-<li><a href="https://apatch.dev/zh_CN/rescue-bootloop.html">救砖 | APatch Docs</a></li>
-<li><code>logcat</code>、<code>dmesg</code>、<code>/proc/kmsg</code> 等抓取日志的方法</li>
-<li>基本的 Git 知识</li>
-</ul>
-<h2 id="内核切换方法">内核切换方法</h2>
-<p>切换、更新、修改内核有三种方法：</p>
-<ol>
-<li>从别人那里要来 boot.img 刷入</li>
-<li>将内核镜像（.gz/.gz-dtb）用 AnyKernel3 刷入</li>
-<li>将内核镜像（Image）用 magiskboot 打包入 boot.img 刷入</li>
-</ol>
-<h1 id="Magisk">Magisk</h1>
-<h2 id="安装-Magisk">安装 Magisk</h2>
-<ol>
-<li>下载 Magisk 最新版 APK 文件，并安装到手机中。</li>
-<li>打开 Magisk Manager，点击左上角的 “安装” 按钮，选择空白的 Boot 镜像文件，修补。</li>
-<li>使用 TWRP 备份 Boot 分区，刷入修补好的 boot.img 到 Boot 分区，然后重启手机。</li>
-<li>重启后会提示<code>需要修复环境</code>，不要点击修复，按返回键拒绝。选择安装，<strong>取消勾选</strong> “安装到 Recovery”，然后重启。</li>
-</ol>
-<h2 id="Magisk-注意事项">Magisk 注意事项</h2>
-<ol>
-<li>Wenhao 新版内核由于未知原因不适用 Magisk，将会导致手机随机重启入 EDL 模式或高通救援模式，并且无法使用微信视频通话和 QQ 视频通话，请勿尝试。</li>
-<li>修复 Magisk 运行环境与更新 Magisk 时，<strong>务必取消</strong>勾选 “安装到 recvoery” 这个选项，高版本 Magisk （26.1+）会<strong>默认启用</strong>这个选项，错误刷入后会导致 WLAN 无法打开以及 Recovery 无法进入。<br>如果您不慎安装到了 Recovery，请提取卡刷包内的 boot.img 和 recovery.img 重新刷入对应分区，或者干脆重刷完整包。</li>
-<li>“Ramdisk” 为 “否” 是正常的，是 R11 (s) 设备的特性，<strong>不</strong>影响 Magisk 功能。</li>
-<li><s>使用 <code>Magisk Delta</code>（后改名 <code>Kitsune Mask</code>）将难以在除 <code>Kitsune</code> 自己的群组之外的社区得到技术支持，也不需要且无法使用 <code>Shamiko</code> 和 <code>ZygiskNext</code>（包括衍生）。</s> 不建议继续使用 <code>Kitsune Mask</code>，其不仅在社区内臭名昭著，而且已经停止更新。</li>
-<li><code>Alpha</code> 禁止在 Android 内修改 <code>/system</code>，介意勿用。但要知道：这十分有利于安全。</li>
-</ol>
-<h2 id="Magisk-技巧提示">Magisk 技巧提示</h2>
-<ol>
-<li>Magisk APK 相当于刷机包。当 Magisk 出现 “掉 Root 权限”“获取不到 Root 权限”“Zygisk 反复注入失败” 等问题，而三方 Recovery 又可用时，您可以通过将 Magisk.apk 重命名为 Magisk.<strong>zip</strong> 并刷入来修复。</li>
-<li>Magisk 有多个 Fork，各 Fork 各有不同。若您想切换不同的的 Fork，除了在三方 Recovery 中刷入 Magisk.zip 外，还可以在已有的 Magisk Manager 中授予将要安装的 Magisk Manager Root 权限，并重新启动准备安装的 Magisk Manager。此时准备安装的 Magisk Manager 应当有 “无法获取版本信息”“必须重新安装”“修复运行环境” 等提示，重新安装即可。</li>
-</ol>
-<h1 id="KernelSU">KernelSU</h1>
-<h2 id="安装-KernelSU">安装 KernelSU</h2>
-<p>在第三方 Recovery 中把 <code>AnyKernel3-*.zip</code> 刷入即可</p>
-<h2 id="KernelSU-注意事项">KernelSU 注意事项</h2>
-<ol>
-<li>KernelSU 在 1.x 版本中移除了 non-GKI 支持，因此不适用于 R11 设备。R11 设备请使用 <a href="https://github.com/rsuntk/KernelSU">RKSU</a>。</li>
-<li>KernelSU 在 0.9.3 版本中更改了管理器检测方式，在 ColorOS 6 上会引起卡二屏。请使用 0.9.2 及以下版本。</li>
-<li>安装模块超级慢的情况，使用 <a href="https://github.com/5ec1cff/KernelSU">MKSU</a>。</li>
-<li>KernelSU 禁止在 Android 内修改 <code>/system</code>，介意勿用。但要知道：这十分有利于安全。</li>
-<li>KernelSU 没有申请 Root 权限的机制。在授予应用程序 Root 后，应用程序在调用时会自动获取 Root 权限且无任何提示。请仅授予可信的应用程序 Root 权限！</li>
-<li>KernelSU 隐藏挂载点泄漏请使用 <a href="https://github.com/rsuntk/KernelSU">RKSU</a>。</li>
-</ol>
-<h1 id="APatch">APatch</h1>
-<h2 id="安装-APatch">安装 APatch</h2>
-<ol>
-<li>下载 APatch 最新版 APK 文件，并安装到手机中。</li>
-<li>打开 APatch Manager，点击右上角的 “安装” 按钮，选择空白的 Boot 镜像文件，修补。</li>
-<li>使用 TWRP 备份 Boot 分区，刷入修补好的 boot.img 到 Boot 分区，然后重启手机。</li>
-</ol>
-<h2 id="APatch-注意事项">APatch 注意事项</h2>
-<ol>
-<li>更新 APatch 管理器后需进行两步更新：
-<ol>
-<li>点击主页面更新以更新系统补丁（APatch）</li>
-<li>重新修补并刷写 Boot 分区以更新 KernelPatch</li>
-</ol>
-</li>
-<li>APatch 禁止在 Android 内修改 <code>/system</code>，介意勿用。但要知道：这十分有利于安全。</li>
-<li>APatch 没有申请 Root 权限的机制。在授予应用程序 Root 后，应用程序在调用时会自动获取 Root 权限且无任何提示。请仅授予可信的应用程序 Root 权限！</li>
-<li>若您使用了他人修补的 boot.img，务必重新设置密钥！</li>
-<li>Scene 及其附属模块暂不支持 APatch，请勿尝试安装。</li>
-</ol>
-<h2 id="APatch-技巧提示">APatch 技巧提示</h2>
-<ol>
-<li>可通过使用内核模块 <a href="https://t.me/tbthoughts/25">Cherish Peekaboo</a> 隐藏一些挂载点。（作者：GarfieldHan，暂停更新）</li>
-<li>可通过<a href="https://t.me/apatch_discuss/76157">特殊方法</a>使用 Shamiko，但非常不建议。（作者：GarfieldHan）</li>
-</ol>
-<h1 id="推荐学习">推荐学习</h1>
-<h2 id="自己编译内核">自己编译内核</h2>
-<p>如果您对已有的内核不满意，想要自己修改一下；或者等不及更新，按捺不住追版本号的激动，那下面的内容正合您胃口。</p>
-<p>编译内核是一项较为浩大的工程，所以我们用 Github CodeSpace 编译。当然，您也可以选择本地计算机。但是，使用 CodeSpace 有相当的优势：</p>
-<ol>
-<li>自带完美的、几乎无性能损耗的 Ubuntu，免除安装、调试系统的烦恼</li>
-<li> Ubuntu 是较为常规、通用、可靠的 Linux 发行版，有助于避免在一些小众发行版上的问题</li>
-<li>编译内核很占 CPU、内存和磁盘 IO，会影响本地计算机的使用</li>
-</ol>
-<h3 id="启动！">启动！</h3>
-<p>Fork 自己中意的仓库，建立它的 CodeSpace，各项配置拉满。</p>
-<div class="note warning flat"><p>注意：对于不同的内核，您可能需要不同的编译器！</p>
-</div>
-<h3 id="环境搭建">环境搭建</h3>
-<p>首先，您需要准备好编译环境。</p>
-<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">环境搭建 1</button><button type="button" class="tab"> 环境搭建 2</button></div><div class="tab-contents"><div class="tab-item-content active"><p><s>选择一个合适的位置，下载 <a href="https://releases.linaro.org/components/toolchain/binaries/4.9-2017.01/aarch64-linux-gnu/gcc-linaro-4.9.4-2017.01-x86_64_aarch64-linux-gnu.tar.xz">Linaro GCC 4.9</a> 或 <a href="https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+/refs/tags/android-9.0.0_r61">Google GCC Android 9</a>，记下路径。</s></p>
-<p>GCC 有些旧了，目前仍在更新的 Wenhao Kernel 建议使用 ZyC Clang！</p></div><div class="tab-item-content"><p><s>选择一个合适的位置，<code>git clone https://github.com/kdrag0n/proton-clang</code>，记下路径。</s></p>
-<p>Proton Clang 也好久没更了，让我们使用 <a href="https://github.com/ZyCromerZ/Clang">ZyC Clang</a>！</p></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
-<h3 id="环境变量">环境变量</h3>
-<p>设置必需的环境变量。</p>
-<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">环境搭建 1</button><button type="button" class="tab"> 环境搭建 2</button></div><div class="tab-contents"><div class="tab-item-content active"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> ARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> SUBARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/path/to/gcc/bin</span><br><span class="line"><span class="built_in">export</span> CROSS_COMPILE=aarch64-xxxxxxxxxx</span><br><span class="line"><span class="built_in">export</span> OPPO_TARGET_DEVICE=<span class="string">"MSM_nnnnn"</span> <span class="comment"># R11 MSM_16051，R11s MSM_17011</span></span><br></pre></td></tr></tbody></table></figure></div><div class="tab-item-content"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> ARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> SUBARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/path/to/clang/bin</span><br><span class="line"><span class="built_in">export</span> CROSS_COMPILE=aarch64-xxxxxxxxxx</span><br><span class="line"><span class="built_in">export</span> OPPO_TARGET_DEVICE=<span class="string">"MSM_nnnnn"</span> <span class="comment"># R11 MSM_16051，R11s MSM_17011</span></span><br></pre></td></tr></tbody></table></figure></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
-<h3 id="编译">编译</h3>
-<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 拉取子模块</span></span><br><span class="line">git submodule init</span><br><span class="line">git submodule update</span><br></pre></td></tr></tbody></table></figure>
-<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">编译 1</button><button type="button" class="tab"> 编译 2</button></div><div class="tab-contents"><div class="tab-item-content active"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">make O=out sdm660-perf_defconfig</span><br><span class="line">make -j$(<span class="built_in">nproc</span> --all) O=out 2&gt;&amp;1 | <span class="built_in">tee</span> kernel_log.log</span><br></pre></td></tr></tbody></table></figure></div><div class="tab-item-content"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">make O=out sdm660-perf_defconfig CC=clang</span><br><span class="line">make -j$(<span class="built_in">nproc</span> --all) O=out CC=clang 2&gt;&amp;1 | <span class="built_in">tee</span> kernel_log.log</span><br></pre></td></tr></tbody></table></figure></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
-<h3 id="打包内核">打包内核</h3>
-<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">打包内核 1</button><button type="button" class="tab"> 打包内核 2</button></div><div class="tab-contents"><div class="tab-item-content active"><ol>
-<li>提取一个原版 <code>boot.img</code>，要求不带有 Magisk</li>
-<li> 回到 CodeSpace，依次展开目录 <code>./out/arch/arm64/boot/</code>，将 <code>Image</code> 下载下来备用</li>
-<li>下载 Magisk.apk（适用于 Linux/，方法为解压后在 libs 里找到并提取 x86_64 的 <code>libmagiskboot.so</code>）或 <a href="https://github.com/PinNaCode/magiskboot_build/">magiskboot</a>（适用于 Windows），得到 <code>magiskboot</code> 备用</li>
-<li><code>magiskboot unpack boot-origin.img</code></li>
-<li>用 <code>Image</code> 替换掉 <code>kernel</code>，保持 <code>kernel</code> 名称不变</li>
-<li><code>magiskoot repack</code>，刷入得到的 <code>new-boot.img</code></li>
-</ol></div><div class="tab-item-content"><ol>
-<li>回到 CodeSpace，依次展开目录 <code>./out/arch/arm64/boot/</code>，将 <code>Image-gz.dtb</code> 下载下来备用</li>
-<li>下载一个 <a href="https://codeload.github.com/WenHao2130/android_kernel_oppo_sdm660_4.4.153/zip/refs/heads/prebuilt_ak3">AnyKernel3</a><br>注意文件夹结构！</li>
-<li>用第一步得到的 <code>Image-gz.dtb</code> 替换掉 <code>AnyKernel3-*.zip</code> 里的 <code>Image-gz.dtb</code></li>
-</ol></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
-<h1 id="参考资料">参考资料</h1>
-<ul>
-<li><a href="https://github.com/WenHao2130/android_kernel_oppo_sdm660/tree/747c8b9cf5968d20f155e6e7853d56d3d2e1d77c/.github/workflows">WenHao2130/android_kernel_oppo_sdm660</a></li>
-<li><a href="https://kernelsu.org/zh_CN/guide/how-to-integrate-for-non-gki.html">如何为非 GKI 内核集成 KernelSU | KernelSU</a></li>
-<li><a href="https://github.com/tiann/KernelSU/discussions/950">[基础教程] 如何编译一个 ARM64 架构的自定义内核・tiann/KernelSU・Discussion #950</a></li>
-<li><a href="https://github.com/tiann/KernelSU/discussions/952">[基础教程 2] 如何使用 AnyKernel 3 打包内核・tiann/KernelSU・Discussion #952</a></li>
-<li><a href="https://apatch.dev/zh_CN/install.html">安装 | APatch Docs</a></li>
-</ul>
-<h1 id="拓展阅读">拓展阅读</h1>
-<ul>
-<li><a href="https://github.com/osm0sis/AnyKernel3">osm0sis/AnyKernel3: AnyKernel, Evolved</a></li>
-<li><a href="https://source.android.com/docs/core/architecture/bootloader/dtb-images?hl=zh-cn">DTB 映像 &nbsp;|&nbsp; Android 开源项目 &nbsp;|&nbsp; Android Open Source Project</a></li>
-</ul>
-<h1 id="鸣谢">鸣谢</h1>
-<ul>
-<li><a href="https://github.com/Wenhao2130">Wenhao2130</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>科学与技术</category>
-        <category>计算机</category>
-        <category>刷机</category>
-      </categories>
-      <tags>
-        <tag>刷机</tag>
       </tags>
   </entry>
   <entry>
