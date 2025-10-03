@@ -604,6 +604,218 @@ h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​
       </tags>
   </entry>
   <entry>
+    <title>旧手机优化计划之二 - Root</title>
+    <url>/article/2a7bbe49/</url>
+    <content><![CDATA[<h1 id="总述">总述</h1>
+<p>本文将介绍三种主流 Root（Magisk、KernelSU、APatch）的安装，并介绍它们的一些技巧提示。</p>
+<p>开始之前，请确保您已经刷入了 TWRP 3.7.0、<code>1170</code>底包的系统，并有且只有一种可用的 Root 方式。</p>
+<h1 id="必备前置知识">必备前置知识</h1>
+<h2 id="救砖">救砖</h2>
+<ul>
+<li><a href="https://kernelsu.org/zh_CN/guide/rescue-from-bootloop.html">救砖 | KernelSU</a></li>
+<li><a href="https://apatch.dev/zh_CN/rescue-bootloop.html">救砖 | APatch Docs</a></li>
+<li><code>logcat</code>、<code>dmesg</code>、<code>/proc/kmsg</code> 等抓取日志的方法</li>
+<li>基本的 Git 知识</li>
+</ul>
+<h2 id="内核切换方法">内核切换方法</h2>
+<p>切换、更新、修改内核有三种方法：</p>
+<ol>
+<li>从别人那里要来 boot.img 刷入</li>
+<li>将内核镜像（.gz/.gz-dtb）用 AnyKernel3 刷入</li>
+<li>将内核镜像（Image）用 magiskboot 打包入 boot.img 刷入</li>
+</ol>
+<h1 id="Magisk">Magisk</h1>
+<h2 id="安装-Magisk">安装 Magisk</h2>
+<ol>
+<li>下载 Magisk 最新版 APK 文件，并安装到手机中。</li>
+<li>打开 Magisk Manager，点击左上角的 “安装” 按钮，选择空白的 Boot 镜像文件，修补。</li>
+<li>使用 TWRP 备份 Boot 分区，刷入修补好的 boot.img 到 Boot 分区，然后重启手机。</li>
+<li>重启后会提示<code>需要修复环境</code>，不要点击修复，按返回键拒绝。选择安装，<strong>取消勾选</strong>“安装到 Recovery”，然后重启。</li>
+</ol>
+<h2 id="Magisk-注意事项">Magisk 注意事项</h2>
+<ol>
+<li>Wenhao 新版内核由于未知原因不适用 Magisk，将会导致手机随机重启入 EDL 模式或高通救援模式，并且无法使用微信视频通话和 QQ 视频通话，请勿尝试。</li>
+<li>修复 Magisk 运行环境与更新 Magisk 时，<strong>务必取消</strong>勾选 “安装到 recvoery” 这个选项，高版本 Magisk （26.1+）会<strong>默认启用</strong>这个选项，错误刷入后会导致 WLAN 无法打开以及 Recovery 无法进入。<br>如果您不慎安装到了 Recovery，请提取卡刷包内的 boot.img 和 recovery.img 重新刷入对应分区，或者干脆重刷完整包。</li>
+<li>“Ramdisk” 为 “否” 是正常的，是 R11 (s) 设备的特性，<strong>不</strong>影响 Magisk 功能。</li>
+<li>~~使用 <code>Magisk Delta</code>（后改名 <code>Kitsune Mask</code>）将难以在除 <code>Kitsune</code> 自己的群组之外的社区得到技术支持，也不需要且无法使用 <code>Shamiko</code> 和 <code>ZygiskNext</code>（包括衍生）。~~不建议继续使用 <code>Kitsune Mask</code>，其不仅在社区内臭名昭著，而且已经停止更新。</li>
+<li><code>Alpha</code> 禁止在 Android 内修改 <code>/system</code>，介意勿用。但要知道：这十分有利于安全。</li>
+</ol>
+<h2 id="Magisk-技巧提示">Magisk 技巧提示</h2>
+<ol>
+<li>Magisk APK 相当于刷机包。当 Magisk 出现 “掉 Root 权限”“获取不到 Root 权限”“Zygisk 反复注入失败” 等问题，而三方 Recovery 又可用时，您可以通过将 Magisk.apk 重命名为 Magisk.<strong>zip</strong> 并刷入来修复。</li>
+<li>Magisk 有多个 Fork，各 Fork 各有不同。若您想切换不同的的 Fork，除了在三方 Recovery 中刷入 Magisk.zip 外，还可以在已有的 Magisk Manager 中授予将要安装的 Magisk Manager Root 权限，并重新启动准备安装的 Magisk Manager。此时准备安装的 Magisk Manager 应当有 “无法获取版本信息”“必须重新安装”“修复运行环境” 等提示，重新安装即可。</li>
+</ol>
+<h1 id="KernelSU">KernelSU</h1>
+<h2 id="安装-KernelSU">安装 KernelSU</h2>
+<p>在第三方 Recovery 中把 <code>AnyKernel3-*.zip</code> 刷入即可</p>
+<h2 id="KernelSU-注意事项">KernelSU 注意事项</h2>
+<ol>
+<li>~~KernelSU 在 1.x 版本中移除了 non-GKI 支持，因此不适用于 R11 设备。R11 设备请使用 0.9.5 及以下版本。~~使用 <a href="https://github.com/rsuntk/KernelSU">RKSU</a></li>
+<li>KernelSU 在 0.9.3 版本中更改了管理器检测方式，在 ColorOS 6 上会引起卡二屏。请使用 0.9.2 及以下版本。</li>
+<li>~~安装模块超级慢的情况暂时无解。~~使用 <a href="https://github.com/5ec1cff/KernelSU">MKSU</a>。</li>
+<li>KernelSU 禁止在 Android 内修改 <code>/system</code>，介意勿用。但要知道：这十分有利于安全。</li>
+<li>KernelSU 没有申请 Root 权限的机制。在授予应用程序 Root 后，应用程序在调用时会自动获取 Root 权限且无任何提示。请仅授予可信的应用程序 Root 权限！</li>
+<li><s>KernelSU 暂未有较好的隐藏挂载点泄漏的方法。</s> <a href="https://t.me/pzqqt_c/5837">不建议使用 susfs</a>。</li>
+</ol>
+<h1 id="APatch">APatch</h1>
+<h2 id="安装-APatch">安装 APatch</h2>
+<ol>
+<li>下载 APatch 最新版 APK 文件，并安装到手机中。</li>
+<li>打开 APatch Manager，点击右上角的 “安装” 按钮，选择空白的 Boot 镜像文件，修补。</li>
+<li>使用 TWRP 备份 Boot 分区，刷入修补好的 boot.img 到 Boot 分区，然后重启手机。</li>
+</ol>
+<h2 id="APatch-注意事项">APatch 注意事项</h2>
+<ol>
+<li>更新 APatch 管理器后需进行两步更新：
+<ol>
+<li>点击主页面更新以更新系统补丁（APatch）</li>
+<li>重新修补并刷写 Boot 分区以更新 KernelPatch</li>
+</ol>
+</li>
+<li>APatch 禁止在 Android 内修改 <code>/system</code>，介意勿用。但要知道：这十分有利于安全。</li>
+<li>APatch 没有申请 Root 权限的机制。在授予应用程序 Root 后，应用程序在调用时会自动获取 Root 权限且无任何提示。请仅授予可信的应用程序 Root 权限！</li>
+<li>若您使用了他人修补的 boot.img，务必重新设置密钥！</li>
+<li>Scene 及其附属模块暂不支持 APatch，请勿尝试安装。</li>
+</ol>
+<h2 id="APatch-技巧提示">APatch 技巧提示</h2>
+<ol>
+<li>可通过使用内核模块 <a href="https://t.me/tbthoughts/25">Cherish Peekaboo</a> 隐藏一些挂载点。（作者：GarfieldHan，暂停更新）</li>
+<li>可通过<a href="https://t.me/apatch_discuss/76157">特殊方法</a>使用 Shamiko，但非常不建议。（作者：GarfieldHan）</li>
+</ol>
+<h1 id="推荐学习">推荐学习</h1>
+<h2 id="自己编译内核">自己编译内核</h2>
+<p>如果您对已有的内核不满意，想要自己修改一下；或者等不及更新，按捺不住追版本号的激动，那下面的内容正合您胃口。</p>
+<p>编译内核是一项较为浩大的工程，所以我们用 Github CodeSpace 编译。当然，您也可以选择本地计算机。但是，使用 CodeSpace 有相当的优势：</p>
+<ol>
+<li>自带完美的、几乎无性能损耗的 Ubuntu，免除安装、调试系统的烦恼</li>
+<li>Ubuntu 是较为常规、通用、可靠的 Linux 发行版，有助于避免在一些小众发行版上的问题</li>
+<li>编译内核很占 CPU、内存和磁盘 IO，会影响本地计算机的使用</li>
+</ol>
+<h3 id="启动！">启动！</h3>
+<p>Fork 自己中意的仓库，建立它的 CodeSpace，各项配置拉满。</p>
+<div class="note warning flat"><p>注意：对于不同的内核，您可能需要不同的编译器！</p>
+</div>
+<h3 id="环境搭建">环境搭建</h3>
+<p>首先，您需要准备好编译环境。</p>
+<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">环境搭建 1</button><button type="button" class="tab"> 环境搭建 2</button></div><div class="tab-contents"><div class="tab-item-content active"><p><s>选择一个合适的位置，下载 <a href="https://releases.linaro.org/components/toolchain/binaries/4.9-2017.01/aarch64-linux-gnu/gcc-linaro-4.9.4-2017.01-x86_64_aarch64-linux-gnu.tar.xz">Linaro GCC 4.9</a> 或 <a href="https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+/refs/tags/android-9.0.0_r61">Google GCC Android 9</a>，记下路径。</s></p>
+<p>GCC 老矣！</p></div><div class="tab-item-content"><p><s>选择一个合适的位置，<code>git clone https://github.com/kdrag0n/proton-clang</code>，记下路径。</s> Proton Clang 老了，让我们使用 <a href="https://github.com/ZyCromerZ/Clang">ZyC Clang</a>！</p></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+<h3 id="环境变量">环境变量</h3>
+<p>设置必需的环境变量。</p>
+<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">环境搭建 1</button><button type="button" class="tab"> 环境搭建 2</button></div><div class="tab-contents"><div class="tab-item-content active"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> ARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> SUBARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/path/to/gcc/bin</span><br><span class="line"><span class="built_in">export</span> CROSS_COMPILE=aarch64-xxxxxxxxxx</span><br><span class="line"><span class="built_in">export</span> OPPO_TARGET_DEVICE=<span class="string">"MSM_nnnnn"</span> <span class="comment"># R11 MSM_16051，R11s MSM_17011</span></span><br></pre></td></tr></tbody></table></figure></div><div class="tab-item-content"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> ARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> SUBARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/path/to/clang/bin</span><br><span class="line"><span class="built_in">export</span> CROSS_COMPILE=aarch64-xxxxxxxxxx</span><br><span class="line"><span class="built_in">export</span> OPPO_TARGET_DEVICE=<span class="string">"MSM_nnnnn"</span> <span class="comment"># R11 MSM_16051，R11s MSM_17011</span></span><br></pre></td></tr></tbody></table></figure></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+<h3 id="编译">编译</h3>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 拉取子模块</span></span><br><span class="line">git submodule init</span><br><span class="line">git submodule update</span><br></pre></td></tr></tbody></table></figure>
+<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">编译 1</button><button type="button" class="tab"> 编译 2</button></div><div class="tab-contents"><div class="tab-item-content active"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">make O=out sdm660-perf_defconfig</span><br><span class="line">make -j$(<span class="built_in">nproc</span> --all) O=out 2&gt;&amp;1 | <span class="built_in">tee</span> kernel_log.log</span><br></pre></td></tr></tbody></table></figure></div><div class="tab-item-content"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">make O=out sdm660-perf_defconfig CC=clang</span><br><span class="line">make -j$(<span class="built_in">nproc</span> --all) O=out CC=clang 2&gt;&amp;1 | <span class="built_in">tee</span> kernel_log.log</span><br></pre></td></tr></tbody></table></figure></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+<h3 id="打包内核">打包内核</h3>
+<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">打包内核 1</button><button type="button" class="tab"> 打包内核 2</button></div><div class="tab-contents"><div class="tab-item-content active"><ol>
+<li>提取一个原版 <code>boot.img</code>，要求不带有 Magisk</li>
+<li>回到 CodeSpace，依次展开目录 <code>./out/arch/arm64/boot/</code>，将 <code>Image</code> 下载下来备用</li>
+<li>下载 Magisk.apk（适用于 Linux/，方法为解压后在 libs 里找到并提取 x86_64 的 <code>libmagiskboot.so</code>）或 <a href="https://github.com/PinNaCode/magiskboot_build/">magiskboot</a>（适用于 Windows），得到 <code>magiskboot</code> 备用</li>
+<li><code>magiskboot unpack boot-origin.img</code></li>
+<li>用 <code>Image</code> 替换掉 <code>kernel</code>，保持 <code>kernel</code> 名称不变</li>
+<li><code>magiskoot repack</code>，刷入得到的 <code>new-boot.img</code></li>
+</ol></div><div class="tab-item-content"><ol>
+<li>回到 CodeSpace，依次展开目录 <code>./out/arch/arm64/boot/</code>，将 <code>Image-gz.dtb</code> 下载下来备用</li>
+<li>下载一个 <a href="https://codeload.github.com/WenHao2130/android_kernel_oppo_sdm660_4.4.153/zip/refs/heads/prebuilt_ak3">AnyKernel3</a><br>注意文件夹结构！</li>
+<li>用第一步得到的 <code>Image-gz.dtb</code> 替换掉 <code>AnyKernel3-*.zip</code> 里的 <code>Image-gz.dtb</code></li>
+</ol></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+<h1 id="参考资料">参考资料</h1>
+<ul>
+<li><a href="https://github.com/WenHao2130/android_kernel_oppo_sdm660/tree/747c8b9cf5968d20f155e6e7853d56d3d2e1d77c/.github/workflows">WenHao2130/android_kernel_oppo_sdm660</a></li>
+<li><a href="https://kernelsu.org/zh_CN/guide/how-to-integrate-for-non-gki.html">如何为非 GKI 内核集成 KernelSU | KernelSU</a></li>
+<li><a href="https://github.com/tiann/KernelSU/discussions/950">[基础教程] 如何编译一个 ARM64 架构的自定义内核・tiann / KernelSU・Discussion #950</a></li>
+<li><a href="https://github.com/tiann/KernelSU/discussions/952">[基础教程 2] 如何使用 AnyKernel 3 打包内核・tiann / KernelSU・Discussion #952</a></li>
+<li><a href="https://apatch.dev/zh_CN/install.html">安装 | APatch Docs</a></li>
+</ul>
+<h1 id="拓展阅读">拓展阅读</h1>
+<ul>
+<li><a href="https://github.com/osm0sis/AnyKernel3">osm0sis/AnyKernel3: AnyKernel, Evolved</a></li>
+<li><a href="https://source.android.com/docs/core/architecture/bootloader/dtb-images?hl=zh-cn">DTB 映像 &nbsp;|&nbsp; Android 开源项目 &nbsp;|&nbsp; Android Open Source Project</a></li>
+</ul>
+<h1 id="鸣谢">鸣谢</h1>
+<ul>
+<li><a href="https://github.com/Wenhao2130">Wenhao2130</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>科学与技术</category>
+        <category>计算机</category>
+        <category>刷机</category>
+      </categories>
+      <tags>
+        <tag>刷机</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>网站速度优化指北</title>
+    <url>/article/a63f345a/</url>
+    <content><![CDATA[<p>在开始之前，有这么一个网站：<a href="https://files.lynx3.link/html/loading.html">https://files.lynx3.link/html/loading.html</a>。</p>
+<p>这里面引入了五套字体，每套字体 3 个或 9 个字重，共计需要加载 1000 ～ 2000 个字体文件。那么，这个网页的速度与性能，会差到什么程度？</p>
+<p>由此，我们引出本文的话题：如何优化网站速度？</p>
+<h1 id="减少下载资源的数量">减少下载资源的数量</h1>
+<p>更多的文件意味着更长的加载用时与渲染用时，因此应慎重引入。以 Butterfly 主题为例，若不必需某些组件（如 abcjs），则应将其关闭。若不明确某些功能（如 Layload）的利弊关系，则也不应轻易启用。常见的有：</p>
+<h2 id="功能性附加组件">功能性附加组件</h2>
+<p>附加组件包括 abcjs，Mermaid，Katex / MathJax，Aplayer，Firework 等。这些东西若非必需，不应以多多益善为由开启。</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># eg.</span></span><br><span class="line"><span class="attr">aplayerInject:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
+<p>此外，还有诸如小挂件、弹窗等，同样有一定的性能需求，可能也会对页面带来负担。</p>
+<h2 id="预加载">预加载</h2>
+<p>在双方网速足够快时，开启它作用并似乎不明显。但对于部署于 Github Pages 等国外平台建议开启。</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">instantpage:</span> <span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure>
+<h2 id="懒加载">懒加载</h2>
+<p>在图床速度足够快时，开启它作用并不明显。</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">lazyload:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
+<h1 id="调节动画">调节动画</h1>
+<p>很多朋友为了网页美观性往往会添加加载动画，但正如前面所说，只要有一条资源有问题，就会阻塞整个加载动画，致使网页迟迟显示不出有效内容。纵使是非全屏式动画（pace_css），也仿佛在提示用户 “嘿！我还没加载完呢！” 十分影响观感，建议关闭。</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">preloader:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
+<p>开启可以掩盖加载时的闪烁，提高美观性。</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">enter_transitions:</span> <span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure>
+<h1 id="优化图片">优化图片</h1>
+<p>图片作为媒体的重头戏，在网页上不可或缺。随着图片体积的增大，图片所带来的负担也不容小觑。优化图片的要做的是减小体积，其方法有：</p>
+<ol>
+<li>手动降低分辨率、位深、色彩精度之类</li>
+<li>使用工具进行无损或低损压缩<br>参见：<a href="https://butterfly.js.org/posts/4073eda/#%E5%9C%96%E7%89%87%E5%A3%93%E7%B8%AE">Butterfly 安裝文檔 (六) 進階教程 | Butterfly</a></li>
+<li> 将 PNG，JPG 等格式转为 WeBP 或 Avif 格式<br>此类图片发布日期较新，有许多新技术以及新特征（比如在保证质量不太差的前提下，最大程度压缩体积），适合网页使用</li>
+<li>将 Gif 换用 APNG 或 MP4<br>Gif 不仅体积巨大，质量差，渲染还十分费力，不如直接用视频</li>
+</ol>
+<h1 id="保证资源加载畅通">保证资源加载畅通</h1>
+<h2 id="保证性能良好">保证性能良好</h2>
+<p>在引用资源前，应确保来源稳定可靠。若其速度不稳定或服务时好时坏，可能会导致卡加载动画或卡白屏。</p>
+<p>应对资源和服务进行维护、监控或选择可靠的来源，引入前应进行<a href="https://itdog.cn/">多地 Ping / HTTP 测试</a>，确保多地访问通畅。</p>
+<p>若确因资金、政策、网络环境等原因不能保证服务时时可用，可用备用 URL 或 IP 属地判断等技术缓解。具体按可以参见 <a href="https://github.com/EmptyDreams/hexo-swpp">hexo-swpp</a>、 <a href="https://kmar.top/posts/b70ec88f/">Swpp Backends 官方文档</a> 和<a href="https://github.com/lisuid2/hexo1/blob/main/sw-rules.js">一份新版配置文件</a>。</p>
+<h2 id="使用合适的-CDN">使用合适的 CDN</h2>
+<p>打个比方，假如在上海收快递时，件儿从苏州还是美国发过来快？显然是苏州！CDN 也同理。市面上常用的公益 CDN（JSDelivr，&nbsp;UNPKG，CDNJS）等多没有大陆节点，使用此类 CDN, 数据包往往要漂洋过海从大洋彼岸发过来，速度堪忧。</p>
+<p>以 Butterfly&nbsp; 为例，可在配置中将 CDN 来源设为 custom 以使用可靠的国内 CDN：</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">CDN:</span></span><br><span class="line">  <span class="attr">third_party_provider:</span> <span class="string">custom</span></span><br><span class="line">  <span class="attr">custom_format:</span> <span class="string">https://registry.npmmirror.com/${name}/${version}/files/${file}</span></span><br></pre></td></tr></tbody></table></figure>
+<p>其它一些优秀的公益 CDN：</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># Custom format</span></span><br><span class="line"><span class="comment">## NPM(推荐，CDNJS 并不总是提供最新版本的包)</span></span><br><span class="line"><span class="comment"># custom_format: https://cdn.jsdmirror.com/npm/${name}@${version}/${file}</span></span><br><span class="line"><span class="comment"># custom_format: https://npm.webcache.cn/${name}@${version}/${file}</span></span><br><span class="line"><span class="attr">custom_format:</span> <span class="string">https://registry.npmmirror.com/${name}/${version}/files/${file}</span></span><br><span class="line"><span class="comment"># custom_format: https://npm.akass.cn/${name}@${version}/${file}</span></span><br><span class="line"><span class="comment">## CDNJS</span></span><br><span class="line"><span class="comment"># custom_format: https://s4.zstatic.net/ajax/libs/${cdnjs_name}/${version}/${min_cdnjs_file}</span></span><br><span class="line"><span class="comment"># custom_format: https://cdnjs.webstatic.cn/ajax/libs/${cdnjs_name}/${version}/${min_cdnjs_file}</span></span><br><span class="line"><span class="comment"># custom_format: https://sf.akass.cn/${cdnjs_name}/${version}/${min_cdnjs_file}</span></span><br></pre></td></tr></tbody></table></figure>
+<p>若国内源无法包含所有所需文件，还可以给某资源设定单独链接。例如：</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">CDN:</span></span><br><span class="line">  <span class="attr">option:</span></span><br><span class="line">    <span class="attr">busuanzi:</span> <span class="string">https://cn.vercount.one/js</span></span><br></pre></td></tr></tbody></table></figure>
+<p>若站点面向全球用户，则可选择 CDN 竞速等策略。具体按可以参见 <a href="https://github.com/EmptyDreams/hexo-swpp">hexo-swpp</a>、 <a href="https://kmar.top/posts/b70ec88f/">Swpp Backends 官方文档</a> 和<a href="https://github.com/lisuid2/hexo1/blob/main/sw-rules.js">一份新版配置文件</a>。</p>
+<h1 id="压缩文件">压缩文件</h1>
+<p>HTML/JS/CSS 文件中的回车、部分空格、注释等仅起提高可读性的作用，却仍占用相当大体积，因此应将其删去。</p>
+<h2 id="Gulp">Gulp</h2>
+<p>参见<a href="https://kmar.top/posts/7d9fb37e/">网站加载速度优化方案总结 | 山岳库博</a></p>
+<h2 id="Hexo-插件">Hexo 插件</h2>
+<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">方案 1</button><button type="button" class="tab"> 方案 2</button></div><div class="tab-contents"><div class="tab-item-content active"><p>参见 <a href="https://argvchs.github.io/2022/08/27/hexo-minify-static-files/">Hexo 压缩静态文件 | Argvchs の小窝</a></p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">npm install hexo-html-minifier hexo-clean-css hexo-uglify --save</span><br></pre></td></tr></tbody></table></figure>
+<p>在博客目录下 <code>_config.yml</code> 添加如下配置：</p>
+<figure class="highlight yaml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">uglify:</span></span><br><span class="line">  <span class="attr">mangle:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">output:</span></span><br><span class="line">  <span class="attr">compress:</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">"*.min.js"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">clean_css:</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">"*.min.css"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">html_minifier:</span></span><br><span class="line">  <span class="attr">collapseBooleanAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">collapseWhitespace:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">ignoreCustomComments:</span> [<span class="type">!!js/regexp</span> <span class="string">/^\s*more/</span>]</span><br><span class="line">  <span class="attr">removeComments:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">removeEmptyAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">removeScriptTypeAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">removeStyleLinkTypeAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">minifyJS:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">minifyCSS:</span> <span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure></div><div class="tab-item-content"><p>curbengh 的 <code>hexo-yam</code> 插件</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">npm install hexo-yam --save</span><br></pre></td></tr></tbody></table></figure>
+<p>在博客目录下 <code>_config.yml</code> 添加如下配置：</p>
+<figure class="highlight yaml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">minify:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">previewServer:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">html:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">exclude:</span></span><br><span class="line">  <span class="attr">css:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">exclude:</span></span><br><span class="line">  <span class="attr">js:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">exclude:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.min.js"</span></span><br><span class="line">  <span class="attr">svg:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">include:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.svg"</span></span><br><span class="line">  <span class="attr">gzip:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">brotli:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">xml:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">    <span class="attr">include:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.xml"</span></span><br><span class="line">  <span class="attr">json:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">include:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.json"</span></span><br><span class="line">  <span class="attr">zstd:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+<h1 id="缓存">缓存</h1>
+<p>部分服务器是没有缓存功能的，这意味着每次访问都需要从服务器下载资源，既浪费流量，又拉长加载时间，而 ServiceWorker 就解决了这一难题。ServiceWorker 可以对缓存进行合理调度，减少内容的下载量，对于速度提升十分明显。</p>
+<p>具体部署过程此处不多讲，请参见 <a href="https://github.com/EmptyDreams/hexo-swpp">hexo-swpp</a>、 <a href="https://kmar.top/posts/b70ec88f/">Swpp Backends 官方文档</a> 和<a href="https://github.com/lisuid2/hexo1/blob/main/sw-rules.js">一份新版配置文件</a>。</p>
+]]></content>
+      <categories>
+        <category>科学与技术</category>
+        <category>计算机</category>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>文章效果与字体编码测试</title>
     <url>/article/a36a68fc/</url>
     <content><![CDATA[<h1 id="Markdown-基本语法">Markdown 基本语法</h1>
@@ -1154,218 +1366,6 @@ Countless small mysteries are also solved in the process.</span></p></div>
 </li>
 </ol>
 </section>
-]]></content>
-      <categories>
-        <category>科学与技术</category>
-        <category>计算机</category>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>前端</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>旧手机优化计划之二 - Root</title>
-    <url>/article/2a7bbe49/</url>
-    <content><![CDATA[<h1 id="总述">总述</h1>
-<p>本文将介绍三种主流 Root（Magisk、KernelSU、APatch）的安装，并介绍它们的一些技巧提示。</p>
-<p>开始之前，请确保您已经刷入了 TWRP 3.7.0、<code>1170</code>底包的系统，并有且只有一种可用的 Root 方式。</p>
-<h1 id="必备前置知识">必备前置知识</h1>
-<h2 id="救砖">救砖</h2>
-<ul>
-<li><a href="https://kernelsu.org/zh_CN/guide/rescue-from-bootloop.html">救砖 | KernelSU</a></li>
-<li><a href="https://apatch.dev/zh_CN/rescue-bootloop.html">救砖 | APatch Docs</a></li>
-<li><code>logcat</code>、<code>dmesg</code>、<code>/proc/kmsg</code> 等抓取日志的方法</li>
-<li>基本的 Git 知识</li>
-</ul>
-<h2 id="内核切换方法">内核切换方法</h2>
-<p>切换、更新、修改内核有三种方法：</p>
-<ol>
-<li>从别人那里要来 boot.img 刷入</li>
-<li>将内核镜像（.gz/.gz-dtb）用 AnyKernel3 刷入</li>
-<li>将内核镜像（Image）用 magiskboot 打包入 boot.img 刷入</li>
-</ol>
-<h1 id="Magisk">Magisk</h1>
-<h2 id="安装-Magisk">安装 Magisk</h2>
-<ol>
-<li>下载 Magisk 最新版 APK 文件，并安装到手机中。</li>
-<li>打开 Magisk Manager，点击左上角的 “安装” 按钮，选择空白的 Boot 镜像文件，修补。</li>
-<li>使用 TWRP 备份 Boot 分区，刷入修补好的 boot.img 到 Boot 分区，然后重启手机。</li>
-<li>重启后会提示<code>需要修复环境</code>，不要点击修复，按返回键拒绝。选择安装，<strong>取消勾选</strong>“安装到 Recovery”，然后重启。</li>
-</ol>
-<h2 id="Magisk-注意事项">Magisk 注意事项</h2>
-<ol>
-<li>Wenhao 新版内核由于未知原因不适用 Magisk，将会导致手机随机重启入 EDL 模式或高通救援模式，并且无法使用微信视频通话和 QQ 视频通话，请勿尝试。</li>
-<li>修复 Magisk 运行环境与更新 Magisk 时，<strong>务必取消</strong>勾选 “安装到 recvoery” 这个选项，高版本 Magisk （26.1+）会<strong>默认启用</strong>这个选项，错误刷入后会导致 WLAN 无法打开以及 Recovery 无法进入。<br>如果您不慎安装到了 Recovery，请提取卡刷包内的 boot.img 和 recovery.img 重新刷入对应分区，或者干脆重刷完整包。</li>
-<li>“Ramdisk” 为 “否” 是正常的，是 R11 (s) 设备的特性，<strong>不</strong>影响 Magisk 功能。</li>
-<li>~~使用 <code>Magisk Delta</code>（后改名 <code>Kitsune Mask</code>）将难以在除 <code>Kitsune</code> 自己的群组之外的社区得到技术支持，也不需要且无法使用 <code>Shamiko</code> 和 <code>ZygiskNext</code>（包括衍生）。~~不建议继续使用 <code>Kitsune Mask</code>，其不仅在社区内臭名昭著，而且已经停止更新。</li>
-<li><code>Alpha</code> 禁止在 Android 内修改 <code>/system</code>，介意勿用。但要知道：这十分有利于安全。</li>
-</ol>
-<h2 id="Magisk-技巧提示">Magisk 技巧提示</h2>
-<ol>
-<li>Magisk APK 相当于刷机包。当 Magisk 出现 “掉 Root 权限”“获取不到 Root 权限”“Zygisk 反复注入失败” 等问题，而三方 Recovery 又可用时，您可以通过将 Magisk.apk 重命名为 Magisk.<strong>zip</strong> 并刷入来修复。</li>
-<li>Magisk 有多个 Fork，各 Fork 各有不同。若您想切换不同的的 Fork，除了在三方 Recovery 中刷入 Magisk.zip 外，还可以在已有的 Magisk Manager 中授予将要安装的 Magisk Manager Root 权限，并重新启动准备安装的 Magisk Manager。此时准备安装的 Magisk Manager 应当有 “无法获取版本信息”“必须重新安装”“修复运行环境” 等提示，重新安装即可。</li>
-</ol>
-<h1 id="KernelSU">KernelSU</h1>
-<h2 id="安装-KernelSU">安装 KernelSU</h2>
-<p>在第三方 Recovery 中把 <code>AnyKernel3-*.zip</code> 刷入即可</p>
-<h2 id="KernelSU-注意事项">KernelSU 注意事项</h2>
-<ol>
-<li>~~KernelSU 在 1.x 版本中移除了 non-GKI 支持，因此不适用于 R11 设备。R11 设备请使用 0.9.5 及以下版本。~~使用 <a href="https://github.com/rsuntk/KernelSU">RKSU</a></li>
-<li>KernelSU 在 0.9.3 版本中更改了管理器检测方式，在 ColorOS 6 上会引起卡二屏。请使用 0.9.2 及以下版本。</li>
-<li>~~安装模块超级慢的情况暂时无解。~~使用 <a href="https://github.com/5ec1cff/KernelSU">MKSU</a>。</li>
-<li>KernelSU 禁止在 Android 内修改 <code>/system</code>，介意勿用。但要知道：这十分有利于安全。</li>
-<li>KernelSU 没有申请 Root 权限的机制。在授予应用程序 Root 后，应用程序在调用时会自动获取 Root 权限且无任何提示。请仅授予可信的应用程序 Root 权限！</li>
-<li><s>KernelSU 暂未有较好的隐藏挂载点泄漏的方法。</s> <a href="https://t.me/pzqqt_c/5837">不建议使用 susfs</a>。</li>
-</ol>
-<h1 id="APatch">APatch</h1>
-<h2 id="安装-APatch">安装 APatch</h2>
-<ol>
-<li>下载 APatch 最新版 APK 文件，并安装到手机中。</li>
-<li>打开 APatch Manager，点击右上角的 “安装” 按钮，选择空白的 Boot 镜像文件，修补。</li>
-<li>使用 TWRP 备份 Boot 分区，刷入修补好的 boot.img 到 Boot 分区，然后重启手机。</li>
-</ol>
-<h2 id="APatch-注意事项">APatch 注意事项</h2>
-<ol>
-<li>更新 APatch 管理器后需进行两步更新：
-<ol>
-<li>点击主页面更新以更新系统补丁（APatch）</li>
-<li>重新修补并刷写 Boot 分区以更新 KernelPatch</li>
-</ol>
-</li>
-<li>APatch 禁止在 Android 内修改 <code>/system</code>，介意勿用。但要知道：这十分有利于安全。</li>
-<li>APatch 没有申请 Root 权限的机制。在授予应用程序 Root 后，应用程序在调用时会自动获取 Root 权限且无任何提示。请仅授予可信的应用程序 Root 权限！</li>
-<li>若您使用了他人修补的 boot.img，务必重新设置密钥！</li>
-<li>Scene 及其附属模块暂不支持 APatch，请勿尝试安装。</li>
-</ol>
-<h2 id="APatch-技巧提示">APatch 技巧提示</h2>
-<ol>
-<li>可通过使用内核模块 <a href="https://t.me/tbthoughts/25">Cherish Peekaboo</a> 隐藏一些挂载点。（作者：GarfieldHan，暂停更新）</li>
-<li>可通过<a href="https://t.me/apatch_discuss/76157">特殊方法</a>使用 Shamiko，但非常不建议。（作者：GarfieldHan）</li>
-</ol>
-<h1 id="推荐学习">推荐学习</h1>
-<h2 id="自己编译内核">自己编译内核</h2>
-<p>如果您对已有的内核不满意，想要自己修改一下；或者等不及更新，按捺不住追版本号的激动，那下面的内容正合您胃口。</p>
-<p>编译内核是一项较为浩大的工程，所以我们用 Github CodeSpace 编译。当然，您也可以选择本地计算机。但是，使用 CodeSpace 有相当的优势：</p>
-<ol>
-<li>自带完美的、几乎无性能损耗的 Ubuntu，免除安装、调试系统的烦恼</li>
-<li>Ubuntu 是较为常规、通用、可靠的 Linux 发行版，有助于避免在一些小众发行版上的问题</li>
-<li>编译内核很占 CPU、内存和磁盘 IO，会影响本地计算机的使用</li>
-</ol>
-<h3 id="启动！">启动！</h3>
-<p>Fork 自己中意的仓库，建立它的 CodeSpace，各项配置拉满。</p>
-<div class="note warning flat"><p>注意：对于不同的内核，您可能需要不同的编译器！</p>
-</div>
-<h3 id="环境搭建">环境搭建</h3>
-<p>首先，您需要准备好编译环境。</p>
-<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">环境搭建 1</button><button type="button" class="tab"> 环境搭建 2</button></div><div class="tab-contents"><div class="tab-item-content active"><p><s>选择一个合适的位置，下载 <a href="https://releases.linaro.org/components/toolchain/binaries/4.9-2017.01/aarch64-linux-gnu/gcc-linaro-4.9.4-2017.01-x86_64_aarch64-linux-gnu.tar.xz">Linaro GCC 4.9</a> 或 <a href="https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+/refs/tags/android-9.0.0_r61">Google GCC Android 9</a>，记下路径。</s></p>
-<p>GCC 老矣！</p></div><div class="tab-item-content"><p><s>选择一个合适的位置，<code>git clone https://github.com/kdrag0n/proton-clang</code>，记下路径。</s> Proton Clang 老了，让我们使用 <a href="https://github.com/ZyCromerZ/Clang">ZyC Clang</a>！</p></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
-<h3 id="环境变量">环境变量</h3>
-<p>设置必需的环境变量。</p>
-<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">环境搭建 1</button><button type="button" class="tab"> 环境搭建 2</button></div><div class="tab-contents"><div class="tab-item-content active"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> ARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> SUBARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/path/to/gcc/bin</span><br><span class="line"><span class="built_in">export</span> CROSS_COMPILE=aarch64-xxxxxxxxxx</span><br><span class="line"><span class="built_in">export</span> OPPO_TARGET_DEVICE=<span class="string">"MSM_nnnnn"</span> <span class="comment"># R11 MSM_16051，R11s MSM_17011</span></span><br></pre></td></tr></tbody></table></figure></div><div class="tab-item-content"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> ARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> SUBARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/path/to/clang/bin</span><br><span class="line"><span class="built_in">export</span> CROSS_COMPILE=aarch64-xxxxxxxxxx</span><br><span class="line"><span class="built_in">export</span> OPPO_TARGET_DEVICE=<span class="string">"MSM_nnnnn"</span> <span class="comment"># R11 MSM_16051，R11s MSM_17011</span></span><br></pre></td></tr></tbody></table></figure></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
-<h3 id="编译">编译</h3>
-<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 拉取子模块</span></span><br><span class="line">git submodule init</span><br><span class="line">git submodule update</span><br></pre></td></tr></tbody></table></figure>
-<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">编译 1</button><button type="button" class="tab"> 编译 2</button></div><div class="tab-contents"><div class="tab-item-content active"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">make O=out sdm660-perf_defconfig</span><br><span class="line">make -j$(<span class="built_in">nproc</span> --all) O=out 2&gt;&amp;1 | <span class="built_in">tee</span> kernel_log.log</span><br></pre></td></tr></tbody></table></figure></div><div class="tab-item-content"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">make O=out sdm660-perf_defconfig CC=clang</span><br><span class="line">make -j$(<span class="built_in">nproc</span> --all) O=out CC=clang 2&gt;&amp;1 | <span class="built_in">tee</span> kernel_log.log</span><br></pre></td></tr></tbody></table></figure></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
-<h3 id="打包内核">打包内核</h3>
-<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">打包内核 1</button><button type="button" class="tab"> 打包内核 2</button></div><div class="tab-contents"><div class="tab-item-content active"><ol>
-<li>提取一个原版 <code>boot.img</code>，要求不带有 Magisk</li>
-<li>回到 CodeSpace，依次展开目录 <code>./out/arch/arm64/boot/</code>，将 <code>Image</code> 下载下来备用</li>
-<li>下载 Magisk.apk（适用于 Linux/，方法为解压后在 libs 里找到并提取 x86_64 的 <code>libmagiskboot.so</code>）或 <a href="https://github.com/PinNaCode/magiskboot_build/">magiskboot</a>（适用于 Windows），得到 <code>magiskboot</code> 备用</li>
-<li><code>magiskboot unpack boot-origin.img</code></li>
-<li>用 <code>Image</code> 替换掉 <code>kernel</code>，保持 <code>kernel</code> 名称不变</li>
-<li><code>magiskoot repack</code>，刷入得到的 <code>new-boot.img</code></li>
-</ol></div><div class="tab-item-content"><ol>
-<li>回到 CodeSpace，依次展开目录 <code>./out/arch/arm64/boot/</code>，将 <code>Image-gz.dtb</code> 下载下来备用</li>
-<li>下载一个 <a href="https://codeload.github.com/WenHao2130/android_kernel_oppo_sdm660_4.4.153/zip/refs/heads/prebuilt_ak3">AnyKernel3</a><br>注意文件夹结构！</li>
-<li>用第一步得到的 <code>Image-gz.dtb</code> 替换掉 <code>AnyKernel3-*.zip</code> 里的 <code>Image-gz.dtb</code></li>
-</ol></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
-<h1 id="参考资料">参考资料</h1>
-<ul>
-<li><a href="https://github.com/WenHao2130/android_kernel_oppo_sdm660/tree/747c8b9cf5968d20f155e6e7853d56d3d2e1d77c/.github/workflows">WenHao2130/android_kernel_oppo_sdm660</a></li>
-<li><a href="https://kernelsu.org/zh_CN/guide/how-to-integrate-for-non-gki.html">如何为非 GKI 内核集成 KernelSU | KernelSU</a></li>
-<li><a href="https://github.com/tiann/KernelSU/discussions/950">[基础教程] 如何编译一个 ARM64 架构的自定义内核・tiann / KernelSU・Discussion #950</a></li>
-<li><a href="https://github.com/tiann/KernelSU/discussions/952">[基础教程 2] 如何使用 AnyKernel 3 打包内核・tiann / KernelSU・Discussion #952</a></li>
-<li><a href="https://apatch.dev/zh_CN/install.html">安装 | APatch Docs</a></li>
-</ul>
-<h1 id="拓展阅读">拓展阅读</h1>
-<ul>
-<li><a href="https://github.com/osm0sis/AnyKernel3">osm0sis/AnyKernel3: AnyKernel, Evolved</a></li>
-<li><a href="https://source.android.com/docs/core/architecture/bootloader/dtb-images?hl=zh-cn">DTB 映像 &nbsp;|&nbsp; Android 开源项目 &nbsp;|&nbsp; Android Open Source Project</a></li>
-</ul>
-<h1 id="鸣谢">鸣谢</h1>
-<ul>
-<li><a href="https://github.com/Wenhao2130">Wenhao2130</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>科学与技术</category>
-        <category>计算机</category>
-        <category>刷机</category>
-      </categories>
-      <tags>
-        <tag>刷机</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>网站速度优化指北</title>
-    <url>/article/a63f345a/</url>
-    <content><![CDATA[<p>在开始之前，有这么一个网站：<a href="https://files.lynx3.link/html/loading.html">https://files.lynx3.link/html/loading.html</a>。</p>
-<p>这里面引入了五套字体，每套字体 3 个或 9 个字重，共计需要加载 1000 ～ 2000 个字体文件。那么，这个网页的速度与性能，会差到什么程度？</p>
-<p>由此，我们引出本文的话题：如何优化网站速度？</p>
-<h1 id="减少下载资源的数量">减少下载资源的数量</h1>
-<p>更多的文件意味着更长的加载用时与渲染用时，因此应慎重引入。以 Butterfly 主题为例，若不必需某些组件（如 abcjs），则应将其关闭。若不明确某些功能（如 Layload）的利弊关系，则也不应轻易启用。常见的有：</p>
-<h2 id="功能性附加组件">功能性附加组件</h2>
-<p>附加组件包括 abcjs，Mermaid，Katex / MathJax，Aplayer，Firework 等。这些东西若非必需，不应以多多益善为由开启。</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># eg.</span></span><br><span class="line"><span class="attr">aplayerInject:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
-<p>此外，还有诸如小挂件、弹窗等，同样有一定的性能需求，可能也会对页面带来负担。</p>
-<h2 id="预加载">预加载</h2>
-<p>在双方网速足够快时，开启它作用并似乎不明显。但对于部署于 Github Pages 等国外平台建议开启。</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">instantpage:</span> <span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure>
-<h2 id="懒加载">懒加载</h2>
-<p>在图床速度足够快时，开启它作用并不明显。</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">lazyload:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
-<h1 id="调节动画">调节动画</h1>
-<p>很多朋友为了网页美观性往往会添加加载动画，但正如前面所说，只要有一条资源有问题，就会阻塞整个加载动画，致使网页迟迟显示不出有效内容。纵使是非全屏式动画（pace_css），也仿佛在提示用户 “嘿！我还没加载完呢！” 十分影响观感，建议关闭。</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">preloader:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
-<p>开启可以掩盖加载时的闪烁，提高美观性。</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">enter_transitions:</span> <span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure>
-<h1 id="优化图片">优化图片</h1>
-<p>图片作为媒体的重头戏，在网页上不可或缺。随着图片体积的增大，图片所带来的负担也不容小觑。优化图片的要做的是减小体积，其方法有：</p>
-<ol>
-<li>手动降低分辨率、位深、色彩精度之类</li>
-<li>使用工具进行无损或低损压缩<br>参见：<a href="https://butterfly.js.org/posts/4073eda/#%E5%9C%96%E7%89%87%E5%A3%93%E7%B8%AE">Butterfly 安裝文檔 (六) 進階教程 | Butterfly</a></li>
-<li> 将 PNG，JPG 等格式转为 WeBP 或 Avif 格式<br>此类图片发布日期较新，有许多新技术以及新特征（比如在保证质量不太差的前提下，最大程度压缩体积），适合网页使用</li>
-<li>将 Gif 换用 APNG 或 MP4<br>Gif 不仅体积巨大，质量差，渲染还十分费力，不如直接用视频</li>
-</ol>
-<h1 id="保证资源加载畅通">保证资源加载畅通</h1>
-<h2 id="保证性能良好">保证性能良好</h2>
-<p>在引用资源前，应确保来源稳定可靠。若其速度不稳定或服务时好时坏，可能会导致卡加载动画或卡白屏。</p>
-<p>应对资源和服务进行维护、监控或选择可靠的来源，引入前应进行<a href="https://itdog.cn/">多地 Ping / HTTP 测试</a>，确保多地访问通畅。</p>
-<p>若确因资金、政策、网络环境等原因不能保证服务时时可用，可用备用 URL 或 IP 属地判断等技术缓解。具体按可以参见 <a href="https://github.com/EmptyDreams/hexo-swpp">hexo-swpp</a>、 <a href="https://kmar.top/posts/b70ec88f/">Swpp Backends 官方文档</a> 和<a href="https://github.com/lisuid2/hexo1/blob/main/sw-rules.js">一份新版配置文件</a>。</p>
-<h2 id="使用合适的-CDN">使用合适的 CDN</h2>
-<p>打个比方，假如在上海收快递时，件儿从苏州还是美国发过来快？显然是苏州！CDN 也同理。市面上常用的公益 CDN（JSDelivr，&nbsp;UNPKG，CDNJS）等多没有大陆节点，使用此类 CDN, 数据包往往要漂洋过海从大洋彼岸发过来，速度堪忧。</p>
-<p>以 Butterfly&nbsp; 为例，可在配置中将 CDN 来源设为 custom 以使用可靠的国内 CDN：</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">CDN:</span></span><br><span class="line">  <span class="attr">third_party_provider:</span> <span class="string">custom</span></span><br><span class="line">  <span class="attr">custom_format:</span> <span class="string">https://registry.npmmirror.com/${name}/${version}/files/${file}</span></span><br></pre></td></tr></tbody></table></figure>
-<p>其它一些优秀的公益 CDN：</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># Custom format</span></span><br><span class="line"><span class="comment">## NPM(推荐，CDNJS 并不总是提供最新版本的包)</span></span><br><span class="line"><span class="comment"># custom_format: https://cdn.jsdmirror.com/npm/${name}@${version}/${file}</span></span><br><span class="line"><span class="comment"># custom_format: https://npm.webcache.cn/${name}@${version}/${file}</span></span><br><span class="line"><span class="attr">custom_format:</span> <span class="string">https://registry.npmmirror.com/${name}/${version}/files/${file}</span></span><br><span class="line"><span class="comment"># custom_format: https://npm.akass.cn/${name}@${version}/${file}</span></span><br><span class="line"><span class="comment">## CDNJS</span></span><br><span class="line"><span class="comment"># custom_format: https://s4.zstatic.net/ajax/libs/${cdnjs_name}/${version}/${min_cdnjs_file}</span></span><br><span class="line"><span class="comment"># custom_format: https://cdnjs.webstatic.cn/ajax/libs/${cdnjs_name}/${version}/${min_cdnjs_file}</span></span><br><span class="line"><span class="comment"># custom_format: https://sf.akass.cn/${cdnjs_name}/${version}/${min_cdnjs_file}</span></span><br></pre></td></tr></tbody></table></figure>
-<p>若国内源无法包含所有所需文件，还可以给某资源设定单独链接。例如：</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">CDN:</span></span><br><span class="line">  <span class="attr">option:</span></span><br><span class="line">    <span class="attr">busuanzi:</span> <span class="string">https://cn.vercount.one/js</span></span><br></pre></td></tr></tbody></table></figure>
-<p>若站点面向全球用户，则可选择 CDN 竞速等策略。具体按可以参见 <a href="https://github.com/EmptyDreams/hexo-swpp">hexo-swpp</a>、 <a href="https://kmar.top/posts/b70ec88f/">Swpp Backends 官方文档</a> 和<a href="https://github.com/lisuid2/hexo1/blob/main/sw-rules.js">一份新版配置文件</a>。</p>
-<h1 id="压缩文件">压缩文件</h1>
-<p>HTML/JS/CSS 文件中的回车、部分空格、注释等仅起提高可读性的作用，却仍占用相当大体积，因此应将其删去。</p>
-<h2 id="Gulp">Gulp</h2>
-<p>参见<a href="https://kmar.top/posts/7d9fb37e/">网站加载速度优化方案总结 | 山岳库博</a></p>
-<h2 id="Hexo-插件">Hexo 插件</h2>
-<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">方案 1</button><button type="button" class="tab"> 方案 2</button></div><div class="tab-contents"><div class="tab-item-content active"><p>参见 <a href="https://argvchs.github.io/2022/08/27/hexo-minify-static-files/">Hexo 压缩静态文件 | Argvchs の小窝</a></p>
-<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">npm install hexo-html-minifier hexo-clean-css hexo-uglify --save</span><br></pre></td></tr></tbody></table></figure>
-<p>在博客目录下 <code>_config.yml</code> 添加如下配置：</p>
-<figure class="highlight yaml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">uglify:</span></span><br><span class="line">  <span class="attr">mangle:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">output:</span></span><br><span class="line">  <span class="attr">compress:</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">"*.min.js"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">clean_css:</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">"*.min.css"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">html_minifier:</span></span><br><span class="line">  <span class="attr">collapseBooleanAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">collapseWhitespace:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">ignoreCustomComments:</span> [<span class="type">!!js/regexp</span> <span class="string">/^\s*more/</span>]</span><br><span class="line">  <span class="attr">removeComments:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">removeEmptyAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">removeScriptTypeAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">removeStyleLinkTypeAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">minifyJS:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">minifyCSS:</span> <span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure></div><div class="tab-item-content"><p>curbengh 的 <code>hexo-yam</code> 插件</p>
-<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">npm install hexo-yam --save</span><br></pre></td></tr></tbody></table></figure>
-<p>在博客目录下 <code>_config.yml</code> 添加如下配置：</p>
-<figure class="highlight yaml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">minify:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">previewServer:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">html:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">exclude:</span></span><br><span class="line">  <span class="attr">css:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">exclude:</span></span><br><span class="line">  <span class="attr">js:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">exclude:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.min.js"</span></span><br><span class="line">  <span class="attr">svg:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">include:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.svg"</span></span><br><span class="line">  <span class="attr">gzip:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">brotli:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">xml:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">    <span class="attr">include:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.xml"</span></span><br><span class="line">  <span class="attr">json:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">include:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.json"</span></span><br><span class="line">  <span class="attr">zstd:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
-<h1 id="缓存">缓存</h1>
-<p>部分服务器是没有缓存功能的，这意味着每次访问都需要从服务器下载资源，既浪费流量，又拉长加载时间，而 ServiceWorker 就解决了这一难题。ServiceWorker 可以对缓存进行合理调度，减少内容的下载量，对于速度提升十分明显。</p>
-<p>具体部署过程此处不多讲，请参见 <a href="https://github.com/EmptyDreams/hexo-swpp">hexo-swpp</a>、 <a href="https://kmar.top/posts/b70ec88f/">Swpp Backends 官方文档</a> 和<a href="https://github.com/lisuid2/hexo1/blob/main/sw-rules.js">一份新版配置文件</a>。</p>
 ]]></content>
       <categories>
         <category>科学与技术</category>
