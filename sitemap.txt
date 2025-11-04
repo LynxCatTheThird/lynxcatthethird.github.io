@@ -5,8 +5,8 @@ https://www.lynx3.me/link/index.html
 https://www.lynx3.me/policy/index.html
 https://www.lynx3.me/tags/index.html
 https://www.lynx3.me/about/index.html
-https://www.lynx3.me/categories/index.html
 https://www.lynx3.me/board/index.html
+https://www.lynx3.me/categories/index.html
 https://www.lynx3.me/comment/index.html
 https://www.lynx3.me/faq/index.html
 https://www.lynx3.me/article/2a7bbe49/
