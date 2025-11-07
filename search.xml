@@ -576,6 +576,104 @@ h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​
       </tags>
   </entry>
   <entry>
+    <title>网站可用性优化指北</title>
+    <url>/article/7bd2ed19/</url>
+    <content><![CDATA[<h1 id="静态托管">静态托管</h1>
+<div class="note warning flat"><p>优选是社区行为，请注意 TOS</p>
+</div>
+<p>静态托管的优化关键在于分配到更好的 IP。对于 Vercel、Netlify、Cloudflare 等厂商，分配到的 IP 往往不尽人意。分配到更好的 IP，就可以极大缓解不稳定的情况，并且大幅度提速。</p>
+<h2 id="Vercel-Netlify">Vercel / Netlify</h2>
+<p>先使用官方 CNAME 获取到 SSL 证书，然后换成：</p>
+<figure class="highlight zone"><table><tbody><tr><td class="code"><pre><span class="line">vercel.example.com.	<span class="number">1</span>	<span class="keyword">IN</span>	<span class="keyword">CNAME</span>	vercel-cname.xingpingcn.top. <span class="comment">; cf_tags=cf-proxied:false</span></span><br><span class="line">netlify.example.com.	<span class="number">1</span>	<span class="keyword">IN</span>	<span class="keyword">CNAME</span>	netlify.cname.bee-zh.cn. <span class="comment">; cf_tags=cf-proxied:false</span></span><br></pre></td></tr></tbody></table></figure>
+<p>由于 CNAME 的 IP 的质量并不能总是保持优质，需要隔三差五检查。</p>
+<p>另有：</p>
+<figure class="highlight zone"><table><tbody><tr><td class="code"><pre><span class="line">vercel.example.com.	<span class="number">1</span>	<span class="keyword">IN</span>	<span class="keyword">CNAME</span>	vercel.cname.bee-zh.cn. <span class="comment">; cf_tags=cf-proxied:false</span></span><br><span class="line">netlify.example.com.	<span class="number">1</span>	<span class="keyword">IN</span>	<span class="keyword">CNAME</span>	netlify-cname.xingpingcn.top. <span class="comment">; cf_tags=cf-proxied:false</span></span><br><span class="line">netlify.example.com.	<span class="number">1</span>	<span class="keyword">IN</span>	<span class="keyword">CNAME</span>	sth.netlify.com. <span class="comment">; cf_tags=cf-proxied:false</span></span><br></pre></td></tr></tbody></table></figure>
+<h2 id="Cloudflare-Pages">Cloudflare Pages</h2>
+<p>使用任意支持地域化解析的 DNS 供应商（可惜 Cloudflare 免费版不支持，可以 NS 到支持的，比如阿里），国外解析到 <code>sth.pages.dev</code>，国内解析到 <code>cf.877774.xyz</code></p>
+<h2 id="Cloudflare-CDN">Cloudflare CDN</h2>
+<p>使用 Cloudflare SaaS（Software as a Service, 软件即服务）中的自定义主机名功能，具体可参考<a href="https://www.bilibili.com/video/BV1SM4m1176E/">这个视频</a>，皮皮虾老师讲的非常清楚，鄙人不多赘述。</p>
+<h1 id="单点服务器">单点服务器</h1>
+<p>自托管服务器的网站问题则更大了。</p>
+<h2 id="HSTS-Preload">HSTS Preload</h2>
+<div class="note warning flat"><p>HSTS 配置错误可能会导致网站长期报废</p>
+</div>
+<p>由于 HTTP 不加密，首次访问可能会被劫持，没有机会建立 HTTPS 连接；若无 HSTS（HTTP Strict Transport Security，HTTP 严格传输安全），攻击者甚至还可以阻断 HTTPS 的连接。即使加上 HSTS 头，从一般用户角度来说，也往往需要首次的 HTTP。</p>
+<p>那怎么办？加入 <code>HSTS Preload</code>（HSTS Preload List，HSTS 预加载列表） 列表（这个列表随着每次浏览器的发布而更新）后，你的网站会自动启用 HSTS，首次访问即为 HTTPS。代价就是 SSL 证书爆炸的话<strong>无路可退</strong>，只能等下一次浏览器发布的时候退出列表。</p>
+<p>进入 preload 列表必须 <code>max-age ≥ 31536000</code> 且 <code>includeSubDomains</code> 且 <code>preload</code>。为了避免这个问题，建议从较小的 <code>max-age</code> 起递增。</p>
+<p>加上这个头：</p>
+<figure class="highlight http"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attribute">Strict-Transport-Security</span><span class="punctuation">: </span>max-age=63072000; includeSubDomains; preload</span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>Copy from <a href="https://developer.chrome.com/docs/lighthouse/best-practices/has-hsts?hl=zh-cn">Google</a>：</p>
+<p>max-age 指令用于指定用户浏览器必须仅使用 TLS 访问网站的时间量（以秒为单位）。一旦时间过去，如果网站未提供 HSTS 标头（或从 HTTP 到 HTTPS 的临时重定向），用户就可以再次通过纯 HTTP 访问该网站。</p>
+<p>设置 includeSubDomains 指令会强制在最初发送标头的网页网址的<strong>任何子网域</strong>上使用该标头。例如，如果 <a href="http://google.com">google.com</a> 发送的 HSTS 标头包含 includeSubDomains 指令，则会在 <a href="http://mail.google.com">mail.google.com</a> 上强制执行 HSTS 标头。</p>
+<p>设置 preload 指令并将网域提交给 <a href="https://hstspreload.org/">HSTS 预加载服务</a>后，系统会将该网域编译到使用预加载 HSTS 列表的浏览器二进制文件中。不仅 Google Chrome 如此，</p>
+</blockquote>
+<h2 id="泛解析">泛解析</h2>
+<p>某一个域名的所有子域名指向同一个网站，一定程度上起到镜像站的作用。有些时候 ISP（Internet Service Provider，互联网服务提供商，也就是运营商） 不会下狠手，只会封禁一个子域名。</p>
+<h2 id="DNSSEC">DNSSEC</h2>
+<p>DNS 污染是对于小网站成本较低、伤害较大的一个招式。当受到大范围的 DNS 投毒时，上游的权威 DNS 都会受到污染，DoT 和 DoH 也无力回天。</p>
+<p><a href="https://www.cloudflare.com/zh-cn/learning/dns/dnssec/universal-dnssec/">DNSSEC</a>（Domain Name System Security Extensions，域名系统安全扩展） 通过引入数字签名来确保 DNS 响应的真实性和完整性。哪怕攻击者劫持了 DNS，也难以伪造签名，这个错误的 DNS 解析结果会被拒绝。它确保了你的浏览器在发起 HTTP / HTTPS 请求时，连接的是正确、合法的服务器。</p>
+<p>Cloudflare 提供免费的 DNSSEC，可以按照<a href="https://www.cloudflare.com/zh-cn/learning/dns/dnssec/universal-dnssec/">博客</a>开启。</p>
+<h2 id="CAA">CAA</h2>
+<p>CAA（Certificate Authority Authorization，证书颁发机构授权）是规定那些有权为域名签发证书的 CA（Certificate Authority，证书颁发机构） 的白名单。</p>
+<figure class="highlight zone"><table><tbody><tr><td class="code"><pre><span class="line">example.com. <span class="keyword">CAA</span> <span class="number">0</span> issue "letsencrypt.org"</span><br><span class="line">example.com. <span class="keyword">CAA</span> <span class="number">0</span> issue "pki.goog"</span><br><span class="line">example.com. <span class="keyword">CAA</span> <span class="number">0</span> issue "digicert.com"</span><br></pre></td></tr></tbody></table></figure>
+<p>这可以有效防止黑 CA 或者 ISP 通过颁发假证书的方法进行攻击。如果 CA 胆敢违反 CAA 颁发证书，那么可能会被吊销执照。</p>
+<h2 id="CT">CT</h2>
+<p>但是，某些 ISP 掌握或者胁迫正规 CA 颁发证书，这个时候 <a href="https://developer.mozilla.org/zh-CN/docs/Web/Security/Certificate_Transparency">CT</a>（Certificate Transparency，证书透明度）就会出手。CT 会记录下每一张证书，方便进行审核。什么？你想不提交到 CT 来逃过审核？那这张证书会因为没有有效的 SCT（Signed Certificate Timestamp，证书签署时间戳）而被浏览器拒绝。</p>
+<h2 id="OCSP-CRL">OCSP / CRL</h2>
+<p>证书已经出问题了，怎么办？</p>
+<ul>
+<li>CRL（Certificate Revocation List，证书吊销列表）：CA 定期发布一个包含所有已吊销证书序列号的大列表，浏览器需要下载并检查。</li>
+<li>OCSP（Online Certificate Status Protocol，在线证书状态协议）：浏览器向 CA 的 OCSP 服务器实时查询证书状况。</li>
+<li>OCSP Stapling（OCSP Stapling，OCSP 装订）：网站服务器自己定期去查询 OCSP 状态，并将有效的 OCSP 响应与证书一起 “装订” 起来发给浏览器。这避免了浏览器自己去查询，减少了延迟和被 ISP 拦截的风险。但如果 ISP 是中间人，它也可以替换掉这个 “装订” 的响应。</li>
+</ul>
+<p>似乎装订 + 短期证书（90d）更有效，靠撤销长期证书有点亡羊补牢？</p>
+<figure class="highlight nginx"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># https://ssl-config.mozilla.org/#server=nginx&amp;version=1.27.3&amp;config=modern&amp;openssl=3.4.0&amp;hsts=false&amp;guideline=5.7</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># OCSP stapling</span></span><br><span class="line"><span class="attribute">ssl_stapling</span> <span class="literal">on</span>;</span><br><span class="line"><span class="attribute">ssl_stapling_verify</span> <span class="literal">on</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># verify chain of trust of OCSP response using Root CA and Intermediate certs</span></span><br><span class="line"><span class="attribute">ssl_trusted_certificate</span> /path/to/root_CA_cert_plus_intermediates;</span><br><span class="line"></span><br><span class="line"><span class="comment"># replace with the IP address of your resolver;</span></span><br><span class="line"><span class="comment"># 这里我替换成了 1.1.1.1</span></span><br><span class="line"><span class="comment"># async 'resolver' is important for proper operation of OCSP stapling</span></span><br><span class="line"><span class="attribute">resolver</span> <span class="number">1.1.1.1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># If certificates are marked OCSP Must-Staple, consider managing the</span></span><br><span class="line"><span class="comment"># OCSP stapling cache with an external script, e.g. certbot-ocsp-fetcher</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<div class="note info flat"><p><a href="https://letsencrypt.org/">Let's Encrypt</a> 的 CRL 域名在中国大陆遭到封禁，建议使用 <a href="https://docs.cloud.google.com/certificate-manager/docs/public-ca-tutorial?hl=zh-cn">Google Trust Services</a>。其验证服务器在国内有 CDN。</p>
+</div>
+<h1 id="通用">通用</h1>
+<h2 id="ECH">ECH</h2>
+<p><a href="https://blog.cloudflare.com/zh-cn/announcing-encrypted-client-hello/">ECH</a>（Encrypted ClientHello，加密客户端问候） 理论上可以保护隐私、对抗封禁。</p>
+<h3 id="客户端">客户端</h3>
+<p>Firefox 119 已经默认启用 ECH，Chrome / Edge 据说是 105 开始默认启用，总之最新的浏览器没问题的。启用浏览器内置的安全 DNS（Cloudflare、Google 等主流均可），然后尝试访问 <a href="https://tls-ech.dev/">https://tls-ech.dev/</a>，看到 <code>You are using ECH. :)</code> 就可以了。</p>
+<h3 id="服务器">服务器</h3>
+<p>Cloudflare CDN 免费版默认启用 ECH，Pages 似乎没有。</p>
+<p>包括 <code>OpenSSL</code>、<code>Curl</code>、<code>Nginx</code> 等项目对于 ECH 的支持大多停留在实验阶段，故单点服务器难以上手。</p>
+<p>你可以使用 <a href="https://dns.google/query?name=tls-ech.dev&amp;rr_type=HTTPS&amp;ecs=&amp;show_dnssec=true">Google Public DNS</a> 查询网站的支持情况，HTTPS 记录中包含 <code>ech=</code> 即可。</p>
+<p>Firefox 用户还可以安装 <a href="https://github.com/27justin/ohmyech">oh-my-ech 插件</a>实时查看网站的 ECH 情况。</p>
+<h2 id="CSP-与-SRI">CSP 与 SRI</h2>
+<p>自己的网站百密无疏了，但是别忘了上游 CDN 投毒也是网络安全的重要话题。StaticFile、BootCDN、51LA 等都发生过投毒事件。</p>
+<p>可以通过 CSP（Content Security Policy，内容安全策略）头限制资源加载：</p>
+<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><span class="line">&lt;meta <span class="attribute">http-equiv</span>=<span class="string">"Content-Security-Policy"</span></span><br><span class="line">      <span class="attribute">content</span>=<span class="string">"default-src 'self'; script-src 'self' trusted.com"</span>&gt;</span><br></pre></td></tr></tbody></table></figure>
+<p>通过 SRI（Subresource Integrity，子资源完整性）防止资源被篡改：</p>
+<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><span class="line">&lt;script <span class="attribute">src</span>=<span class="string">"https://cdn.example.com/jquery.js"</span></span><br><span class="line">        <span class="attribute">integrity</span>=<span class="string">"sha384-..."</span></span><br><span class="line">        <span class="attribute">crossorigin</span>=<span class="string">"anonymous"</span>&gt;&lt;/script&gt;</span><br></pre></td></tr></tbody></table></figure>
+<h1 id="鸣谢与引用">鸣谢与引用</h1>
+<ol>
+<li><a href="https://furries.fun/2025/02/04/over_the_isp_wall/">[矛与盾] 运营商封锁的原理以及 “低成本” 解决方案</a></li>
+<li> Cloudflare：
+<ol>
+<li><a href="https://www.cloudflare.com/zh-cn/learning/dns/dnssec/universal-dnssec/">https://www.cloudflare.com/zh-cn/learning/dns/dnssec/universal-dnssec/</a></li>
+<li><a href="https://blog.cloudflare.com/zh-cn/announcing-encrypted-client-hello/">https://blog.cloudflare.com/zh-cn/announcing-encrypted-client-hello/</a></li>
+</ol>
+</li>
+<li>Mozilla
+<ol>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/Security/Certificate_Transparency">https://developer.mozilla.org/zh-CN/docs/Web/Security/Certificate_Transparency</a></li>
+<li><a href="https://ssl-config.mozilla.org/">https://ssl-config.mozilla.org/</a></li>
+</ol>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>科学与技术</category>
+        <category>计算机</category>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>加密测试</title>
     <url>/article/53963325/</url>
     <content><![CDATA[<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="抱歉, 这个密码看着不太对, 请再试试。" data-whm="抱歉, 这个文章不能被校验, 不过您还是能看看解密后的内容。">
@@ -743,6 +841,76 @@ h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​
       </categories>
       <tags>
         <tag>刷机</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>网站速度优化指北</title>
+    <url>/article/a63f345a/</url>
+    <content><![CDATA[<p>在开始之前，有这么一个网站：<a href="https://files.lynx3.link/html/loading.html">https://files.lynx3.link/html/loading.html</a>。</p>
+<p>这里面引入了五套字体，每套字体 3 个或 9 个字重，共计需要加载 1000 ～ 2000 个字体文件。那么，这个网页的速度与性能，会差到什么程度？</p>
+<p>由此，我们引出本文的话题：如何优化网站速度？</p>
+<h1 id="减少下载资源的数量">减少下载资源的数量</h1>
+<p>更多的文件意味着更长的加载用时与渲染用时，因此应慎重引入。以 Butterfly 主题为例，若不必需某些组件（如 abcjs），则应将其关闭。若不明确某些功能（如 Layload）的利弊关系，则也不应轻易启用。常见的有：</p>
+<h2 id="功能性附加组件">功能性附加组件</h2>
+<p>附加组件包括 abcjs，Mermaid，Katex / MathJax，Aplayer，Firework 等。这些东西若非必需，不应以多多益善为由开启。</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># eg.</span></span><br><span class="line"><span class="attr">aplayerInject:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
+<p>此外，还有诸如小挂件、弹窗等，同样有一定的性能需求，可能也会对页面带来负担。</p>
+<h2 id="预加载">预加载</h2>
+<p>在双方网速足够快时，开启它作用并似乎不明显。但对于部署于 Github Pages 等国外平台建议开启。</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">instantpage:</span> <span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure>
+<h2 id="懒加载">懒加载</h2>
+<p>在图床速度足够快时，开启它作用并不明显。</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">lazyload:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
+<h1 id="调节动画">调节动画</h1>
+<p>很多朋友为了网页美观性往往会添加加载动画，但正如前面所说，只要有一条资源有问题，就会阻塞整个加载动画，致使网页迟迟显示不出有效内容。纵使是非全屏式动画（pace_css），也仿佛在提示用户 “嘿！我还没加载完呢！” 十分影响观感，建议关闭。</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">preloader:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
+<p>但是开启转场动画可以掩盖加载时的闪烁，提高美观性。</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">enter_transitions:</span> <span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure>
+<h1 id="优化图片">优化图片</h1>
+<p>图片作为媒体的重头戏，在网页上不可或缺。随着图片体积的增大，图片所带来的负担也不容小觑。优化图片的要做的是减小体积，其方法有：</p>
+<ol>
+<li>手动降低分辨率、位深、色彩精度之类</li>
+<li>使用工具进行无损或低损压缩<br>参见：<a href="https://butterfly.js.org/posts/4073eda/#%E5%9C%96%E7%89%87%E5%A3%93%E7%B8%AE">Butterfly 安裝文檔 (六) 進階教程 | Butterfly</a></li>
+<li> 将 PNG，JPG 等格式转为 WeBP 或 Avif 格式<br>此类图片发布日期较新，有许多新技术以及新特征（比如在保证质量不太差的前提下，最大程度压缩体积），适合网页使用</li>
+<li>将 Gif 换用 APNG 或 MP4<br>Gif 不仅体积巨大，质量差，渲染还十分费力，不如直接用视频</li>
+</ol>
+<h1 id="保证资源加载畅通">保证资源加载畅通</h1>
+<h2 id="保证性能良好">保证性能良好</h2>
+<p>在引用资源前，应确保来源稳定可靠。若其速度不稳定或服务时好时坏，可能会导致卡加载动画或卡白屏。</p>
+<p>应对资源和服务进行维护、监控或选择可靠的来源，引入前应进行<a href="https://itdog.cn/">多地 Ping / HTTP 测试</a>，确保多地访问通畅。</p>
+<p>若确因资金、政策、网络环境等原因不能保证服务时时可用，可用备用 URL 或 IP 属地判断等技术缓解。具体按可以参见 <a href="https://github.com/EmptyDreams/hexo-swpp">hexo-swpp</a>、 <a href="https://kmar.top/posts/b70ec88f/">Swpp Backends 官方文档</a> 和<a href="https://github.com/lisuid2/hexo1/blob/main/sw-rules.js">一份新版配置文件</a>。</p>
+<h2 id="使用合适的-CDN">使用合适的 CDN</h2>
+<p>打个比方，假如在上海收快递时，件儿从苏州还是美国发过来快？显然是苏州！CDN 也同理。市面上常用的公益 CDN（JSDelivr，&nbsp;UNPKG，CDNJS）等多没有大陆节点，使用此类 CDN, 数据包往往要漂洋过海从大洋彼岸发过来，速度堪忧。</p>
+<p>以 Butterfly&nbsp; 为例，可在配置中将 CDN 来源设为 custom 以使用可靠的国内 CDN：</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">CDN:</span></span><br><span class="line">  <span class="attr">third_party_provider:</span> <span class="string">custom</span></span><br><span class="line">  <span class="attr">custom_format:</span> <span class="string">https://registry.npmmirror.com/${name}/${version}/files/${file}</span></span><br></pre></td></tr></tbody></table></figure>
+<p>其它一些优秀的公益 CDN：</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># Custom format</span></span><br><span class="line"><span class="comment">## NPM(推荐，CDNJS 并不总是提供最新版本的包)</span></span><br><span class="line"><span class="comment"># custom_format: https://cdn.jsdmirror.com/npm/${name}@${version}/${file}</span></span><br><span class="line"><span class="comment"># custom_format: https://npm.webcache.cn/${name}@${version}/${file}</span></span><br><span class="line"><span class="attr">custom_format:</span> <span class="string">https://registry.npmmirror.com/${name}/${version}/files/${file}</span></span><br><span class="line"><span class="comment"># custom_format: https://npm.akass.cn/${name}@${version}/${file}</span></span><br><span class="line"><span class="comment">## CDNJS</span></span><br><span class="line"><span class="comment"># custom_format: https://s4.zstatic.net/ajax/libs/${cdnjs_name}/${version}/${min_cdnjs_file}</span></span><br><span class="line"><span class="comment"># custom_format: https://cdnjs.webstatic.cn/ajax/libs/${cdnjs_name}/${version}/${min_cdnjs_file}</span></span><br><span class="line"><span class="comment"># custom_format: https://sf.akass.cn/${cdnjs_name}/${version}/${min_cdnjs_file}</span></span><br></pre></td></tr></tbody></table></figure>
+<p>若国内源无法包含所有所需文件，还可以给某资源设定单独链接。例如：</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">CDN:</span></span><br><span class="line">  <span class="attr">option:</span></span><br><span class="line">    <span class="attr">busuanzi:</span> <span class="string">https://cn.vercount.one/js</span></span><br></pre></td></tr></tbody></table></figure>
+<p>若站点面向全球用户，则可选择 CDN 竞速等策略。具体按可以参见 <a href="https://github.com/EmptyDreams/hexo-swpp">hexo-swpp</a>、 <a href="https://kmar.top/posts/b70ec88f/">Swpp Backends 官方文档</a> 和<a href="https://github.com/lisuid2/hexo1/blob/main/sw-rules.js">一份新版配置文件</a>。</p>
+<h1 id="压缩文件">压缩文件</h1>
+<p>HTML/JS/CSS 文件中的回车、部分空格、注释等仅起提高可读性的作用，却仍占用相当大体积，因此应将其删去。</p>
+<h2 id="Gulp">Gulp</h2>
+<p>参见<a href="https://kmar.top/posts/7d9fb37e/">网站加载速度优化方案总结 | 山岳库博</a></p>
+<h2 id="Hexo-插件">Hexo 插件</h2>
+<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">方案 1</button><button type="button" class="tab"> 方案 2</button></div><div class="tab-contents"><div class="tab-item-content active"><p>参见 <a href="https://argvchs.github.io/2022/08/27/hexo-minify-static-files/">Hexo 压缩静态文件 | Argvchs の小窝</a></p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">npm install hexo-html-minifier hexo-clean-css hexo-uglify --save</span><br></pre></td></tr></tbody></table></figure>
+<p>在博客目录下 <code>_config.yml</code> 添加如下配置：</p>
+<figure class="highlight yaml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">uglify:</span></span><br><span class="line">  <span class="attr">mangle:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">output:</span></span><br><span class="line">  <span class="attr">compress:</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">"*.min.js"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">clean_css:</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">"*.min.css"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">html_minifier:</span></span><br><span class="line">  <span class="attr">collapseBooleanAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">collapseWhitespace:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">ignoreCustomComments:</span> [<span class="type">!!js/regexp</span> <span class="string">/^\s*more/</span>]</span><br><span class="line">  <span class="attr">removeComments:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">removeEmptyAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">removeScriptTypeAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">removeStyleLinkTypeAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">minifyJS:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">minifyCSS:</span> <span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure></div><div class="tab-item-content"><p>curbengh 的 <code>hexo-yam</code> 插件</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">npm install hexo-yam --save</span><br></pre></td></tr></tbody></table></figure>
+<p>在博客目录下 <code>_config.yml</code> 添加如下配置：</p>
+<figure class="highlight yaml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">minify:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">previewServer:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">html:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">exclude:</span></span><br><span class="line">  <span class="attr">css:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">exclude:</span></span><br><span class="line">  <span class="attr">js:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">exclude:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.min.js"</span></span><br><span class="line">  <span class="attr">svg:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">include:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.svg"</span></span><br><span class="line">  <span class="attr">gzip:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">brotli:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">xml:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">    <span class="attr">include:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.xml"</span></span><br><span class="line">  <span class="attr">json:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">include:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.json"</span></span><br><span class="line">  <span class="attr">zstd:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+<h1 id="缓存">缓存</h1>
+<p>部分服务器是没有缓存功能的，这意味着每次访问都需要从服务器下载资源，既浪费流量，又拉长加载时间，而 ServiceWorker 就解决了这一难题。ServiceWorker 可以对缓存进行合理调度，减少内容的下载量，对于速度提升十分明显。</p>
+<p>具体部署过程此处不多讲，请参见 <a href="https://github.com/EmptyDreams/hexo-swpp">hexo-swpp</a>、 <a href="https://kmar.top/posts/b70ec88f/">Swpp Backends 官方文档</a> 和<a href="https://github.com/lisuid2/hexo1/blob/main/sw-rules.js">一份新版配置文件</a>。</p>
+]]></content>
+      <categories>
+        <category>科学与技术</category>
+        <category>计算机</category>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
       </tags>
   </entry>
   <entry>
@@ -1296,174 +1464,6 @@ Countless small mysteries are also solved in the process.</span></p></div>
 </li>
 </ol>
 </section>
-]]></content>
-      <categories>
-        <category>科学与技术</category>
-        <category>计算机</category>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>前端</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>网站可用性优化指北</title>
-    <url>/article/7bd2ed19/</url>
-    <content><![CDATA[<h1 id="静态托管">静态托管</h1>
-<div class="note warning flat"><p>优选是社区行为，请注意 TOS</p>
-</div>
-<p>静态托管的优化关键在于分配到更好的 IP。对于 Vercel、Netlify、Cloudflare 等厂商，分配到的 IP 往往不尽人意。分配到更好的 IP，就可以极大缓解不稳定的情况，并且大幅度提速。</p>
-<h2 id="Vercel-Netlify">Vercel / Netlify</h2>
-<p>先使用官方 CNAME 获取到 SSL 证书，然后换成：</p>
-<figure class="highlight zone"><table><tbody><tr><td class="code"><pre><span class="line">vercel.example.com.	<span class="number">1</span>	<span class="keyword">IN</span>	<span class="keyword">CNAME</span>	vercel-cname.xingpingcn.top. <span class="comment">; cf_tags=cf-proxied:false</span></span><br><span class="line">netlify.example.com.	<span class="number">1</span>	<span class="keyword">IN</span>	<span class="keyword">CNAME</span>	netlify.cname.bee-zh.cn. <span class="comment">; cf_tags=cf-proxied:false</span></span><br></pre></td></tr></tbody></table></figure>
-<p>由于 CNAME 的 IP 的质量并不能总是保持优质，需要隔三差五检查。</p>
-<p>另有：</p>
-<figure class="highlight zone"><table><tbody><tr><td class="code"><pre><span class="line">vercel.example.com.	<span class="number">1</span>	<span class="keyword">IN</span>	<span class="keyword">CNAME</span>	vercel.cname.bee-zh.cn. <span class="comment">; cf_tags=cf-proxied:false</span></span><br><span class="line">netlify.example.com.	<span class="number">1</span>	<span class="keyword">IN</span>	<span class="keyword">CNAME</span>	netlify-cname.xingpingcn.top. <span class="comment">; cf_tags=cf-proxied:false</span></span><br><span class="line">netlify.example.com.	<span class="number">1</span>	<span class="keyword">IN</span>	<span class="keyword">CNAME</span>	sth.netlify.com. <span class="comment">; cf_tags=cf-proxied:false</span></span><br></pre></td></tr></tbody></table></figure>
-<h2 id="Cloudflare-Pages">Cloudflare Pages</h2>
-<p>使用任意支持地域化解析的 DNS 供应商（可惜 Cloudflare 免费版不支持，可以 NS 到支持的，比如阿里），国外解析到 <code>sth.pages.dev</code>，国内解析到 <code>cf.877774.xyz</code></p>
-<h2 id="Cloudflare-CDN">Cloudflare CDN</h2>
-<p>使用 Cloudflare SaaS（Software as a Service, 软件即服务）中的自定义主机名功能，具体可参考<a href="https://www.bilibili.com/video/BV1SM4m1176E/">这个视频</a>，皮皮虾老师讲的非常清楚，鄙人不多赘述。</p>
-<h1 id="单点服务器">单点服务器</h1>
-<p>自托管服务器的网站问题则更大了。</p>
-<h2 id="HSTS-Preload">HSTS Preload</h2>
-<div class="note warning flat"><p>HSTS 配置错误可能会导致网站长期报废</p>
-</div>
-<p>由于 HTTP 不加密，首次访问可能会被劫持，没有机会建立 HTTPS 连接；若无 HSTS（HTTP Strict Transport Security，HTTP 严格传输安全），攻击者甚至还可以阻断 HTTPS 的连接。即使加上 HSTS 头，从一般用户角度来说，也往往需要首次的 HTTP。</p>
-<p>那怎么办？加入 <code>HSTS Preload</code>（HSTS Preload List，HSTS 预加载列表） 列表（这个列表随着每次浏览器的发布而更新）后，你的网站会自动启用 HSTS，首次访问即为 HTTPS。代价就是 SSL 证书爆炸的话<strong>无路可退</strong>，只能等下一次浏览器发布的时候退出列表。</p>
-<p>进入 preload 列表必须 <code>max-age ≥ 31536000</code> 且 <code>includeSubDomains</code> 且 <code>preload</code>。为了避免这个问题，建议从较小的 <code>max-age</code> 起递增。</p>
-<p>加上这个头：</p>
-<figure class="highlight http"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attribute">Strict-Transport-Security</span><span class="punctuation">: </span>max-age=63072000; includeSubDomains; preload</span><br></pre></td></tr></tbody></table></figure>
-<blockquote>
-<p>Copy from <a href="https://developer.chrome.com/docs/lighthouse/best-practices/has-hsts?hl=zh-cn">Google</a>：</p>
-<p>max-age 指令用于指定用户浏览器必须仅使用 TLS 访问网站的时间量（以秒为单位）。一旦时间过去，如果网站未提供 HSTS 标头（或从 HTTP 到 HTTPS 的临时重定向），用户就可以再次通过纯 HTTP 访问该网站。</p>
-<p>设置 includeSubDomains 指令会强制在最初发送标头的网页网址的<strong>任何子网域</strong>上使用该标头。例如，如果 <a href="http://google.com">google.com</a> 发送的 HSTS 标头包含 includeSubDomains 指令，则会在 <a href="http://mail.google.com">mail.google.com</a> 上强制执行 HSTS 标头。</p>
-<p>设置 preload 指令并将网域提交给 <a href="https://hstspreload.org/">HSTS 预加载服务</a>后，系统会将该网域编译到使用预加载 HSTS 列表的浏览器二进制文件中。不仅 Google Chrome 如此，</p>
-</blockquote>
-<h2 id="泛解析">泛解析</h2>
-<p>某一个域名的所有子域名指向同一个网站，一定程度上起到镜像站的作用。有些时候 ISP（Internet Service Provider，互联网服务提供商，也就是运营商） 不会下狠手，只会封禁一个子域名。</p>
-<h2 id="DNSSEC">DNSSEC</h2>
-<p>DNS 污染是对于小网站成本较低、伤害较大的一个招式。当受到大范围的 DNS 投毒时，上游的权威 DNS 都会受到污染，DoT 和 DoH 也无力回天。</p>
-<p><a href="https://www.cloudflare.com/zh-cn/learning/dns/dnssec/universal-dnssec/">DNSSEC</a>（Domain Name System Security Extensions，域名系统安全扩展） 通过引入数字签名来确保 DNS 响应的真实性和完整性。哪怕攻击者劫持了 DNS，也难以伪造签名，这个错误的 DNS 解析结果会被拒绝。它确保了你的浏览器在发起 HTTP / HTTPS 请求时，连接的是正确、合法的服务器。</p>
-<p>Cloudflare 提供免费的 DNSSEC，可以按照<a href="https://www.cloudflare.com/zh-cn/learning/dns/dnssec/universal-dnssec/">博客</a>开启。</p>
-<h2 id="CAA">CAA</h2>
-<p>CAA（Certificate Authority Authorization，证书颁发机构授权）是规定那些有权为域名签发证书的 CA（Certificate Authority，证书颁发机构） 的白名单。</p>
-<figure class="highlight zone"><table><tbody><tr><td class="code"><pre><span class="line">example.com. <span class="keyword">CAA</span> <span class="number">0</span> issue "letsencrypt.org"</span><br><span class="line">example.com. <span class="keyword">CAA</span> <span class="number">0</span> issue "pki.goog"</span><br><span class="line">example.com. <span class="keyword">CAA</span> <span class="number">0</span> issue "digicert.com"</span><br></pre></td></tr></tbody></table></figure>
-<p>这可以有效防止黑 CA 或者 ISP 通过颁发假证书的方法进行攻击。如果 CA 胆敢违反 CAA 颁发证书，那么可能会被吊销执照。</p>
-<h2 id="CT">CT</h2>
-<p>但是，某些 ISP 掌握或者胁迫正规 CA 颁发证书，这个时候 <a href="https://developer.mozilla.org/zh-CN/docs/Web/Security/Certificate_Transparency">CT</a>（Certificate Transparency，证书透明度）就会出手。CT 会记录下每一张证书，方便进行审核。什么？你想不提交到 CT 来逃过审核？那这张证书会因为没有有效的 SCT（Signed Certificate Timestamp，证书签署时间戳）而被浏览器拒绝。</p>
-<h2 id="OCSP-CRL">OCSP / CRL</h2>
-<p>证书已经出问题了，怎么办？</p>
-<ul>
-<li>CRL（Certificate Revocation List，证书吊销列表）：CA 定期发布一个包含所有已吊销证书序列号的大列表，浏览器需要下载并检查。</li>
-<li>OCSP（Online Certificate Status Protocol，在线证书状态协议）：浏览器向 CA 的 OCSP 服务器实时查询证书状况。</li>
-<li>OCSP Stapling（OCSP Stapling，OCSP 装订）：网站服务器自己定期去查询 OCSP 状态，并将有效的 OCSP 响应与证书一起 “装订” 起来发给浏览器。这避免了浏览器自己去查询，减少了延迟和被 ISP 拦截的风险。但如果 ISP 是中间人，它也可以替换掉这个 “装订” 的响应。</li>
-</ul>
-<p>似乎装订 + 短期证书（90d）更有效，靠撤销长期证书有点亡羊补牢？</p>
-<figure class="highlight nginx"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># https://ssl-config.mozilla.org/#server=nginx&amp;version=1.27.3&amp;config=modern&amp;openssl=3.4.0&amp;hsts=false&amp;guideline=5.7</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># OCSP stapling</span></span><br><span class="line"><span class="attribute">ssl_stapling</span> <span class="literal">on</span>;</span><br><span class="line"><span class="attribute">ssl_stapling_verify</span> <span class="literal">on</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># verify chain of trust of OCSP response using Root CA and Intermediate certs</span></span><br><span class="line"><span class="attribute">ssl_trusted_certificate</span> /path/to/root_CA_cert_plus_intermediates;</span><br><span class="line"></span><br><span class="line"><span class="comment"># replace with the IP address of your resolver;</span></span><br><span class="line"><span class="comment"># 这里我替换成了 1.1.1.1</span></span><br><span class="line"><span class="comment"># async 'resolver' is important for proper operation of OCSP stapling</span></span><br><span class="line"><span class="attribute">resolver</span> <span class="number">1.1.1.1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># If certificates are marked OCSP Must-Staple, consider managing the</span></span><br><span class="line"><span class="comment"># OCSP stapling cache with an external script, e.g. certbot-ocsp-fetcher</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
-<div class="note info flat"><p><a href="https://letsencrypt.org/">Let's Encrypt</a> 的 CRL 域名在中国大陆遭到封禁，建议使用 <a href="https://docs.cloud.google.com/certificate-manager/docs/public-ca-tutorial?hl=zh-cn">Google Trust Services</a>。其验证服务器在国内有 CDN。</p>
-</div>
-<h1 id="通用">通用</h1>
-<h2 id="ECH">ECH</h2>
-<p><a href="https://blog.cloudflare.com/zh-cn/announcing-encrypted-client-hello/">ECH</a>（Encrypted ClientHello，加密客户端问候） 理论上可以保护隐私、对抗封禁。</p>
-<h3 id="客户端">客户端</h3>
-<p>Firefox 119 已经默认启用 ECH，Chrome / Edge 据说是 105 开始默认启用，总之最新的浏览器没问题的。启用浏览器内置的安全 DNS（Cloudflare、Google 等主流均可），然后尝试访问 <a href="https://tls-ech.dev/">https://tls-ech.dev/</a>，看到 <code>You are using ECH. :)</code> 就可以了。</p>
-<h3 id="服务器">服务器</h3>
-<p>Cloudflare CDN 免费版默认启用 ECH，Pages 似乎没有。</p>
-<p>包括 <code>OpenSSL</code>、<code>Curl</code>、<code>Nginx</code> 等项目对于 ECH 的支持大多停留在实验阶段，故单点服务器难以上手。</p>
-<p>你可以使用 <a href="https://dns.google/query?name=tls-ech.dev&amp;rr_type=HTTPS&amp;ecs=&amp;show_dnssec=true">Google Public DNS</a> 查询网站的支持情况，HTTPS 记录中包含 <code>ech=</code> 即可。</p>
-<p>Firefox 用户还可以安装 <a href="https://github.com/27justin/ohmyech">oh-my-ech 插件</a>实时查看网站的 ECH 情况。</p>
-<h2 id="CSP-与-SRI">CSP 与 SRI</h2>
-<p>自己的网站百密无疏了，但是别忘了上游 CDN 投毒也是网络安全的重要话题。StaticFile、BootCDN、51LA 等都发生过投毒事件。</p>
-<p>可以通过 CSP（Content Security Policy，内容安全策略）头限制资源加载：</p>
-<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><span class="line">&lt;meta <span class="attribute">http-equiv</span>=<span class="string">"Content-Security-Policy"</span></span><br><span class="line">      <span class="attribute">content</span>=<span class="string">"default-src 'self'; script-src 'self' trusted.com"</span>&gt;</span><br></pre></td></tr></tbody></table></figure>
-<p>通过 SRI（Subresource Integrity，子资源完整性）防止资源被篡改：</p>
-<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><span class="line">&lt;script <span class="attribute">src</span>=<span class="string">"https://cdn.example.com/jquery.js"</span></span><br><span class="line">        <span class="attribute">integrity</span>=<span class="string">"sha384-..."</span></span><br><span class="line">        <span class="attribute">crossorigin</span>=<span class="string">"anonymous"</span>&gt;&lt;/script&gt;</span><br></pre></td></tr></tbody></table></figure>
-<h1 id="鸣谢与引用">鸣谢与引用</h1>
-<ol>
-<li><a href="https://furries.fun/2025/02/04/over_the_isp_wall/">[矛与盾] 运营商封锁的原理以及 “低成本” 解决方案</a></li>
-<li> Cloudflare：
-<ol>
-<li><a href="https://www.cloudflare.com/zh-cn/learning/dns/dnssec/universal-dnssec/">https://www.cloudflare.com/zh-cn/learning/dns/dnssec/universal-dnssec/</a></li>
-<li><a href="https://blog.cloudflare.com/zh-cn/announcing-encrypted-client-hello/">https://blog.cloudflare.com/zh-cn/announcing-encrypted-client-hello/</a></li>
-</ol>
-</li>
-<li>Mozilla
-<ol>
-<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/Security/Certificate_Transparency">https://developer.mozilla.org/zh-CN/docs/Web/Security/Certificate_Transparency</a></li>
-<li><a href="https://ssl-config.mozilla.org/">https://ssl-config.mozilla.org/</a></li>
-</ol>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>科学与技术</category>
-        <category>计算机</category>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>前端</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>网站速度优化指北</title>
-    <url>/article/a63f345a/</url>
-    <content><![CDATA[<p>在开始之前，有这么一个网站：<a href="https://files.lynx3.link/html/loading.html">https://files.lynx3.link/html/loading.html</a>。</p>
-<p>这里面引入了五套字体，每套字体 3 个或 9 个字重，共计需要加载 1000 ～ 2000 个字体文件。那么，这个网页的速度与性能，会差到什么程度？</p>
-<p>由此，我们引出本文的话题：如何优化网站速度？</p>
-<h1 id="减少下载资源的数量">减少下载资源的数量</h1>
-<p>更多的文件意味着更长的加载用时与渲染用时，因此应慎重引入。以 Butterfly 主题为例，若不必需某些组件（如 abcjs），则应将其关闭。若不明确某些功能（如 Layload）的利弊关系，则也不应轻易启用。常见的有：</p>
-<h2 id="功能性附加组件">功能性附加组件</h2>
-<p>附加组件包括 abcjs，Mermaid，Katex / MathJax，Aplayer，Firework 等。这些东西若非必需，不应以多多益善为由开启。</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># eg.</span></span><br><span class="line"><span class="attr">aplayerInject:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
-<p>此外，还有诸如小挂件、弹窗等，同样有一定的性能需求，可能也会对页面带来负担。</p>
-<h2 id="预加载">预加载</h2>
-<p>在双方网速足够快时，开启它作用并似乎不明显。但对于部署于 Github Pages 等国外平台建议开启。</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">instantpage:</span> <span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure>
-<h2 id="懒加载">懒加载</h2>
-<p>在图床速度足够快时，开启它作用并不明显。</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">lazyload:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
-<h1 id="调节动画">调节动画</h1>
-<p>很多朋友为了网页美观性往往会添加加载动画，但正如前面所说，只要有一条资源有问题，就会阻塞整个加载动画，致使网页迟迟显示不出有效内容。纵使是非全屏式动画（pace_css），也仿佛在提示用户 “嘿！我还没加载完呢！” 十分影响观感，建议关闭。</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">preloader:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
-<p>但是开启转场动画可以掩盖加载时的闪烁，提高美观性。</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">enter_transitions:</span> <span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure>
-<h1 id="优化图片">优化图片</h1>
-<p>图片作为媒体的重头戏，在网页上不可或缺。随着图片体积的增大，图片所带来的负担也不容小觑。优化图片的要做的是减小体积，其方法有：</p>
-<ol>
-<li>手动降低分辨率、位深、色彩精度之类</li>
-<li>使用工具进行无损或低损压缩<br>参见：<a href="https://butterfly.js.org/posts/4073eda/#%E5%9C%96%E7%89%87%E5%A3%93%E7%B8%AE">Butterfly 安裝文檔 (六) 進階教程 | Butterfly</a></li>
-<li> 将 PNG，JPG 等格式转为 WeBP 或 Avif 格式<br>此类图片发布日期较新，有许多新技术以及新特征（比如在保证质量不太差的前提下，最大程度压缩体积），适合网页使用</li>
-<li>将 Gif 换用 APNG 或 MP4<br>Gif 不仅体积巨大，质量差，渲染还十分费力，不如直接用视频</li>
-</ol>
-<h1 id="保证资源加载畅通">保证资源加载畅通</h1>
-<h2 id="保证性能良好">保证性能良好</h2>
-<p>在引用资源前，应确保来源稳定可靠。若其速度不稳定或服务时好时坏，可能会导致卡加载动画或卡白屏。</p>
-<p>应对资源和服务进行维护、监控或选择可靠的来源，引入前应进行<a href="https://itdog.cn/">多地 Ping / HTTP 测试</a>，确保多地访问通畅。</p>
-<p>若确因资金、政策、网络环境等原因不能保证服务时时可用，可用备用 URL 或 IP 属地判断等技术缓解。具体按可以参见 <a href="https://github.com/EmptyDreams/hexo-swpp">hexo-swpp</a>、 <a href="https://kmar.top/posts/b70ec88f/">Swpp Backends 官方文档</a> 和<a href="https://github.com/lisuid2/hexo1/blob/main/sw-rules.js">一份新版配置文件</a>。</p>
-<h2 id="使用合适的-CDN">使用合适的 CDN</h2>
-<p>打个比方，假如在上海收快递时，件儿从苏州还是美国发过来快？显然是苏州！CDN 也同理。市面上常用的公益 CDN（JSDelivr，&nbsp;UNPKG，CDNJS）等多没有大陆节点，使用此类 CDN, 数据包往往要漂洋过海从大洋彼岸发过来，速度堪忧。</p>
-<p>以 Butterfly&nbsp; 为例，可在配置中将 CDN 来源设为 custom 以使用可靠的国内 CDN：</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">CDN:</span></span><br><span class="line">  <span class="attr">third_party_provider:</span> <span class="string">custom</span></span><br><span class="line">  <span class="attr">custom_format:</span> <span class="string">https://registry.npmmirror.com/${name}/${version}/files/${file}</span></span><br></pre></td></tr></tbody></table></figure>
-<p>其它一些优秀的公益 CDN：</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># Custom format</span></span><br><span class="line"><span class="comment">## NPM(推荐，CDNJS 并不总是提供最新版本的包)</span></span><br><span class="line"><span class="comment"># custom_format: https://cdn.jsdmirror.com/npm/${name}@${version}/${file}</span></span><br><span class="line"><span class="comment"># custom_format: https://npm.webcache.cn/${name}@${version}/${file}</span></span><br><span class="line"><span class="attr">custom_format:</span> <span class="string">https://registry.npmmirror.com/${name}/${version}/files/${file}</span></span><br><span class="line"><span class="comment"># custom_format: https://npm.akass.cn/${name}@${version}/${file}</span></span><br><span class="line"><span class="comment">## CDNJS</span></span><br><span class="line"><span class="comment"># custom_format: https://s4.zstatic.net/ajax/libs/${cdnjs_name}/${version}/${min_cdnjs_file}</span></span><br><span class="line"><span class="comment"># custom_format: https://cdnjs.webstatic.cn/ajax/libs/${cdnjs_name}/${version}/${min_cdnjs_file}</span></span><br><span class="line"><span class="comment"># custom_format: https://sf.akass.cn/${cdnjs_name}/${version}/${min_cdnjs_file}</span></span><br></pre></td></tr></tbody></table></figure>
-<p>若国内源无法包含所有所需文件，还可以给某资源设定单独链接。例如：</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">CDN:</span></span><br><span class="line">  <span class="attr">option:</span></span><br><span class="line">    <span class="attr">busuanzi:</span> <span class="string">https://cn.vercount.one/js</span></span><br></pre></td></tr></tbody></table></figure>
-<p>若站点面向全球用户，则可选择 CDN 竞速等策略。具体按可以参见 <a href="https://github.com/EmptyDreams/hexo-swpp">hexo-swpp</a>、 <a href="https://kmar.top/posts/b70ec88f/">Swpp Backends 官方文档</a> 和<a href="https://github.com/lisuid2/hexo1/blob/main/sw-rules.js">一份新版配置文件</a>。</p>
-<h1 id="压缩文件">压缩文件</h1>
-<p>HTML/JS/CSS 文件中的回车、部分空格、注释等仅起提高可读性的作用，却仍占用相当大体积，因此应将其删去。</p>
-<h2 id="Gulp">Gulp</h2>
-<p>参见<a href="https://kmar.top/posts/7d9fb37e/">网站加载速度优化方案总结 | 山岳库博</a></p>
-<h2 id="Hexo-插件">Hexo 插件</h2>
-<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">方案 1</button><button type="button" class="tab"> 方案 2</button></div><div class="tab-contents"><div class="tab-item-content active"><p>参见 <a href="https://argvchs.github.io/2022/08/27/hexo-minify-static-files/">Hexo 压缩静态文件 | Argvchs の小窝</a></p>
-<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">npm install hexo-html-minifier hexo-clean-css hexo-uglify --save</span><br></pre></td></tr></tbody></table></figure>
-<p>在博客目录下 <code>_config.yml</code> 添加如下配置：</p>
-<figure class="highlight yaml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">uglify:</span></span><br><span class="line">  <span class="attr">mangle:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">output:</span></span><br><span class="line">  <span class="attr">compress:</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">"*.min.js"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">clean_css:</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">"*.min.css"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">html_minifier:</span></span><br><span class="line">  <span class="attr">collapseBooleanAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">collapseWhitespace:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">ignoreCustomComments:</span> [<span class="type">!!js/regexp</span> <span class="string">/^\s*more/</span>]</span><br><span class="line">  <span class="attr">removeComments:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">removeEmptyAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">removeScriptTypeAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">removeStyleLinkTypeAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">minifyJS:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">minifyCSS:</span> <span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure></div><div class="tab-item-content"><p>curbengh 的 <code>hexo-yam</code> 插件</p>
-<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">npm install hexo-yam --save</span><br></pre></td></tr></tbody></table></figure>
-<p>在博客目录下 <code>_config.yml</code> 添加如下配置：</p>
-<figure class="highlight yaml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">minify:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">previewServer:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">html:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">exclude:</span></span><br><span class="line">  <span class="attr">css:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">exclude:</span></span><br><span class="line">  <span class="attr">js:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">exclude:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.min.js"</span></span><br><span class="line">  <span class="attr">svg:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">include:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.svg"</span></span><br><span class="line">  <span class="attr">gzip:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">brotli:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">xml:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">    <span class="attr">include:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.xml"</span></span><br><span class="line">  <span class="attr">json:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">include:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.json"</span></span><br><span class="line">  <span class="attr">zstd:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
-<h1 id="缓存">缓存</h1>
-<p>部分服务器是没有缓存功能的，这意味着每次访问都需要从服务器下载资源，既浪费流量，又拉长加载时间，而 ServiceWorker 就解决了这一难题。ServiceWorker 可以对缓存进行合理调度，减少内容的下载量，对于速度提升十分明显。</p>
-<p>具体部署过程此处不多讲，请参见 <a href="https://github.com/EmptyDreams/hexo-swpp">hexo-swpp</a>、 <a href="https://kmar.top/posts/b70ec88f/">Swpp Backends 官方文档</a> 和<a href="https://github.com/lisuid2/hexo1/blob/main/sw-rules.js">一份新版配置文件</a>。</p>
 ]]></content>
       <categories>
         <category>科学与技术</category>
