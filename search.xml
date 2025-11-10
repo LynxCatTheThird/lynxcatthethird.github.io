@@ -447,6 +447,148 @@ h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​
       </tags>
   </entry>
   <entry>
+    <title>旧手机优化计划之二 - Root</title>
+    <url>/article/2a7bbe49/</url>
+    <content><![CDATA[<h1 id="总述">总述</h1>
+<p>本文将介绍三种主流 Root（Magisk、KernelSU、APatch）的安装，并介绍它们的一些技巧提示。</p>
+<p>开始之前，请确保您已经刷入了 TWRP 3.7.0、<code>1170</code>底包的系统，并有且只有一种可用的 Root 方式。</p>
+<h1 id="必备前置知识">必备前置知识</h1>
+<h2 id="救砖">救砖</h2>
+<ul>
+<li><a href="https://kernelsu.org/zh_CN/guide/rescue-from-bootloop.html">救砖 | KernelSU</a></li>
+<li><a href="https://apatch.dev/zh_CN/rescue-bootloop.html">救砖 | APatch Docs</a></li>
+<li><code>logcat</code>、<code>dmesg</code>、<code>/proc/kmsg</code> 等抓取日志的方法</li>
+<li>基本的 Git 知识</li>
+</ul>
+<h2 id="内核切换方法">内核切换方法</h2>
+<p>切换、更新、修改内核有三种方法：</p>
+<ol>
+<li>从别人那里要来 boot.img 刷入</li>
+<li>将内核镜像（.gz/.gz-dtb）用 AnyKernel3 刷入</li>
+<li>将内核镜像（Image）用 magiskboot 打包入 boot.img 刷入</li>
+</ol>
+<h1 id="Magisk">Magisk</h1>
+<h2 id="安装-Magisk">安装 Magisk</h2>
+<ol>
+<li>下载 Magisk 最新版 APK 文件，并安装到手机中。</li>
+<li>打开 Magisk Manager，点击左上角的 “安装” 按钮，选择空白的 Boot 镜像文件，修补。</li>
+<li>使用 TWRP 备份 Boot 分区，刷入修补好的 boot.img 到 Boot 分区，然后重启手机。</li>
+<li>重启后会提示<code>需要修复环境</code>，不要点击修复，按返回键拒绝。选择安装，<strong>取消勾选</strong>“安装到 Recovery”，然后重启。</li>
+</ol>
+<h2 id="Magisk-注意事项">Magisk 注意事项</h2>
+<ol>
+<li>Wenhao 新版内核由于未知原因不适用 Magisk，将会导致手机随机重启入 EDL 模式或高通救援模式，并且无法使用微信视频通话和 QQ 视频通话，请勿尝试。</li>
+<li>修复 Magisk 运行环境与更新 Magisk 时，<strong>务必取消</strong>勾选 “安装到 recvoery” 这个选项，高版本 Magisk （26.1+）会<strong>默认启用</strong>这个选项，错误刷入后会导致 WLAN 无法打开以及 Recovery 无法进入。<br>如果您不慎安装到了 Recovery，请提取卡刷包内的 boot.img 和 recovery.img 重新刷入对应分区，或者干脆重刷完整包。</li>
+<li>“Ramdisk” 为 “否” 是正常的，是 R11 (s) 设备的特性，<strong>不</strong>影响 Magisk 功能。</li>
+<li><s>使用 <code>Magisk Delta</code>（后改名 <code>Kitsune Mask</code>）将难以在除 <code>Kitsune</code> 自己的群组之外的社区得到技术支持，也不需要且无法使用 <code>Shamiko</code> 和 <code>ZygiskNext</code>（包括衍生）。</s> 不建议继续使用 <code>Kitsune Mask</code>，其不仅在社区内臭名昭著，而且已经停止更新。</li>
+<li><code>Alpha</code> 禁止在 Android 内修改 <code>/system</code>，介意勿用。但要知道：这十分有利于安全。</li>
+</ol>
+<h2 id="Magisk-技巧提示">Magisk 技巧提示</h2>
+<ol>
+<li>Magisk APK 相当于刷机包。当 Magisk 出现 “掉 Root 权限”“获取不到 Root 权限”“Zygisk 反复注入失败” 等问题，而三方 Recovery 又可用时，您可以通过将 Magisk.apk 重命名为 Magisk.<strong>zip</strong> 并刷入来修复。</li>
+<li>Magisk 有多个 Fork，各 Fork 各有不同。若您想切换不同的的 Fork，除了在三方 Recovery 中刷入 Magisk.zip 外，还可以在已有的 Magisk Manager 中授予将要安装的 Magisk Manager Root 权限，并重新启动准备安装的 Magisk Manager。此时准备安装的 Magisk Manager 应当有 “无法获取版本信息”“必须重新安装”“修复运行环境” 等提示，重新安装即可。</li>
+</ol>
+<h1 id="KernelSU">KernelSU</h1>
+<h2 id="安装-KernelSU">安装 KernelSU</h2>
+<p>在第三方 Recovery 中把 <code>AnyKernel3-*.zip</code> 刷入即可</p>
+<h2 id="KernelSU-注意事项">KernelSU 注意事项</h2>
+<ol>
+<li><s>KernelSU 在 1.x 版本中移除了 non-GKI 支持，因此不适用于 R11 设备。R11 设备请使用 0.9.5 及以下版本。</s> R11 作为 non-GKI 设备应当使用 <a href="https://github.com/rsuntk/KernelSU">RKSU</a></li>
+<li>KernelSU 在 0.9.3 版本中更改了管理器检测方式，在 ColorOS 6 上会引起卡二屏。请使用 0.9.2 及以下版本。</li>
+<li><s>安装模块超级慢的情况暂时无解。</s> <a href="https://github.com/5ec1cff/KernelSU">MKSU</a> 引入了 Magic Mount，可以缓解安装模块缓慢无比的情况。</li>
+<li>KernelSU 禁止在 Android 内修改 <code>/system</code>，介意勿用。但要知道：这十分有利于安全。</li>
+<li>KernelSU 没有申请 Root 权限的机制。在授予应用程序 Root 后，应用程序在调用时会自动获取 Root 权限且无任何提示。请仅授予可信的应用程序 Root 权限！</li>
+<li><s>KernelSU 暂未有较好的隐藏挂载点泄漏的方法。</s> <a href="https://t.me/pzqqt_c/5837">不建议使用 susfs</a>。</li>
+</ol>
+<h1 id="APatch">APatch</h1>
+<h2 id="安装-APatch">安装 APatch</h2>
+<ol>
+<li>下载 APatch 最新版 APK 文件，并安装到手机中。</li>
+<li>打开 APatch Manager，点击右上角的 “安装” 按钮，选择空白的 Boot 镜像文件，修补。</li>
+<li>使用 TWRP 备份 Boot 分区，刷入修补好的 boot.img 到 Boot 分区，然后重启手机。</li>
+</ol>
+<h2 id="APatch-注意事项">APatch 注意事项</h2>
+<ol>
+<li>更新 APatch 管理器后需进行两步更新：
+<ol>
+<li>点击主页面更新以更新系统补丁（APatch）</li>
+<li>重新修补并刷写 Boot 分区以更新 KernelPatch</li>
+</ol>
+</li>
+<li>APatch 禁止在 Android 内修改 <code>/system</code>，介意勿用。但要知道：这十分有利于安全。</li>
+<li>APatch 没有申请 Root 权限的机制。在授予应用程序 Root 后，应用程序在调用时会自动获取 Root 权限且无任何提示。请仅授予可信的应用程序 Root 权限！</li>
+<li>若您使用了他人修补的 boot.img，务必重新设置密钥！</li>
+<li>Scene 及其附属模块暂不支持 APatch，请勿尝试安装。</li>
+</ol>
+<h2 id="APatch-技巧提示">APatch 技巧提示</h2>
+<ol>
+<li>可通过使用内核模块 <a href="https://t.me/tbthoughts/25">Cherish Peekaboo</a> 隐藏一些挂载点。（作者：GarfieldHan，暂停更新）</li>
+<li>可通过<a href="https://t.me/apatch_discuss/76157">特殊方法</a>使用 Shamiko，但非常不建议。（作者：GarfieldHan）</li>
+</ol>
+<h1 id="推荐学习">推荐学习</h1>
+<h2 id="自己编译内核">自己编译内核</h2>
+<p>如果您对已有的内核不满意，想要自己修改一下；或者等不及更新，按捺不住追版本号的激动，那下面的内容正合您胃口。</p>
+<p>编译内核是一项较为浩大的工程，所以我们用 Github CodeSpace 编译。当然，您也可以选择本地计算机。但是，使用 CodeSpace 有相当的优势：</p>
+<ol>
+<li>自带完美的、几乎无性能损耗的 Ubuntu，免除安装、调试系统的烦恼</li>
+<li>Ubuntu 是较为常规、通用、可靠的 Linux 发行版，有助于避免在一些小众发行版上的问题</li>
+<li>编译内核很占 CPU、内存和磁盘 IO，会影响本地计算机的使用</li>
+</ol>
+<h3 id="启动！">启动！</h3>
+<p>Fork 自己中意的仓库，建立它的 CodeSpace，各项配置拉满。</p>
+<div class="note warning flat"><p>注意：对于不同的内核，您可能需要不同的编译器！</p>
+</div>
+<h3 id="环境搭建">环境搭建</h3>
+<p>首先，您需要准备好编译环境。</p>
+<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">环境搭建 1</button><button type="button" class="tab"> 环境搭建 2</button></div><div class="tab-contents"><div class="tab-item-content active"><p><s>选择一个合适的位置，下载 <a href="https://releases.linaro.org/components/toolchain/binaries/4.9-2017.01/aarch64-linux-gnu/gcc-linaro-4.9.4-2017.01-x86_64_aarch64-linux-gnu.tar.xz">Linaro GCC 4.9</a> 或 <a href="https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+/refs/tags/android-9.0.0_r61">Google GCC Android 9</a>，记下路径。</s></p>
+<p>GCC 老矣！</p></div><div class="tab-item-content"><p><s>选择一个合适的位置，<code>git clone https://github.com/kdrag0n/proton-clang</code>，记下路径。</s> Proton Clang 老了，让我们使用 <a href="https://github.com/ZyCromerZ/Clang">ZyC Clang</a>！</p></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+<h3 id="环境变量">环境变量</h3>
+<p>设置必需的环境变量。</p>
+<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">环境搭建 1</button><button type="button" class="tab"> 环境搭建 2</button></div><div class="tab-contents"><div class="tab-item-content active"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> ARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> SUBARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/path/to/gcc/bin</span><br><span class="line"><span class="built_in">export</span> CROSS_COMPILE=aarch64-xxxxxxxxxx</span><br><span class="line"><span class="built_in">export</span> OPPO_TARGET_DEVICE=<span class="string">"MSM_nnnnn"</span> <span class="comment"># R11 MSM_16051，R11s MSM_17011</span></span><br></pre></td></tr></tbody></table></figure></div><div class="tab-item-content"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> ARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> SUBARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/path/to/clang/bin</span><br><span class="line"><span class="built_in">export</span> CROSS_COMPILE=aarch64-xxxxxxxxxx</span><br><span class="line"><span class="built_in">export</span> OPPO_TARGET_DEVICE=<span class="string">"MSM_nnnnn"</span> <span class="comment"># R11 MSM_16051，R11s MSM_17011</span></span><br></pre></td></tr></tbody></table></figure></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+<h3 id="编译">编译</h3>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 拉取子模块</span></span><br><span class="line">git submodule init</span><br><span class="line">git submodule update</span><br></pre></td></tr></tbody></table></figure>
+<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">编译 1</button><button type="button" class="tab"> 编译 2</button></div><div class="tab-contents"><div class="tab-item-content active"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">make O=out sdm660-perf_defconfig</span><br><span class="line">make -j$(<span class="built_in">nproc</span> --all) O=out 2&gt;&amp;1 | <span class="built_in">tee</span> kernel_log.log</span><br></pre></td></tr></tbody></table></figure></div><div class="tab-item-content"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">make O=out sdm660-perf_defconfig CC=clang</span><br><span class="line">make -j$(<span class="built_in">nproc</span> --all) O=out CC=clang 2&gt;&amp;1 | <span class="built_in">tee</span> kernel_log.log</span><br></pre></td></tr></tbody></table></figure></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+<h3 id="打包内核">打包内核</h3>
+<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">打包内核 1</button><button type="button" class="tab"> 打包内核 2</button></div><div class="tab-contents"><div class="tab-item-content active"><ol>
+<li>提取一个原版 <code>boot.img</code>，要求不带有 Magisk</li>
+<li>回到 CodeSpace，依次展开目录 <code>./out/arch/arm64/boot/</code>，将 <code>Image</code> 下载下来备用</li>
+<li>下载 Magisk.apk（适用于 Linux/，方法为解压后在 libs 里找到并提取 x86_64 的 <code>libmagiskboot.so</code>）或 <a href="https://github.com/PinNaCode/magiskboot_build/">magiskboot</a>（适用于 Windows），得到 <code>magiskboot</code> 备用</li>
+<li><code>magiskboot unpack boot-origin.img</code></li>
+<li>用 <code>Image</code> 替换掉 <code>kernel</code>，保持 <code>kernel</code> 名称不变</li>
+<li><code>magiskoot repack</code>，刷入得到的 <code>new-boot.img</code></li>
+</ol></div><div class="tab-item-content"><ol>
+<li>回到 CodeSpace，依次展开目录 <code>./out/arch/arm64/boot/</code>，将 <code>Image-gz.dtb</code> 下载下来备用</li>
+<li>下载一个 <a href="https://codeload.github.com/WenHao2130/android_kernel_oppo_sdm660_4.4.153/zip/refs/heads/prebuilt_ak3">AnyKernel3</a><br>注意文件夹结构！</li>
+<li>用第一步得到的 <code>Image-gz.dtb</code> 替换掉 <code>AnyKernel3-*.zip</code> 里的 <code>Image-gz.dtb</code></li>
+</ol></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+<h1 id="参考资料">参考资料</h1>
+<ul>
+<li><a href="https://github.com/WenHao2130/android_kernel_oppo_sdm660/tree/747c8b9cf5968d20f155e6e7853d56d3d2e1d77c/.github/workflows">WenHao2130/android_kernel_oppo_sdm660</a></li>
+<li><a href="https://kernelsu.org/zh_CN/guide/how-to-integrate-for-non-gki.html">如何为非 GKI 内核集成 KernelSU | KernelSU</a></li>
+<li><a href="https://github.com/tiann/KernelSU/discussions/950">[基础教程] 如何编译一个 ARM64 架构的自定义内核・tiann / KernelSU・Discussion #950</a></li>
+<li><a href="https://github.com/tiann/KernelSU/discussions/952">[基础教程 2] 如何使用 AnyKernel 3 打包内核・tiann / KernelSU・Discussion #952</a></li>
+<li><a href="https://apatch.dev/zh_CN/install.html">安装 | APatch Docs</a></li>
+</ul>
+<h1 id="拓展阅读">拓展阅读</h1>
+<ul>
+<li><a href="https://github.com/osm0sis/AnyKernel3">osm0sis/AnyKernel3: AnyKernel, Evolved</a></li>
+<li><a href="https://source.android.com/docs/core/architecture/bootloader/dtb-images?hl=zh-cn">DTB 映像 &nbsp;|&nbsp; Android 开源项目 &nbsp;|&nbsp; Android Open Source Project</a></li>
+</ul>
+<h1 id="鸣谢">鸣谢</h1>
+<ul>
+<li><a href="https://github.com/Wenhao2130">Wenhao2130</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>科学与技术</category>
+        <category>计算机</category>
+        <category>刷机</category>
+      </categories>
+      <tags>
+        <tag>刷机</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>旧手机优化计划之三 - 流畅、保活与省电</title>
     <url>/article/4097fa9/</url>
     <content><![CDATA[<div class="note warning flat"><p>除非您有把握，否则不建议随意调整手机默认的性能配置！
@@ -699,148 +841,6 @@ h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​
       </categories>
       <tags>
         <tag>前端</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>旧手机优化计划之二 - Root</title>
-    <url>/article/2a7bbe49/</url>
-    <content><![CDATA[<h1 id="总述">总述</h1>
-<p>本文将介绍三种主流 Root（Magisk、KernelSU、APatch）的安装，并介绍它们的一些技巧提示。</p>
-<p>开始之前，请确保您已经刷入了 TWRP 3.7.0、<code>1170</code>底包的系统，并有且只有一种可用的 Root 方式。</p>
-<h1 id="必备前置知识">必备前置知识</h1>
-<h2 id="救砖">救砖</h2>
-<ul>
-<li><a href="https://kernelsu.org/zh_CN/guide/rescue-from-bootloop.html">救砖 | KernelSU</a></li>
-<li><a href="https://apatch.dev/zh_CN/rescue-bootloop.html">救砖 | APatch Docs</a></li>
-<li><code>logcat</code>、<code>dmesg</code>、<code>/proc/kmsg</code> 等抓取日志的方法</li>
-<li>基本的 Git 知识</li>
-</ul>
-<h2 id="内核切换方法">内核切换方法</h2>
-<p>切换、更新、修改内核有三种方法：</p>
-<ol>
-<li>从别人那里要来 boot.img 刷入</li>
-<li>将内核镜像（.gz/.gz-dtb）用 AnyKernel3 刷入</li>
-<li>将内核镜像（Image）用 magiskboot 打包入 boot.img 刷入</li>
-</ol>
-<h1 id="Magisk">Magisk</h1>
-<h2 id="安装-Magisk">安装 Magisk</h2>
-<ol>
-<li>下载 Magisk 最新版 APK 文件，并安装到手机中。</li>
-<li>打开 Magisk Manager，点击左上角的 “安装” 按钮，选择空白的 Boot 镜像文件，修补。</li>
-<li>使用 TWRP 备份 Boot 分区，刷入修补好的 boot.img 到 Boot 分区，然后重启手机。</li>
-<li>重启后会提示<code>需要修复环境</code>，不要点击修复，按返回键拒绝。选择安装，<strong>取消勾选</strong>“安装到 Recovery”，然后重启。</li>
-</ol>
-<h2 id="Magisk-注意事项">Magisk 注意事项</h2>
-<ol>
-<li>Wenhao 新版内核由于未知原因不适用 Magisk，将会导致手机随机重启入 EDL 模式或高通救援模式，并且无法使用微信视频通话和 QQ 视频通话，请勿尝试。</li>
-<li>修复 Magisk 运行环境与更新 Magisk 时，<strong>务必取消</strong>勾选 “安装到 recvoery” 这个选项，高版本 Magisk （26.1+）会<strong>默认启用</strong>这个选项，错误刷入后会导致 WLAN 无法打开以及 Recovery 无法进入。<br>如果您不慎安装到了 Recovery，请提取卡刷包内的 boot.img 和 recovery.img 重新刷入对应分区，或者干脆重刷完整包。</li>
-<li>“Ramdisk” 为 “否” 是正常的，是 R11 (s) 设备的特性，<strong>不</strong>影响 Magisk 功能。</li>
-<li><s>使用 <code>Magisk Delta</code>（后改名 <code>Kitsune Mask</code>）将难以在除 <code>Kitsune</code> 自己的群组之外的社区得到技术支持，也不需要且无法使用 <code>Shamiko</code> 和 <code>ZygiskNext</code>（包括衍生）。</s> 不建议继续使用 <code>Kitsune Mask</code>，其不仅在社区内臭名昭著，而且已经停止更新。</li>
-<li><code>Alpha</code> 禁止在 Android 内修改 <code>/system</code>，介意勿用。但要知道：这十分有利于安全。</li>
-</ol>
-<h2 id="Magisk-技巧提示">Magisk 技巧提示</h2>
-<ol>
-<li>Magisk APK 相当于刷机包。当 Magisk 出现 “掉 Root 权限”“获取不到 Root 权限”“Zygisk 反复注入失败” 等问题，而三方 Recovery 又可用时，您可以通过将 Magisk.apk 重命名为 Magisk.<strong>zip</strong> 并刷入来修复。</li>
-<li>Magisk 有多个 Fork，各 Fork 各有不同。若您想切换不同的的 Fork，除了在三方 Recovery 中刷入 Magisk.zip 外，还可以在已有的 Magisk Manager 中授予将要安装的 Magisk Manager Root 权限，并重新启动准备安装的 Magisk Manager。此时准备安装的 Magisk Manager 应当有 “无法获取版本信息”“必须重新安装”“修复运行环境” 等提示，重新安装即可。</li>
-</ol>
-<h1 id="KernelSU">KernelSU</h1>
-<h2 id="安装-KernelSU">安装 KernelSU</h2>
-<p>在第三方 Recovery 中把 <code>AnyKernel3-*.zip</code> 刷入即可</p>
-<h2 id="KernelSU-注意事项">KernelSU 注意事项</h2>
-<ol>
-<li><s>KernelSU 在 1.x 版本中移除了 non-GKI 支持，因此不适用于 R11 设备。R11 设备请使用 0.9.5 及以下版本。</s> R11 作为 non-GKI 设备应当使用 <a href="https://github.com/rsuntk/KernelSU">RKSU</a></li>
-<li>KernelSU 在 0.9.3 版本中更改了管理器检测方式，在 ColorOS 6 上会引起卡二屏。请使用 0.9.2 及以下版本。</li>
-<li><s>安装模块超级慢的情况暂时无解。</s> <a href="https://github.com/5ec1cff/KernelSU">MKSU</a> 引入了 Magic Mount，可以缓解安装模块缓慢无比的情况。</li>
-<li>KernelSU 禁止在 Android 内修改 <code>/system</code>，介意勿用。但要知道：这十分有利于安全。</li>
-<li>KernelSU 没有申请 Root 权限的机制。在授予应用程序 Root 后，应用程序在调用时会自动获取 Root 权限且无任何提示。请仅授予可信的应用程序 Root 权限！</li>
-<li><s>KernelSU 暂未有较好的隐藏挂载点泄漏的方法。</s> <a href="https://t.me/pzqqt_c/5837">不建议使用 susfs</a>。</li>
-</ol>
-<h1 id="APatch">APatch</h1>
-<h2 id="安装-APatch">安装 APatch</h2>
-<ol>
-<li>下载 APatch 最新版 APK 文件，并安装到手机中。</li>
-<li>打开 APatch Manager，点击右上角的 “安装” 按钮，选择空白的 Boot 镜像文件，修补。</li>
-<li>使用 TWRP 备份 Boot 分区，刷入修补好的 boot.img 到 Boot 分区，然后重启手机。</li>
-</ol>
-<h2 id="APatch-注意事项">APatch 注意事项</h2>
-<ol>
-<li>更新 APatch 管理器后需进行两步更新：
-<ol>
-<li>点击主页面更新以更新系统补丁（APatch）</li>
-<li>重新修补并刷写 Boot 分区以更新 KernelPatch</li>
-</ol>
-</li>
-<li>APatch 禁止在 Android 内修改 <code>/system</code>，介意勿用。但要知道：这十分有利于安全。</li>
-<li>APatch 没有申请 Root 权限的机制。在授予应用程序 Root 后，应用程序在调用时会自动获取 Root 权限且无任何提示。请仅授予可信的应用程序 Root 权限！</li>
-<li>若您使用了他人修补的 boot.img，务必重新设置密钥！</li>
-<li>Scene 及其附属模块暂不支持 APatch，请勿尝试安装。</li>
-</ol>
-<h2 id="APatch-技巧提示">APatch 技巧提示</h2>
-<ol>
-<li>可通过使用内核模块 <a href="https://t.me/tbthoughts/25">Cherish Peekaboo</a> 隐藏一些挂载点。（作者：GarfieldHan，暂停更新）</li>
-<li>可通过<a href="https://t.me/apatch_discuss/76157">特殊方法</a>使用 Shamiko，但非常不建议。（作者：GarfieldHan）</li>
-</ol>
-<h1 id="推荐学习">推荐学习</h1>
-<h2 id="自己编译内核">自己编译内核</h2>
-<p>如果您对已有的内核不满意，想要自己修改一下；或者等不及更新，按捺不住追版本号的激动，那下面的内容正合您胃口。</p>
-<p>编译内核是一项较为浩大的工程，所以我们用 Github CodeSpace 编译。当然，您也可以选择本地计算机。但是，使用 CodeSpace 有相当的优势：</p>
-<ol>
-<li>自带完美的、几乎无性能损耗的 Ubuntu，免除安装、调试系统的烦恼</li>
-<li>Ubuntu 是较为常规、通用、可靠的 Linux 发行版，有助于避免在一些小众发行版上的问题</li>
-<li>编译内核很占 CPU、内存和磁盘 IO，会影响本地计算机的使用</li>
-</ol>
-<h3 id="启动！">启动！</h3>
-<p>Fork 自己中意的仓库，建立它的 CodeSpace，各项配置拉满。</p>
-<div class="note warning flat"><p>注意：对于不同的内核，您可能需要不同的编译器！</p>
-</div>
-<h3 id="环境搭建">环境搭建</h3>
-<p>首先，您需要准备好编译环境。</p>
-<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">环境搭建 1</button><button type="button" class="tab"> 环境搭建 2</button></div><div class="tab-contents"><div class="tab-item-content active"><p><s>选择一个合适的位置，下载 <a href="https://releases.linaro.org/components/toolchain/binaries/4.9-2017.01/aarch64-linux-gnu/gcc-linaro-4.9.4-2017.01-x86_64_aarch64-linux-gnu.tar.xz">Linaro GCC 4.9</a> 或 <a href="https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+/refs/tags/android-9.0.0_r61">Google GCC Android 9</a>，记下路径。</s></p>
-<p>GCC 老矣！</p></div><div class="tab-item-content"><p><s>选择一个合适的位置，<code>git clone https://github.com/kdrag0n/proton-clang</code>，记下路径。</s> Proton Clang 老了，让我们使用 <a href="https://github.com/ZyCromerZ/Clang">ZyC Clang</a>！</p></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
-<h3 id="环境变量">环境变量</h3>
-<p>设置必需的环境变量。</p>
-<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">环境搭建 1</button><button type="button" class="tab"> 环境搭建 2</button></div><div class="tab-contents"><div class="tab-item-content active"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> ARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> SUBARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/path/to/gcc/bin</span><br><span class="line"><span class="built_in">export</span> CROSS_COMPILE=aarch64-xxxxxxxxxx</span><br><span class="line"><span class="built_in">export</span> OPPO_TARGET_DEVICE=<span class="string">"MSM_nnnnn"</span> <span class="comment"># R11 MSM_16051，R11s MSM_17011</span></span><br></pre></td></tr></tbody></table></figure></div><div class="tab-item-content"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> ARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> SUBARCH=<span class="string">"arm64"</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/path/to/clang/bin</span><br><span class="line"><span class="built_in">export</span> CROSS_COMPILE=aarch64-xxxxxxxxxx</span><br><span class="line"><span class="built_in">export</span> OPPO_TARGET_DEVICE=<span class="string">"MSM_nnnnn"</span> <span class="comment"># R11 MSM_16051，R11s MSM_17011</span></span><br></pre></td></tr></tbody></table></figure></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
-<h3 id="编译">编译</h3>
-<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 拉取子模块</span></span><br><span class="line">git submodule init</span><br><span class="line">git submodule update</span><br></pre></td></tr></tbody></table></figure>
-<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">编译 1</button><button type="button" class="tab"> 编译 2</button></div><div class="tab-contents"><div class="tab-item-content active"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">make O=out sdm660-perf_defconfig</span><br><span class="line">make -j$(<span class="built_in">nproc</span> --all) O=out 2&gt;&amp;1 | <span class="built_in">tee</span> kernel_log.log</span><br></pre></td></tr></tbody></table></figure></div><div class="tab-item-content"><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">make O=out sdm660-perf_defconfig CC=clang</span><br><span class="line">make -j$(<span class="built_in">nproc</span> --all) O=out CC=clang 2&gt;&amp;1 | <span class="built_in">tee</span> kernel_log.log</span><br></pre></td></tr></tbody></table></figure></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
-<h3 id="打包内核">打包内核</h3>
-<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">打包内核 1</button><button type="button" class="tab"> 打包内核 2</button></div><div class="tab-contents"><div class="tab-item-content active"><ol>
-<li>提取一个原版 <code>boot.img</code>，要求不带有 Magisk</li>
-<li>回到 CodeSpace，依次展开目录 <code>./out/arch/arm64/boot/</code>，将 <code>Image</code> 下载下来备用</li>
-<li>下载 Magisk.apk（适用于 Linux/，方法为解压后在 libs 里找到并提取 x86_64 的 <code>libmagiskboot.so</code>）或 <a href="https://github.com/PinNaCode/magiskboot_build/">magiskboot</a>（适用于 Windows），得到 <code>magiskboot</code> 备用</li>
-<li><code>magiskboot unpack boot-origin.img</code></li>
-<li>用 <code>Image</code> 替换掉 <code>kernel</code>，保持 <code>kernel</code> 名称不变</li>
-<li><code>magiskoot repack</code>，刷入得到的 <code>new-boot.img</code></li>
-</ol></div><div class="tab-item-content"><ol>
-<li>回到 CodeSpace，依次展开目录 <code>./out/arch/arm64/boot/</code>，将 <code>Image-gz.dtb</code> 下载下来备用</li>
-<li>下载一个 <a href="https://codeload.github.com/WenHao2130/android_kernel_oppo_sdm660_4.4.153/zip/refs/heads/prebuilt_ak3">AnyKernel3</a><br>注意文件夹结构！</li>
-<li>用第一步得到的 <code>Image-gz.dtb</code> 替换掉 <code>AnyKernel3-*.zip</code> 里的 <code>Image-gz.dtb</code></li>
-</ol></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
-<h1 id="参考资料">参考资料</h1>
-<ul>
-<li><a href="https://github.com/WenHao2130/android_kernel_oppo_sdm660/tree/747c8b9cf5968d20f155e6e7853d56d3d2e1d77c/.github/workflows">WenHao2130/android_kernel_oppo_sdm660</a></li>
-<li><a href="https://kernelsu.org/zh_CN/guide/how-to-integrate-for-non-gki.html">如何为非 GKI 内核集成 KernelSU | KernelSU</a></li>
-<li><a href="https://github.com/tiann/KernelSU/discussions/950">[基础教程] 如何编译一个 ARM64 架构的自定义内核・tiann / KernelSU・Discussion #950</a></li>
-<li><a href="https://github.com/tiann/KernelSU/discussions/952">[基础教程 2] 如何使用 AnyKernel 3 打包内核・tiann / KernelSU・Discussion #952</a></li>
-<li><a href="https://apatch.dev/zh_CN/install.html">安装 | APatch Docs</a></li>
-</ul>
-<h1 id="拓展阅读">拓展阅读</h1>
-<ul>
-<li><a href="https://github.com/osm0sis/AnyKernel3">osm0sis/AnyKernel3: AnyKernel, Evolved</a></li>
-<li><a href="https://source.android.com/docs/core/architecture/bootloader/dtb-images?hl=zh-cn">DTB 映像 &nbsp;|&nbsp; Android 开源项目 &nbsp;|&nbsp; Android Open Source Project</a></li>
-</ul>
-<h1 id="鸣谢">鸣谢</h1>
-<ul>
-<li><a href="https://github.com/Wenhao2130">Wenhao2130</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>科学与技术</category>
-        <category>计算机</category>
-        <category>刷机</category>
-      </categories>
-      <tags>
-        <tag>刷机</tag>
       </tags>
   </entry>
   <entry>
