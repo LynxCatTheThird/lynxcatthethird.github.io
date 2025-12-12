@@ -385,6 +385,68 @@ h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​
       </tags>
   </entry>
   <entry>
+    <title>旧手机优化计划之一 - 刷机</title>
+    <url>/article/d654e311/</url>
+    <content><![CDATA[<p>作为一个信息学爱好者，怎么能不搞刷机呢？作为旧机型用户，我已经遭受绿厂迫害数年了。一气之下，我便把手机刷成了类原生（DotOS 5.2 Vanilla）。在使用了数月后，有了些许经验，分享一下。</p>
+<h1 id="机型概况">机型概况</h1>
+<p>机子是 2017 年发布的 OPPO R11，CPU 是骁龙 660 AIE，运存为 4GB，闪存是严重磨损的 eMMC 64GB。电池是原装的 3000mAh 的（现在只有 2200mAh 了）。</p>
+<p>绿厂只给到 Android 9 ColorOS 6，连暗色模式都没有，根本满足不了我的需求。于是，我决定刷机。</p>
+<p>OPPO R11 目前主要由 CY 团队维护，故绝大多数资源来自 <a href="https://d.cyteam.cn/">CY 团队的下载站</a>。分享链接有密码，请自行加群获取。</p>
+<h1 id="刷机入门">刷机入门</h1>
+<p>在此，我们需要明确几个定义：</p>
+<ul>
+<li><strong>底层</strong>：是指基本的驱动等最重要、最基本的文件，即 “底包”。R11 (s) 系列底包版本号多为 <code>X.nn</code>、<code>nnnn</code> 或 <code>nnnnnn</code> 格式。由于并不总是能够提供三种版本号，请自行辨别。</li>
+<li><strong>系统</strong>：
+<ol>
+<li>字面意义上的系统，包括全部可被刷写的分区</li>
+<li>分区名，通常指 System 分区，可能同时也包括 Boot 分区和 Vendor 分区</li>
+</ol>
+</li>
+<li><strong>A/C</strong>：为了避免歧义，本文中 Android 与 ColorOS 均使用全称而<strong>不</strong>简称为 A 或 C</li>
+</ul>
+<h2 id="解除-Fastboot-限制">解除 Fastboot 限制</h2>
+<p>由于在大多数稳定版系统中 OPPO 对 fastboot 进行了限制，所以我们必须降级或升级至合适的版本进行解锁 BootLoader 的操作。</p>
+<h3 id="无限制">无限制</h3>
+<p>若您的版本号为 <code>A.01</code> / <code>170529</code> 或 <code>C.17</code> / <code>1170</code>，恭喜，Fastboot 畅通无阻，您可直接开始<a href="#%E8%A7%A3%E9%94%81-BootLoader">解锁 BootLoader</a>。</p>
+<h3 id="升级">升级</h3>
+<p>若您的版本号小于 <code>C.17</code> / <code>1170</code>，则可以下载 <a href="https://d.cyteam.cn/d/CY%E4%B8%8E%E6%A9%99%E6%A0%B9%E7%9B%AE%E5%BD%95/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/OPPO/R%26K%20Series/R11/%E5%AE%98%E6%96%B9ROM%EF%BC%88Stock%20ROM%EF%BC%89/%E5%8D%A1%E5%88%B7%EF%BC%88Flash%20Through%20Recovery%EF%BC%89/R11_11_OTA_1170_all_PDZfMhjgV0q1_b68a39.ozip?sign=IY5sogNDdcsn_0Y7V9WT6SSAK73dy6YUPLk92BpdWnk=:0">R11_11_OTA_1170_all_PDZfMhjgV0q1_b68a39.ozip</a>，在<strong>自带</strong>文件管理中打开，升级至 <code>C.17</code> / <code>1170</code> 以解除限制。</p>
+<h3 id="降级">降级</h3>
+<p>相信决定对 OPPO R11 刷机的同学大多数应该更新到了比较新的系统版本吧？如果您的版本号为 <code>C.19</code> / <code>1190</code>，则必须采用降级法。由于此时手机处于严重受限状态，所以我们只能采用最底层的刷机方式 9008 刷机（这也是售后修手机的方法）进行降级操作。</p>
+<ol>
+<li>打上<a href="https://d.cyteam.cn/d/CY%E4%B8%8E%E6%A9%99%E6%A0%B9%E7%9B%AE%E5%BD%95/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7%EF%BC%88Software%20Tools%EF%BC%89/%E9%A9%B1%E5%8A%A8%EF%BC%88Drive%EF%BC%89/CYteam-Services-Tools%20For%20Win10.exe">驱动</a></li>
+<li>下载 <a href="https://d.cyteam.cn/d/CY%E4%B8%8E%E6%A9%99%E6%A0%B9%E7%9B%AE%E5%BD%95/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/OPPO/R%26K%20Series/R11/%E5%AE%98%E6%96%B9ROM%EF%BC%88Stock%20ROM%EF%BC%89/%E7%BA%BF%E5%88%B7%EF%BC%88Flash%20Through%209008%EF%BC%89/R11_11_A.01_170529%EF%BC%889008%E7%BA%BF%E5%88%B7%E5%8C%85%EF%BC%8C11%E3%80%8111t%E5%8F%AF%E7%94%A8%EF%BC%89.7z?sign=EjY5LRISMx_UXC7jbayarsYXffcL_IEzOxuSgBCMpto=:0">R11_11_A.01_170529（9008 线刷包，11、11t 可用）.7z</a> 和 <a href="https://d.cyteam.cn/d/CY%E4%B8%8E%E6%A9%99%E6%A0%B9%E7%9B%AE%E5%BD%95/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/OPPO/R%26K%20Series/R11/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7%20%EF%BC%88Software%20Tools%EF%BC%89/%E5%88%B7%E6%9C%BA%E5%B7%A5%E5%85%B7%20(Flash%20Tool)/R11-MsmDownloadTool.exe?sign=hKnlxjiE602PHN3sgJpqSm_El2EMBhrUt5QAVEyPug8=:0">R11-MsmDownloadTool.exe</a>，选择对应代号（R11 的代号为 16051）；手机关机，同时按下<code>电源键</code> +<code>音量+</code>+<code>音量-</code> 进入 EDL（9008 模式），连接手机至电脑，按照提示刷入即可。</li>
+<li>A.01，启动！</li>
+</ol>
+<p>切记保证数据线连接良好，慎防数据线意外松动。除此之外，基本不会出现什么问题。如果出现诸如 “握手失败”“握手超时” 之类的错误，请尝试重启电脑与手机、更换数据线或 USB 口、重装驱动，有条件的更换电脑。</p>
+<h2 id="解锁-BootLoader">解锁 BootLoader</h2>
+<ol>
+<li>打开开发者选项<br>打开手机，进入设置，找到 “关于手机” 或 “关于设备” 选项，找到 “版本号” 或 “型号 “一栏，并连续点击数次（通常需要点击 7 次），开发者模式即可成功开启。</li>
+<li>打开 OEM 解锁和 USB 调试开关</li>
+<li>下载 <a href="https://developer.android.google.cn/tools/releases/platform-tools?hl=zh_CN">SDK Platform Tools</a>，并解压到合适的位置</li>
+<li>手机连接电脑，重启到 fastboot（或执行 <code>adb reboot fastboot</code>），然后执行 <code>fastboot oem unlock</code>，终端应当提示 “unlocked”</li>
+<li>重启，手机应当有一橙色感叹号（<code>&lt; ! &gt;</code>），提示 “数据有危险”，并要求你访问<code>g.co/ABH</code>。若有，则解锁成功。</li>
+</ol>
+<h2 id="刷入第三方-Rec">刷入第三方 Rec</h2>
+<ol>
+<li>手机连接电脑，重启到 fastboot（或执行 <code>adb reboot fastboot</code>）</li>
+<li>电脑<a href="https://d.cyteam.cn/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/OPPO/R&amp;K%20Series/R11/%E7%AC%AC%E4%B8%89%E6%96%B9%E6%81%A2%E5%A4%8D%E6%A8%A1%E5%BC%8F%E9%95%9C%E5%83%8F%20(Third%20Party%20Recovery%20Image)">下载合适的 Recovery 镜像</a>，执行 <code>fastboot flash recovery twrp-x.x.x-xxxx.img</code></li>
+</ol>
+<h2 id="刷入第三方系统">刷入第三方系统</h2>
+<ol>
+<li>从<a href="https://d.cyteam.cn/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/OPPO/R&amp;K%20Series/R11/%E7%AC%AC%E4%B8%89%E6%96%B9%E7%B3%BB%E7%BB%9F%E5%88%B7%E6%9C%BA%E5%8C%85%20(Third%20Party%20ROM)">第三方系统刷机包 (Third Party ROM)</a> 内下载喜欢的包</li>
+<li>这些包大多是一体包，直接刷入就好</li>
+</ol>
+]]></content>
+      <categories>
+        <category>科学与技术</category>
+        <category>计算机</category>
+        <category>刷机</category>
+      </categories>
+      <tags>
+        <tag>刷机</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>旧手机优化计划之三 - 流畅、保活与省电</title>
     <url>/article/4097fa9/</url>
     <content><![CDATA[<div class="note warning flat"><p>除非您有把握，否则不建议随意调整手机默认的性能配置！
@@ -542,68 +604,6 @@ h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​
       </tags>
   </entry>
   <entry>
-    <title>旧手机优化计划之一 - 刷机</title>
-    <url>/article/d654e311/</url>
-    <content><![CDATA[<p>作为一个信息学爱好者，怎么能不搞刷机呢？作为旧机型用户，我已经遭受绿厂迫害数年了。一气之下，我便把手机刷成了类原生（DotOS 5.2 Vanilla）。在使用了数月后，有了些许经验，分享一下。</p>
-<h1 id="机型概况">机型概况</h1>
-<p>机子是 2017 年发布的 OPPO R11，CPU 是骁龙 660 AIE，运存为 4GB，闪存是严重磨损的 eMMC 64GB。电池是原装的 3000mAh 的（现在只有 2200mAh 了）。</p>
-<p>绿厂只给到 Android 9 ColorOS 6，连暗色模式都没有，根本满足不了我的需求。于是，我决定刷机。</p>
-<p>OPPO R11 目前主要由 CY 团队维护，故绝大多数资源来自 <a href="https://d.cyteam.cn/">CY 团队的下载站</a>。分享链接有密码，请自行加群获取。</p>
-<h1 id="刷机入门">刷机入门</h1>
-<p>在此，我们需要明确几个定义：</p>
-<ul>
-<li><strong>底层</strong>：是指基本的驱动等最重要、最基本的文件，即 “底包”。R11 (s) 系列底包版本号多为 <code>X.nn</code>、<code>nnnn</code> 或 <code>nnnnnn</code> 格式。由于并不总是能够提供三种版本号，请自行辨别。</li>
-<li><strong>系统</strong>：
-<ol>
-<li>字面意义上的系统，包括全部可被刷写的分区</li>
-<li>分区名，通常指 System 分区，可能同时也包括 Boot 分区和 Vendor 分区</li>
-</ol>
-</li>
-<li><strong>A/C</strong>：为了避免歧义，本文中 Android 与 ColorOS 均使用全称而<strong>不</strong>简称为 A 或 C</li>
-</ul>
-<h2 id="解除-Fastboot-限制">解除 Fastboot 限制</h2>
-<p>由于在大多数稳定版系统中 OPPO 对 fastboot 进行了限制，所以我们必须降级或升级至合适的版本进行解锁 BootLoader 的操作。</p>
-<h3 id="无限制">无限制</h3>
-<p>若您的版本号为 <code>A.01</code> / <code>170529</code> 或 <code>C.17</code> / <code>1170</code>，恭喜，Fastboot 畅通无阻，您可直接开始<a href="#%E8%A7%A3%E9%94%81-BootLoader">解锁 BootLoader</a>。</p>
-<h3 id="升级">升级</h3>
-<p>若您的版本号小于 <code>C.17</code> / <code>1170</code>，则可以下载 <a href="https://d.cyteam.cn/d/CY%E4%B8%8E%E6%A9%99%E6%A0%B9%E7%9B%AE%E5%BD%95/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/OPPO/R%26K%20Series/R11/%E5%AE%98%E6%96%B9ROM%EF%BC%88Stock%20ROM%EF%BC%89/%E5%8D%A1%E5%88%B7%EF%BC%88Flash%20Through%20Recovery%EF%BC%89/R11_11_OTA_1170_all_PDZfMhjgV0q1_b68a39.ozip?sign=IY5sogNDdcsn_0Y7V9WT6SSAK73dy6YUPLk92BpdWnk=:0">R11_11_OTA_1170_all_PDZfMhjgV0q1_b68a39.ozip</a>，在<strong>自带</strong>文件管理中打开，升级至 <code>C.17</code> / <code>1170</code> 以解除限制。</p>
-<h3 id="降级">降级</h3>
-<p>相信决定对 OPPO R11 刷机的同学大多数应该更新到了比较新的系统版本吧？如果您的版本号为 <code>C.19</code> / <code>1190</code>，则必须采用降级法。由于此时手机处于严重受限状态，所以我们只能采用最底层的刷机方式 9008 刷机（这也是售后修手机的方法）进行降级操作。</p>
-<ol>
-<li>打上<a href="https://d.cyteam.cn/d/CY%E4%B8%8E%E6%A9%99%E6%A0%B9%E7%9B%AE%E5%BD%95/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7%EF%BC%88Software%20Tools%EF%BC%89/%E9%A9%B1%E5%8A%A8%EF%BC%88Drive%EF%BC%89/CYteam-Services-Tools%20For%20Win10.exe">驱动</a></li>
-<li>下载 <a href="https://d.cyteam.cn/d/CY%E4%B8%8E%E6%A9%99%E6%A0%B9%E7%9B%AE%E5%BD%95/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/OPPO/R%26K%20Series/R11/%E5%AE%98%E6%96%B9ROM%EF%BC%88Stock%20ROM%EF%BC%89/%E7%BA%BF%E5%88%B7%EF%BC%88Flash%20Through%209008%EF%BC%89/R11_11_A.01_170529%EF%BC%889008%E7%BA%BF%E5%88%B7%E5%8C%85%EF%BC%8C11%E3%80%8111t%E5%8F%AF%E7%94%A8%EF%BC%89.7z?sign=EjY5LRISMx_UXC7jbayarsYXffcL_IEzOxuSgBCMpto=:0">R11_11_A.01_170529（9008 线刷包，11、11t 可用）.7z</a> 和 <a href="https://d.cyteam.cn/d/CY%E4%B8%8E%E6%A9%99%E6%A0%B9%E7%9B%AE%E5%BD%95/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/OPPO/R%26K%20Series/R11/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7%20%EF%BC%88Software%20Tools%EF%BC%89/%E5%88%B7%E6%9C%BA%E5%B7%A5%E5%85%B7%20(Flash%20Tool)/R11-MsmDownloadTool.exe?sign=hKnlxjiE602PHN3sgJpqSm_El2EMBhrUt5QAVEyPug8=:0">R11-MsmDownloadTool.exe</a>，选择对应代号（R11 的代号为 16051）；手机关机，同时按下<code>电源键</code> +<code>音量+</code>+<code>音量-</code> 进入 EDL（9008 模式），连接手机至电脑，按照提示刷入即可。</li>
-<li>A.01，启动！</li>
-</ol>
-<p>切记保证数据线连接良好，慎防数据线意外松动。除此之外，基本不会出现什么问题。如果出现诸如 “握手失败”“握手超时” 之类的错误，请尝试重启电脑与手机、更换数据线或 USB 口、重装驱动，有条件的更换电脑。</p>
-<h2 id="解锁-BootLoader">解锁 BootLoader</h2>
-<ol>
-<li>打开开发者选项<br>打开手机，进入设置，找到 “关于手机” 或 “关于设备” 选项，找到 “版本号” 或 “型号 “一栏，并连续点击数次（通常需要点击 7 次），开发者模式即可成功开启。</li>
-<li>打开 OEM 解锁和 USB 调试开关</li>
-<li>下载 <a href="https://developer.android.google.cn/tools/releases/platform-tools?hl=zh_CN">SDK Platform Tools</a>，并解压到合适的位置</li>
-<li>手机连接电脑，重启到 fastboot（或执行 <code>adb reboot fastboot</code>），然后执行 <code>fastboot oem unlock</code>，终端应当提示 “unlocked”</li>
-<li>重启，手机应当有一橙色感叹号（<code>&lt; ! &gt;</code>），提示 “数据有危险”，并要求你访问<code>g.co/ABH</code>。若有，则解锁成功。</li>
-</ol>
-<h2 id="刷入第三方-Rec">刷入第三方 Rec</h2>
-<ol>
-<li>手机连接电脑，重启到 fastboot（或执行 <code>adb reboot fastboot</code>）</li>
-<li>电脑<a href="https://d.cyteam.cn/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/OPPO/R&amp;K%20Series/R11/%E7%AC%AC%E4%B8%89%E6%96%B9%E6%81%A2%E5%A4%8D%E6%A8%A1%E5%BC%8F%E9%95%9C%E5%83%8F%20(Third%20Party%20Recovery%20Image)">下载合适的 Recovery 镜像</a>，执行 <code>fastboot flash recovery twrp-x.x.x-xxxx.img</code></li>
-</ol>
-<h2 id="刷入第三方系统">刷入第三方系统</h2>
-<ol>
-<li>从<a href="https://d.cyteam.cn/%E6%89%8B%E6%9C%BA%E5%88%B7%E6%9C%BA/OPPO/R&amp;K%20Series/R11/%E7%AC%AC%E4%B8%89%E6%96%B9%E7%B3%BB%E7%BB%9F%E5%88%B7%E6%9C%BA%E5%8C%85%20(Third%20Party%20ROM)">第三方系统刷机包 (Third Party ROM)</a> 内下载喜欢的包</li>
-<li>这些包大多是一体包，直接刷入就好</li>
-</ol>
-]]></content>
-      <categories>
-        <category>科学与技术</category>
-        <category>计算机</category>
-        <category>刷机</category>
-      </categories>
-      <tags>
-        <tag>刷机</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>旧手机优化计划之二 - Root</title>
     <url>/article/2a7bbe49/</url>
     <content><![CDATA[<h1 id="总述">总述</h1>
@@ -746,76 +746,6 @@ h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​
       </tags>
   </entry>
   <entry>
-    <title>网站速度优化指北</title>
-    <url>/article/a63f345a/</url>
-    <content><![CDATA[<p>在开始之前，有这么一个网站：<a href="https://files.lynx3.link/html/loading.html">https://files.lynx3.link/html/loading.html</a>。</p>
-<p>这里面引入了五套字体，每套字体 3 个或 9 个字重，共计需要加载 1000 ～ 2000 个字体文件。那么，这个网页的速度与性能，会差到什么程度？</p>
-<p>由此，我们引出本文的话题：如何优化网站速度？</p>
-<h1 id="减少下载资源的数量">减少下载资源的数量</h1>
-<p>更多的文件意味着更长的加载用时与渲染用时，因此应慎重引入。以 Butterfly 主题为例，若不必需某些组件（如 abcjs），则应将其关闭。若不明确某些功能（如 Layload）的利弊关系，则也不应轻易启用。常见的有：</p>
-<h2 id="功能性附加组件">功能性附加组件</h2>
-<p>附加组件包括 abcjs，Mermaid，Katex / MathJax，Aplayer，Firework 等。这些东西若非必需，不应以多多益善为由开启。</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># eg.</span></span><br><span class="line"><span class="attr">aplayerInject:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
-<p>此外，还有诸如小挂件、弹窗等，同样有一定的性能需求，可能也会对页面带来负担。</p>
-<h2 id="预加载">预加载</h2>
-<p>在双方网速足够快时，开启它作用并似乎不明显。但对于部署于 Github Pages 等国外平台建议开启。</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">instantpage:</span> <span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure>
-<h2 id="懒加载">懒加载</h2>
-<p>在图床速度足够快时，开启它作用并不明显。</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">lazyload:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
-<h1 id="调节动画">调节动画</h1>
-<p>很多朋友为了网页美观性往往会添加加载动画，但正如前面所说，只要有一条资源有问题，就会阻塞整个加载动画，致使网页迟迟显示不出有效内容。纵使是非全屏式动画（pace_css），也仿佛在提示用户 “嘿！我还没加载完呢！” 十分影响观感，建议关闭。</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">preloader:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
-<p>但是开启转场动画可以掩盖加载时的闪烁，提高美观性。</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">enter_transitions:</span> <span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure>
-<h1 id="优化图片">优化图片</h1>
-<p>图片作为媒体的重头戏，在网页上不可或缺。随着图片体积的增大，图片所带来的负担也不容小觑。优化图片的要做的是减小体积，其方法有：</p>
-<ol>
-<li>手动降低分辨率、位深、色彩精度之类</li>
-<li>使用工具进行无损或低损压缩<br>参见：<a href="https://butterfly.js.org/posts/4073eda/#%E5%9C%96%E7%89%87%E5%A3%93%E7%B8%AE">Butterfly 安裝文檔 (六) 進階教程 | Butterfly</a></li>
-<li> 将 PNG，JPG 等格式转为 WeBP 或 Avif 格式<br>此类图片发布日期较新，有许多新技术以及新特征（比如在保证质量不太差的前提下，最大程度压缩体积），适合网页使用</li>
-<li>将 Gif 换用 APNG 或 MP4<br>Gif 不仅体积巨大，质量差，渲染还十分费力，不如直接用视频</li>
-</ol>
-<h1 id="保证资源加载畅通">保证资源加载畅通</h1>
-<h2 id="保证性能良好">保证性能良好</h2>
-<p>在引用资源前，应确保来源稳定可靠。若其速度不稳定或服务时好时坏，可能会导致卡加载动画或卡白屏。</p>
-<p>应对资源和服务进行维护、监控或选择可靠的来源，引入前应进行<a href="https://itdog.cn/">多地 Ping / HTTP 测试</a>，确保多地访问通畅。</p>
-<p>若确因资金、政策、网络环境等原因不能保证服务时时可用，可用备用 URL 或 IP 属地判断等技术缓解。具体按可以参见 <a href="https://github.com/EmptyDreams/hexo-swpp">hexo-swpp</a>、 <a href="https://kmar.top/posts/b70ec88f/">Swpp Backends 官方文档</a> 和<a href="https://github.com/lisuid2/hexo1/blob/main/sw-rules.js">一份新版配置文件</a>。</p>
-<h2 id="使用合适的-CDN">使用合适的 CDN</h2>
-<p>打个比方，假如在上海收快递时，件儿从苏州还是美国发过来快？显然是苏州！CDN 也同理。市面上常用的公益 CDN（JSDelivr，&nbsp;UNPKG，CDNJS）等多没有大陆节点，使用此类 CDN, 数据包往往要漂洋过海从大洋彼岸发过来，速度堪忧。</p>
-<p>以 Butterfly&nbsp; 为例，可在配置中将 CDN 来源设为 custom 以使用可靠的国内 CDN：</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">CDN:</span></span><br><span class="line">  <span class="attr">third_party_provider:</span> <span class="string">custom</span></span><br><span class="line">  <span class="attr">custom_format:</span> <span class="string">https://registry.npmmirror.com/${name}/${version}/files/${file}</span></span><br></pre></td></tr></tbody></table></figure>
-<p>其它一些优秀的公益 CDN：</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># Custom format</span></span><br><span class="line"><span class="comment">## NPM(推荐，CDNJS 并不总是提供最新版本的包)</span></span><br><span class="line"><span class="comment"># custom_format: https://cdn.jsdmirror.com/npm/${name}@${version}/${file}</span></span><br><span class="line"><span class="comment"># custom_format: https://npm.webcache.cn/${name}@${version}/${file}</span></span><br><span class="line"><span class="attr">custom_format:</span> <span class="string">https://registry.npmmirror.com/${name}/${version}/files/${file}</span></span><br><span class="line"><span class="comment"># custom_format: https://npm.akass.cn/${name}@${version}/${file}</span></span><br><span class="line"><span class="comment">## CDNJS</span></span><br><span class="line"><span class="comment"># custom_format: https://s4.zstatic.net/ajax/libs/${cdnjs_name}/${version}/${min_cdnjs_file}</span></span><br><span class="line"><span class="comment"># custom_format: https://cdnjs.webstatic.cn/ajax/libs/${cdnjs_name}/${version}/${min_cdnjs_file}</span></span><br><span class="line"><span class="comment"># custom_format: https://sf.akass.cn/${cdnjs_name}/${version}/${min_cdnjs_file}</span></span><br></pre></td></tr></tbody></table></figure>
-<p>若国内源无法包含所有所需文件，还可以给某资源设定单独链接。例如：</p>
-<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">CDN:</span></span><br><span class="line">  <span class="attr">option:</span></span><br><span class="line">    <span class="attr">busuanzi:</span> <span class="string">https://cn.vercount.one/js</span></span><br></pre></td></tr></tbody></table></figure>
-<p>若站点面向全球用户，则可选择 CDN 竞速等策略。具体按可以参见 <a href="https://github.com/EmptyDreams/hexo-swpp">hexo-swpp</a>、 <a href="https://kmar.top/posts/b70ec88f/">Swpp Backends 官方文档</a> 和<a href="https://github.com/lisuid2/hexo1/blob/main/sw-rules.js">一份新版配置文件</a>。</p>
-<h1 id="压缩文件">压缩文件</h1>
-<p>HTML/JS/CSS 文件中的回车、部分空格、注释等仅起提高可读性的作用，却仍占用相当大体积，因此应将其删去。</p>
-<h2 id="Gulp">Gulp</h2>
-<p>参见<a href="https://kmar.top/posts/7d9fb37e/">网站加载速度优化方案总结 | 山岳库博</a></p>
-<h2 id="Hexo-插件">Hexo 插件</h2>
-<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">方案 1</button><button type="button" class="tab"> 方案 2</button></div><div class="tab-contents"><div class="tab-item-content active"><p>参见 <a href="https://argvchs.github.io/2022/08/27/hexo-minify-static-files/">Hexo 压缩静态文件 | Argvchs の小窝</a></p>
-<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">npm install hexo-html-minifier hexo-clean-css hexo-uglify --save</span><br></pre></td></tr></tbody></table></figure>
-<p>在博客目录下 <code>_config.yml</code> 添加如下配置：</p>
-<figure class="highlight yaml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">uglify:</span></span><br><span class="line">  <span class="attr">mangle:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">output:</span></span><br><span class="line">  <span class="attr">compress:</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">"*.min.js"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">clean_css:</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">"*.min.css"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">html_minifier:</span></span><br><span class="line">  <span class="attr">collapseBooleanAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">collapseWhitespace:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">ignoreCustomComments:</span> [<span class="type">!!js/regexp</span> <span class="string">/^\s*more/</span>]</span><br><span class="line">  <span class="attr">removeComments:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">removeEmptyAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">removeScriptTypeAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">removeStyleLinkTypeAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">minifyJS:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">minifyCSS:</span> <span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure></div><div class="tab-item-content"><p>curbengh 的 <code>hexo-yam</code> 插件</p>
-<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">npm install hexo-yam --save</span><br></pre></td></tr></tbody></table></figure>
-<p>在博客目录下 <code>_config.yml</code> 添加如下配置：</p>
-<figure class="highlight yaml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">minify:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">previewServer:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">html:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">exclude:</span></span><br><span class="line">  <span class="attr">css:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">exclude:</span></span><br><span class="line">  <span class="attr">js:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">exclude:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.min.js"</span></span><br><span class="line">  <span class="attr">svg:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">include:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.svg"</span></span><br><span class="line">  <span class="attr">gzip:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">brotli:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">xml:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">    <span class="attr">include:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.xml"</span></span><br><span class="line">  <span class="attr">json:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">include:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.json"</span></span><br><span class="line">  <span class="attr">zstd:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
-<h1 id="缓存">缓存</h1>
-<p>部分服务器是没有缓存功能的，这意味着每次访问都需要从服务器下载资源，既浪费流量，又拉长加载时间，而 ServiceWorker 就解决了这一难题。ServiceWorker 可以对缓存进行合理调度，减少内容的下载量，对于速度提升十分明显。</p>
-<p>具体部署过程此处不多讲，请参见 <a href="https://github.com/EmptyDreams/hexo-swpp">hexo-swpp</a>、 <a href="https://kmar.top/posts/b70ec88f/">Swpp Backends 官方文档</a> 和<a href="https://github.com/lisuid2/hexo1/blob/main/sw-rules.js">一份新版配置文件</a>。</p>
-]]></content>
-      <categories>
-        <category>科学与技术</category>
-        <category>计算机</category>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>前端</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>网站可用性优化指北</title>
     <url>/article/7bd2ed19/</url>
     <content><![CDATA[<h1 id="静态托管">静态托管</h1>
@@ -903,6 +833,76 @@ h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​
 </ol>
 </li>
 </ol>
+]]></content>
+      <categories>
+        <category>科学与技术</category>
+        <category>计算机</category>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>网站速度优化指北</title>
+    <url>/article/a63f345a/</url>
+    <content><![CDATA[<p>在开始之前，有这么一个网站：<a href="https://files.lynx3.link/html/loading.html">https://files.lynx3.link/html/loading.html</a>。</p>
+<p>这里面引入了五套字体，每套字体 3 个或 9 个字重，共计需要加载 1000 ～ 2000 个字体文件。那么，这个网页的速度与性能，会差到什么程度？</p>
+<p>由此，我们引出本文的话题：如何优化网站速度？</p>
+<h1 id="减少下载资源的数量">减少下载资源的数量</h1>
+<p>更多的文件意味着更长的加载用时与渲染用时，因此应慎重引入。以 Butterfly 主题为例，若不必需某些组件（如 abcjs），则应将其关闭。若不明确某些功能（如 Layload）的利弊关系，则也不应轻易启用。常见的有：</p>
+<h2 id="功能性附加组件">功能性附加组件</h2>
+<p>附加组件包括 abcjs，Mermaid，Katex / MathJax，Aplayer，Firework 等。这些东西若非必需，不应以多多益善为由开启。</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># eg.</span></span><br><span class="line"><span class="attr">aplayerInject:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
+<p>此外，还有诸如小挂件、弹窗等，同样有一定的性能需求，可能也会对页面带来负担。</p>
+<h2 id="预加载">预加载</h2>
+<p>在双方网速足够快时，开启它作用并似乎不明显。但对于部署于 Github Pages 等国外平台建议开启。</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">instantpage:</span> <span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure>
+<h2 id="懒加载">懒加载</h2>
+<p>在图床速度足够快时，开启它作用并不明显。</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">lazyload:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
+<h1 id="调节动画">调节动画</h1>
+<p>很多朋友为了网页美观性往往会添加加载动画，但正如前面所说，只要有一条资源有问题，就会阻塞整个加载动画，致使网页迟迟显示不出有效内容。纵使是非全屏式动画（pace_css），也仿佛在提示用户 “嘿！我还没加载完呢！” 十分影响观感，建议关闭。</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">preloader:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
+<p>但是开启转场动画可以掩盖加载时的闪烁，提高美观性。</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">enter_transitions:</span> <span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure>
+<h1 id="优化图片">优化图片</h1>
+<p>图片作为媒体的重头戏，在网页上不可或缺。随着图片体积的增大，图片所带来的负担也不容小觑。优化图片的要做的是减小体积，其方法有：</p>
+<ol>
+<li>手动降低分辨率、位深、色彩精度之类</li>
+<li>使用工具进行无损或低损压缩<br>参见：<a href="https://butterfly.js.org/posts/4073eda/#%E5%9C%96%E7%89%87%E5%A3%93%E7%B8%AE">Butterfly 安裝文檔 (六) 進階教程 | Butterfly</a></li>
+<li> 将 PNG，JPG 等格式转为 WeBP 或 Avif 格式<br>此类图片发布日期较新，有许多新技术以及新特征（比如在保证质量不太差的前提下，最大程度压缩体积），适合网页使用</li>
+<li>将 Gif 换用 APNG 或 MP4<br>Gif 不仅体积巨大，质量差，渲染还十分费力，不如直接用视频</li>
+</ol>
+<h1 id="保证资源加载畅通">保证资源加载畅通</h1>
+<h2 id="保证性能良好">保证性能良好</h2>
+<p>在引用资源前，应确保来源稳定可靠。若其速度不稳定或服务时好时坏，可能会导致卡加载动画或卡白屏。</p>
+<p>应对资源和服务进行维护、监控或选择可靠的来源，引入前应进行<a href="https://itdog.cn/">多地 Ping / HTTP 测试</a>，确保多地访问通畅。</p>
+<p>若确因资金、政策、网络环境等原因不能保证服务时时可用，可用备用 URL 或 IP 属地判断等技术缓解。具体按可以参见 <a href="https://github.com/EmptyDreams/hexo-swpp">hexo-swpp</a>、 <a href="https://kmar.top/posts/b70ec88f/">Swpp Backends 官方文档</a> 和<a href="https://github.com/lisuid2/hexo1/blob/main/sw-rules.js">一份新版配置文件</a>。</p>
+<h2 id="使用合适的-CDN">使用合适的 CDN</h2>
+<p>打个比方，假如在上海收快递时，件儿从苏州还是美国发过来快？显然是苏州！CDN 也同理。市面上常用的公益 CDN（JSDelivr，&nbsp;UNPKG，CDNJS）等多没有大陆节点，使用此类 CDN, 数据包往往要漂洋过海从大洋彼岸发过来，速度堪忧。</p>
+<p>以 Butterfly&nbsp; 为例，可在配置中将 CDN 来源设为 custom 以使用可靠的国内 CDN：</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">CDN:</span></span><br><span class="line">  <span class="attr">third_party_provider:</span> <span class="string">custom</span></span><br><span class="line">  <span class="attr">custom_format:</span> <span class="string">https://registry.npmmirror.com/${name}/${version}/files/${file}</span></span><br></pre></td></tr></tbody></table></figure>
+<p>其它一些优秀的公益 CDN：</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># Custom format</span></span><br><span class="line"><span class="comment">## NPM(推荐，CDNJS 并不总是提供最新版本的包)</span></span><br><span class="line"><span class="comment"># custom_format: https://cdn.jsdmirror.com/npm/${name}@${version}/${file}</span></span><br><span class="line"><span class="comment"># custom_format: https://npm.webcache.cn/${name}@${version}/${file}</span></span><br><span class="line"><span class="attr">custom_format:</span> <span class="string">https://registry.npmmirror.com/${name}/${version}/files/${file}</span></span><br><span class="line"><span class="comment"># custom_format: https://npm.akass.cn/${name}@${version}/${file}</span></span><br><span class="line"><span class="comment">## CDNJS</span></span><br><span class="line"><span class="comment"># custom_format: https://s4.zstatic.net/ajax/libs/${cdnjs_name}/${version}/${min_cdnjs_file}</span></span><br><span class="line"><span class="comment"># custom_format: https://cdnjs.webstatic.cn/ajax/libs/${cdnjs_name}/${version}/${min_cdnjs_file}</span></span><br><span class="line"><span class="comment"># custom_format: https://sf.akass.cn/${cdnjs_name}/${version}/${min_cdnjs_file}</span></span><br></pre></td></tr></tbody></table></figure>
+<p>若国内源无法包含所有所需文件，还可以给某资源设定单独链接。例如：</p>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">CDN:</span></span><br><span class="line">  <span class="attr">option:</span></span><br><span class="line">    <span class="attr">busuanzi:</span> <span class="string">https://cn.vercount.one/js</span></span><br></pre></td></tr></tbody></table></figure>
+<p>若站点面向全球用户，则可选择 CDN 竞速等策略。具体按可以参见 <a href="https://github.com/EmptyDreams/hexo-swpp">hexo-swpp</a>、 <a href="https://kmar.top/posts/b70ec88f/">Swpp Backends 官方文档</a> 和<a href="https://github.com/lisuid2/hexo1/blob/main/sw-rules.js">一份新版配置文件</a>。</p>
+<h1 id="压缩文件">压缩文件</h1>
+<p>HTML/JS/CSS 文件中的回车、部分空格、注释等仅起提高可读性的作用，却仍占用相当大体积，因此应将其删去。</p>
+<h2 id="Gulp">Gulp</h2>
+<p>参见<a href="https://kmar.top/posts/7d9fb37e/">网站加载速度优化方案总结 | 山岳库博</a></p>
+<h2 id="Hexo-插件">Hexo 插件</h2>
+<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">方案 1</button><button type="button" class="tab"> 方案 2</button></div><div class="tab-contents"><div class="tab-item-content active"><p>参见 <a href="https://argvchs.github.io/2022/08/27/hexo-minify-static-files/">Hexo 压缩静态文件 | Argvchs の小窝</a></p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">npm install hexo-html-minifier hexo-clean-css hexo-uglify --save</span><br></pre></td></tr></tbody></table></figure>
+<p>在博客目录下 <code>_config.yml</code> 添加如下配置：</p>
+<figure class="highlight yaml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">uglify:</span></span><br><span class="line">  <span class="attr">mangle:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">output:</span></span><br><span class="line">  <span class="attr">compress:</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">"*.min.js"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">clean_css:</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">"*.min.css"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">html_minifier:</span></span><br><span class="line">  <span class="attr">collapseBooleanAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">collapseWhitespace:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">ignoreCustomComments:</span> [<span class="type">!!js/regexp</span> <span class="string">/^\s*more/</span>]</span><br><span class="line">  <span class="attr">removeComments:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">removeEmptyAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">removeScriptTypeAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">removeStyleLinkTypeAttributes:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">minifyJS:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">minifyCSS:</span> <span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure></div><div class="tab-item-content"><p>curbengh 的 <code>hexo-yam</code> 插件</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">npm install hexo-yam --save</span><br></pre></td></tr></tbody></table></figure>
+<p>在博客目录下 <code>_config.yml</code> 添加如下配置：</p>
+<figure class="highlight yaml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">minify:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">previewServer:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">html:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">exclude:</span></span><br><span class="line">  <span class="attr">css:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">exclude:</span></span><br><span class="line">  <span class="attr">js:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">exclude:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.min.js"</span></span><br><span class="line">  <span class="attr">svg:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">include:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.svg"</span></span><br><span class="line">  <span class="attr">gzip:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">brotli:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">xml:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">    <span class="attr">include:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.xml"</span></span><br><span class="line">  <span class="attr">json:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">include:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"*.json"</span></span><br><span class="line">  <span class="attr">zstd:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+<h1 id="缓存">缓存</h1>
+<p>部分服务器是没有缓存功能的，这意味着每次访问都需要从服务器下载资源，既浪费流量，又拉长加载时间，而 ServiceWorker 就解决了这一难题。ServiceWorker 可以对缓存进行合理调度，减少内容的下载量，对于速度提升十分明显。</p>
+<p>具体部署过程此处不多讲，请参见 <a href="https://github.com/EmptyDreams/hexo-swpp">hexo-swpp</a>、 <a href="https://kmar.top/posts/b70ec88f/">Swpp Backends 官方文档</a> 和<a href="https://github.com/lisuid2/hexo1/blob/main/sw-rules.js">一份新版配置文件</a>。</p>
 ]]></content>
       <categories>
         <category>科学与技术</category>
