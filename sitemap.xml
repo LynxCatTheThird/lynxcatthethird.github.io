@@ -164,6 +164,13 @@
 
   
   <url>
+    <loc>https://www.lynx3.me/tags/%E6%95%B0%E5%AD%A6/</loc>
+    <lastmod>2026-02-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://www.lynx3.me/tags/Linux/</loc>
     <lastmod>2026-02-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -172,13 +179,6 @@
   
   <url>
     <loc>https://www.lynx3.me/tags/Bug/</loc>
-    <lastmod>2026-02-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.lynx3.me/tags/%E6%95%B0%E5%AD%A6/</loc>
     <lastmod>2026-02-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -229,14 +229,14 @@
   </url>
   
   <url>
-    <loc>https://www.lynx3.me/categories/%E7%A7%91%E5%AD%A6%E4%B8%8E%E6%8A%80%E6%9C%AF/%E8%AE%A1%E7%AE%97%E6%9C%BA/Linux/</loc>
+    <loc>https://www.lynx3.me/categories/%E7%A7%91%E5%AD%A6%E4%B8%8E%E6%8A%80%E6%9C%AF/%E8%AE%A1%E7%AE%97%E6%9C%BA/%E5%89%8D%E7%AB%AF/</loc>
     <lastmod>2026-02-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://www.lynx3.me/categories/%E7%A7%91%E5%AD%A6%E4%B8%8E%E6%8A%80%E6%9C%AF/%E8%AE%A1%E7%AE%97%E6%9C%BA/%E5%89%8D%E7%AB%AF/</loc>
+    <loc>https://www.lynx3.me/categories/%E7%A7%91%E5%AD%A6%E4%B8%8E%E6%8A%80%E6%9C%AF/%E8%AE%A1%E7%AE%97%E6%9C%BA/Linux/</loc>
     <lastmod>2026-02-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
