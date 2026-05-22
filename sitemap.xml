@@ -56,7 +56,7 @@
   </url>
   
   <url>
-    <loc>https://www.lynx3.me/categories/index.html</loc>
+    <loc>https://www.lynx3.me/comment/index.html</loc>
     
     <lastmod>2025-11-15</lastmod>
     
@@ -65,7 +65,7 @@
   </url>
   
   <url>
-    <loc>https://www.lynx3.me/comment/index.html</loc>
+    <loc>https://www.lynx3.me/categories/index.html</loc>
     
     <lastmod>2025-11-15</lastmod>
     
@@ -187,6 +187,13 @@
   </url>
   
   <url>
+    <loc>https://www.lynx3.me/tags/%E6%95%B0%E5%AD%A6/</loc>
+    <lastmod>2026-05-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://www.lynx3.me/tags/C/</loc>
     <lastmod>2026-05-22</lastmod>
     <changefreq>weekly</changefreq>
@@ -195,13 +202,6 @@
   
   <url>
     <loc>https://www.lynx3.me/tags/Rust/</loc>
-    <lastmod>2026-05-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.lynx3.me/tags/%E6%95%B0%E5%AD%A6/</loc>
     <lastmod>2026-05-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
